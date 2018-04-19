@@ -3,6 +3,7 @@ public class Ship {
 
 	private String startCoord;
 	private String endCoord;
+	private String ShipCategory;
 	
 	public Ship(String startCoord, String endCoord) {
 		setStartCoord(startCoord);
@@ -10,12 +11,10 @@ public class Ship {
 	}
 	
 	public boolean isHit(String missileCoord) {
+		return true;
 		//si le bateau est touche ou non
 	}
 	
-	public boolean checkCoord(String lenght, String startCoord, String endCoord) {
-		//verifie si les coordonnees correspondent a une taille de bateau valide
-	}
 	
 	public String getStartCoord() {
 		return startCoord;
@@ -31,7 +30,14 @@ public class Ship {
 		this.endCoord = endCoord;
 	}
 
+	public String getShipCategory() {
+		return ShipCategory;
+	}
+
+	public void setShipCategory(String shipCategory) {
+		ShipCategory = shipCategory;
+	}
+
+
 
 }
-
-

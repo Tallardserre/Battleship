@@ -1,18 +1,49 @@
-import java.util.Scanner;
+
 public class Game {
 
-	public void generateShip(int playerNumber, int lenghtShip){
-		Scanner sc1 = new Scanner(System.in);
-		Scanner sc2 = new Scanner(System.in);
-		String str1="",str2="",str3="",str4="";
-		System.out.println("Give the first coordinates of your Carrier (size : 5)");
-		String coord1 = sc1.nextLine();
-		StringBuffer sbcol = new StringBuffer(coord1);
-		StringBuffer sbline = new StringBuffer(coord1);
-		sbcol.delete(0, 1);
-		sbline.delete(1, 2);
-		System.out.println("Give the last coordinates of your Carrier choose between "+str1+str2+str3+str4+":");
-		String coord2 = sc2.nextLine();
-		new Ship(coord1, coord2);//creation des bateaux pour les joueurs en demandant les coordonnees voulues pour le bateau.
+	public int LetterToInt(String letter){
+		int value=10;
+		if (letter.length()==1) {
+			value = (int)letter.charAt(0)-65;
+		}
+		return value;
+	}	
+		
+	public static String IntToLetter(int value){
+		String str="";
+		switch(value){
+			case 0:
+				str= "A";
+				break;
+			case 1:
+				str= "B";
+				break;
+			case 2:
+				str= "C";
+				break;
+			case 3:
+				str= "D";
+				break;
+			case 4:
+				str= "E";
+				break;
+			case 5:
+				str= "F";
+			    break;			
+			case 6:
+				str= "G";
+				break;
+			case 7:
+				str= "H";
+				break;
+			case 8:
+				str= "I";
+				break;
+			case 9:
+				str= "J";
+				break;
+		}
+		return str;
 	}
+
 }
