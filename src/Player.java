@@ -73,46 +73,87 @@ public class Player {
 	}
 	
 	public boolean checkStartCoord(String coord, int size){//ERREUR
-		ArrayList<String> spaces = new ArrayList<String>();
-		int coordColl=(int)coord.charAt(0)-65;
-	    int coordLine = coord.charAt(1) - '0';
-	    if (coord.length()==3) {
-	    	coordLine=(coord.charAt(1)- '0')*10+coord.charAt(2)- '0';
-	    }
-	    
-	    int coordColl1=coordColl-(size-1);
-	    int coordLine1=coordLine-(size-1);
-	    int coordColl2=coordColl+(size-1);
-	    int coordLine2=coordLine+(size-1);
-
-	    if (coordColl1>=0) {
-	    	spaces=checkSpacesArray(coordLine,coordColl,coordLine,coordColl1,size,spaces);
-	    	System.out.println("coordline:"+coordLine+"coordcoll:"+coordColl+"coordline:"+coordLine+"coordcoll:"+coordColl1+"");
-	    }
-	    if (coordColl2<=9){
-	    	spaces=checkSpacesArray(coordLine,coordColl,coordLine,coordColl2,size,spaces);
-
-	    }
-	    if (coordLine1>=1){
-	    	spaces=checkSpacesArray(coordLine,coordColl,coordLine1,coordColl,size,spaces);
-
-	    }
-	    if (coordLine2<=10){
-	    	spaces=checkSpacesArray(coordLine,coordColl,coordLine2,coordColl,size,spaces);
-
-	    }
-	    boolean notFind=true;
-	    int i=0;
-	    int j=0;
-	    while(i<this.spaceOccupied.size()&&notFind){
-	    	for (j=0;j<spaces.size();j++){
-	    		if (this.spaceOccupied.get(i).equals(spaces.get(j))) {
-	    			notFind=false;
-	    		}
-	    	}
-	    	i++;
-	    }
-	    return notFind;
+		boolean end=false;
+		for (int n=0;n<this.spaceOccupied.size();n++){
+			if (this.spaceOccupied.get(n).equals(coord)){
+				end=true;
+			}
+		}
+		
+		if (end) {
+			return false;
+		}
+		else {
+			ArrayList<String> spaces1 = new ArrayList<String>();
+			ArrayList<String> spaces2 = new ArrayList<String>();
+			ArrayList<String> spaces3 = new ArrayList<String>();
+			ArrayList<String> spaces4 = new ArrayList<String>();
+	
+			int coordColl=(int)coord.charAt(0)-65;
+		    int coordLine = coord.charAt(1) - '0';
+		    if (coord.length()==3) {
+		    	coordLine=(coord.charAt(1)- '0')*10+coord.charAt(2)- '0';
+		    }
+		    
+		    int coordColl1=coordColl-(size-1);
+		    int coordLine1=coordLine-(size-1);
+		    int coordColl2=coordColl+(size-1);
+		    int coordLine2=coordLine+(size-1);
+	
+		    if (coordColl1>=0) {
+		    	spaces1=checkSpacesArray(coordLine,coordColl,coordLine,coordColl1,size,spaces1);
+		    	System.out.println("coordline:"+coordLine+"coordcoll:"+coordColl+"coordline:"+coordLine+"coordcoll:"+coordColl1+"");
+		    }
+		    if (coordColl2<=9){
+		    	spaces2=checkSpacesArray(coordLine,coordColl,coordLine,coordColl2,size,spaces2);
+		    	System.out.println("coordline:"+coordLine+"coordcoll:"+coordColl+"coordline:"+coordLine+"coordcoll:"+coordColl2+"");
+	
+		    }
+		    if (coordLine1>=1){
+		    	spaces3=checkSpacesArray(coordLine,coordColl,coordLine1,coordColl,size,spaces3);
+		    	System.out.println("coordline:"+coordLine+"coordcoll:"+coordColl+"coordline:"+coordLine1+"coordcoll:"+coordColl+"");
+	
+		    }
+		    if (coordLine2<=10){
+		    	spaces4=checkSpacesArray(coordLine,coordColl,coordLine2,coordColl,size,spaces4);
+		    	System.out.println("coordline:"+coordLine+"coordcoll:"+coordColl+"coordline:"+coordLine2+"coordcoll:"+coordColl+"");
+	
+		    }
+		    boolean notFind1=true;
+		    boolean notFind2=true;
+		    boolean notFind3=true;
+		    boolean notFind4=true;
+		    int i=0;
+		    int j=0;
+		    int l=0;
+		    int m=0;
+		    int k=0;
+	
+		    while(i<this.spaceOccupied.size()&&(notFind1||notFind2||notFind3||notFind4)){
+		    	for (j=0;j<spaces1.size();j++){
+		    		if (this.spaceOccupied.get(i).equals(spaces1.get(j))) {
+		    			notFind1=false;
+		    		}
+		    	}
+		    	for (k=0;k<spaces2.size();k++){
+		    		if (this.spaceOccupied.get(i).equals(spaces2.get(k))) {
+		    			notFind2=false;
+		    		}
+		    	}
+		    	for (l=0;l<spaces3.size();l++){
+		    		if (this.spaceOccupied.get(i).equals(spaces3.get(l))) {
+		    			notFind3=false;
+		    		}
+		    	}
+		    	for (m=0;m<spaces4.size();m++){
+		    		if (this.spaceOccupied.get(i).equals(spaces4.get(m))) {
+		    			notFind4=false;
+		    		}
+		    	}
+		    	i++;
+		    }
+		    return (notFind1||notFind2||notFind3||notFind4);
+		}
 	}
 	
 	public ArrayList<String> checkSpacesArray(int startCoordLine, int startCoordColl, int endCoordLine, int endCoordColl, int size, ArrayList<String> spaces){
