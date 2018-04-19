@@ -123,22 +123,24 @@ public class Player {
 	    	case 4:
 		    if (endCoordLine==startCoordLine) {
 		    	if (endCoordColl>startCoordColl) {
-		    		System.out.println("1"+Game.IntToLetter(startCoordColl+1)+startCoordLine);
-		    		spaces.add(Game.IntToLetter(startCoordColl+1)+startCoordLine);
-		    		System.out.println("2"+Game.IntToLetter(startCoordColl+2)+startCoordLine);
-		    		spaces.add(Game.IntToLetter(startCoordColl+2)+startCoordLine);
+		    		startCoordColl++;
+		    		spaces.add(Game.IntToLetter(startCoordColl++)+startCoordLine);
+		    		spaces.add(Game.IntToLetter(startCoordColl++)+startCoordLine);
 		    	}
 		    	else {
+		    		startCoordColl--;
 		    		spaces.add(Game.IntToLetter(startCoordColl--)+startCoordLine);
 		    		spaces.add(Game.IntToLetter(startCoordColl--)+startCoordLine);
 		    	}
 		    }
 		    else {
 		    	if (endCoordLine>startCoordLine) {
+		    		startCoordLine++;
 		    		spaces.add(Game.IntToLetter(startCoordColl)+startCoordLine++);
 		    		spaces.add(Game.IntToLetter(startCoordColl)+startCoordLine++);
 		    	}
 		    	else {
+		    		startCoordLine--;
 		    		spaces.add(Game.IntToLetter(startCoordColl)+startCoordLine--);
 		    		spaces.add(Game.IntToLetter(startCoordColl)+startCoordLine--);
 		    	}
@@ -147,17 +149,21 @@ public class Player {
 		case 3:
 		    if (endCoordLine==startCoordLine) {
 		    	if (endCoordColl>startCoordColl) {
+		    		startCoordColl++;
 		    		spaces.add(Game.IntToLetter(startCoordColl++)+startCoordLine);
 		    	}
 		    	else {
+		    		startCoordColl--;
 		    		spaces.add(Game.IntToLetter(startCoordColl--)+startCoordLine);
 		    	}
 		    }
 		    else {
 		    	if (endCoordLine>startCoordLine) {
+		    		startCoordLine++;
 		    		spaces.add(Game.IntToLetter(startCoordColl)+startCoordLine++);
 		    	}
 		    	else {
+		    		startCoordLine--;
 		    		spaces.add(Game.IntToLetter(startCoordColl)+startCoordLine--);
 		    	}
 		    }
@@ -188,11 +194,13 @@ public class Player {
 	    case 5:
 		    if (endCoordLine==startCoordLine) {
 		    	if (endCoordColl>startCoordColl) {
+		    		startCoordColl++;
 		    		this.spaceOccupied.add(Game.IntToLetter(startCoordColl++)+startCoordLine);
 		    		this.spaceOccupied.add(Game.IntToLetter(startCoordColl++)+startCoordLine);
 		    		this.spaceOccupied.add(Game.IntToLetter(startCoordColl++)+startCoordLine);
 		    	}
 		    	else {
+		    		startCoordColl--;
 		    		this.spaceOccupied.add(Game.IntToLetter(startCoordColl--)+startCoordLine);
 		    		this.spaceOccupied.add(Game.IntToLetter(startCoordColl--)+startCoordLine);
 		    		this.spaceOccupied.add(Game.IntToLetter(startCoordColl--)+startCoordLine);
@@ -200,11 +208,13 @@ public class Player {
 		    }
 		    else {
 		    	if (endCoordLine>startCoordLine) {
+		    		startCoordLine++;
 		    		this.spaceOccupied.add(Game.IntToLetter(startCoordColl)+startCoordLine++);
 		    		this.spaceOccupied.add(Game.IntToLetter(startCoordColl)+startCoordLine++);
 		    		this.spaceOccupied.add(Game.IntToLetter(startCoordColl)+startCoordLine++);
 		    	}
 		    	else {
+		    		startCoordLine--;
 		    		this.spaceOccupied.add(Game.IntToLetter(startCoordColl)+startCoordLine--);
 		    		this.spaceOccupied.add(Game.IntToLetter(startCoordColl)+startCoordLine--);
 		    		this.spaceOccupied.add(Game.IntToLetter(startCoordColl)+startCoordLine--);
@@ -214,20 +224,24 @@ public class Player {
 	    case 4:
 		    if (endCoordLine==startCoordLine) {
 		    	if (endCoordColl>startCoordColl) {
+		    		startCoordColl++;
 		    		this.spaceOccupied.add(Game.IntToLetter(startCoordColl++)+startCoordLine);
 		    		this.spaceOccupied.add(Game.IntToLetter(startCoordColl++)+startCoordLine);
 		    	}
 		    	else {
+		    		startCoordColl--;
 		    		this.spaceOccupied.add(Game.IntToLetter(startCoordColl--)+startCoordLine);
 		    		this.spaceOccupied.add(Game.IntToLetter(startCoordColl--)+startCoordLine);
 		    	}
 		    }
 		    else {
 		    	if (endCoordLine>startCoordLine) {
+		    		startCoordLine++;
 		    		this.spaceOccupied.add(Game.IntToLetter(startCoordColl)+startCoordLine++);
 		    		this.spaceOccupied.add(Game.IntToLetter(startCoordColl)+startCoordLine++);
 		    	}
 		    	else {
+		    		startCoordLine--;
 		    		this.spaceOccupied.add(Game.IntToLetter(startCoordColl)+startCoordLine--);
 		    		this.spaceOccupied.add(Game.IntToLetter(startCoordColl)+startCoordLine--);
 		    	}
@@ -236,17 +250,21 @@ public class Player {
 		case 3:
 		    if (endCoordLine==startCoordLine) {
 		    	if (endCoordColl>startCoordColl) {
+		    		startCoordColl++;
 		    		this.spaceOccupied.add(Game.IntToLetter(startCoordColl++)+startCoordLine);
 		    	}
 		    	else {
+		    		startCoordColl--;
 		    		this.spaceOccupied.add(Game.IntToLetter(startCoordColl--)+startCoordLine);
 		    	}
 		    }
 		    else {
 		    	if (endCoordLine>startCoordLine) {
+		    		startCoordLine++;
 		    		this.spaceOccupied.add(Game.IntToLetter(startCoordColl)+startCoordLine++);
 		    	}
 		    	else {
+		    		startCoordLine--;
 		    		this.spaceOccupied.add(Game.IntToLetter(startCoordColl)+startCoordLine--);
 		    	}
 		    }
