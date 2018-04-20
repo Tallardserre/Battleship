@@ -214,10 +214,74 @@ public class Player {
 	    return spaces;
 	}
 	
-	public boolean checkEndCoord(int coordColl, int coordLine, int size){
-		return true;
-	}
-	
+	public boolean checkEndCoord(String startCoord, int endCoordColl, int endCoordLine, int size){
+	    int startCoordColl=(int)startCoord.charAt(0)-65;
+	    int startCoordLine = startCoord.charAt(1) - '0';
+	    ArrayList<String> spaces = new ArrayList<String>();
+	    switch(size){
+    	case 4:
+	    if (endCoordLine==startCoordLine) {
+	    	if (endCoordColl>startCoordColl) {
+	    		startCoordColl++;
+	    		spaces.add(Game.IntToLetter(startCoordColl++)+startCoordLine);
+	    		spaces.add(Game.IntToLetter(startCoordColl++)+startCoordLine);
+	    	}
+	    	else {
+	    		startCoordColl--;
+	    		spaces.add(Game.IntToLetter(startCoordColl--)+startCoordLine);
+	    		spaces.add(Game.IntToLetter(startCoordColl--)+startCoordLine);
+	    	}
+	    }
+	    else {
+	    	if (endCoordLine>startCoordLine) {
+	    		startCoordLine++;
+	    		spaces.add(Game.IntToLetter(startCoordColl)+startCoordLine++);
+	    		spaces.add(Game.IntToLetter(startCoordColl)+startCoordLine++);
+	    	}
+	    	else {
+	    		startCoordLine--;
+	    		spaces.add(Game.IntToLetter(startCoordColl)+startCoordLine--);
+	    		spaces.add(Game.IntToLetter(startCoordColl)+startCoordLine--);
+	    	}
+	    }
+	    break;
+		case 3:
+		    if (endCoordLine==startCoordLine) {
+		    	if (endCoordColl>startCoordColl) {
+		    		startCoordColl++;
+		    		spaces.add(Game.IntToLetter(startCoordColl++)+startCoordLine);
+		    	}
+		    	else {
+		    		startCoordColl--;
+		    		spaces.add(Game.IntToLetter(startCoordColl--)+startCoordLine);
+		    	}
+		    }
+		    else {
+		    	if (endCoordLine>startCoordLine) {
+		    		startCoordLine++;
+		    		spaces.add(Game.IntToLetter(startCoordColl)+startCoordLine++);
+		    	}
+		    	else {
+		    		startCoordLine--;
+		    		spaces.add(Game.IntToLetter(startCoordColl)+startCoordLine--);
+		    	}
+		    }
+		    break;
+	    }
+	    int j=0;
+	    int i=0;
+	    boolean notFind=true;
+	    while(i<this.spaceOccupied.size()&&(notFind)){
+	    	for (j=0;j<spaces.size();j++){
+	    		if (this.spaceOccupied.get(i).equals(spaces.get(j))) {
+	    			notFind=false;
+	    		}
+	    	}
+	    i++;
+	    }
+	    return notFind;
+	}    
+	    
 	public void addSpace(String startCoord, String endCoord, int size){
 		this.spaceOccupied.add(startCoord);
 		this.spaceOccupied.add(endCoord);
@@ -398,16 +462,16 @@ public class Player {
 		coordLine1=coordLine-3;
 		coordColl2=coordColl+3;
 		coordLine2=coordLine+3;
-		if (coordColl1>=0&&checkEndCoord(coordColl1,coordLine,4)) {
+		if (coordColl1>=0&&checkEndCoord(coord1, coordColl1,coordLine,4)) {
 			str1=Game.IntToLetter(coordColl1)+coordLine;
 		}
-		if (coordColl2<=9&&checkEndCoord(coordColl2,coordLine,4)) {
+		if (coordColl2<=9&&checkEndCoord(coord1, coordColl2,coordLine,4)) {
 			str2=Game.IntToLetter(coordColl2)+coordLine;
 		}
-		if (coordLine1>=1&&checkEndCoord(coordColl,coordLine1,4)) {
+		if (coordLine1>=1&&checkEndCoord(coord1, coordColl,coordLine1,4)) {
 			str3=Game.IntToLetter(coordColl)+coordLine1;
 		}
-		if (coordLine2<=10&&checkEndCoord(coordColl,coordLine2,4)) {
+		if (coordLine2<=10&&checkEndCoord(coord1, coordColl,coordLine2,4)) {
 			str4=Game.IntToLetter(coordColl)+coordLine2;
 		}
 			
@@ -453,16 +517,16 @@ public class Player {
 		coordLine1=coordLine-2;
 		coordColl2=coordColl+2;
 		coordLine2=coordLine+2;
-		if (coordColl1>=0&&checkEndCoord(coordColl1,coordLine,3)) {
+		if (coordColl1>=0&&checkEndCoord(coord1, coordColl1,coordLine,3)) {
 			str1=Game.IntToLetter(coordColl1)+coordLine;
 		}
-		if (coordColl2<=9&&checkEndCoord(coordColl2,coordLine,3)) {
+		if (coordColl2<=9&&checkEndCoord(coord1, coordColl2,coordLine,3)) {
 			str2=Game.IntToLetter(coordColl2)+coordLine;
 		}
-		if (coordLine1>=1&&checkEndCoord(coordColl,coordLine1,3)) {
+		if (coordLine1>=1&&checkEndCoord(coord1, coordColl,coordLine1,3)) {
 			str3=Game.IntToLetter(coordColl)+coordLine1;
 		}
-		if (coordLine2<=10&&checkEndCoord(coordColl,coordLine2,3)) {
+		if (coordLine2<=10&&checkEndCoord(coord1, coordColl,coordLine2,3)) {
 			str4=Game.IntToLetter(coordColl)+coordLine2;
 		}
 			
@@ -508,16 +572,16 @@ public class Player {
 		coordLine1=coordLine-2;
 		coordColl2=coordColl+2;
 		coordLine2=coordLine+2;
-		if (coordColl1>=0&&checkEndCoord(coordColl1,coordLine,3)) {
+		if (coordColl1>=0&&checkEndCoord(coord1, coordColl1,coordLine,3)) {
 			str1=Game.IntToLetter(coordColl1)+coordLine;
 		}
-		if (coordColl2<=9&&checkEndCoord(coordColl2,coordLine,3)) {
+		if (coordColl2<=9&&checkEndCoord(coord1, coordColl2,coordLine,3)) {
 			str2=Game.IntToLetter(coordColl2)+coordLine;
 		}
-		if (coordLine1>=1&&checkEndCoord(coordColl,coordLine1,3)) {
+		if (coordLine1>=1&&checkEndCoord(coord1, coordColl,coordLine1,3)) {
 			str3=Game.IntToLetter(coordColl)+coordLine1;
 		}
-		if (coordLine2<=10&&checkEndCoord(coordColl,coordLine2,3)) {
+		if (coordLine2<=10&&checkEndCoord(coord1, coordColl,coordLine2,3)) {
 			str4=Game.IntToLetter(coordColl)+coordLine2;
 		}
 			
@@ -563,16 +627,16 @@ public class Player {
 		coordLine1=coordLine-1;
 		coordColl2=coordColl+1;
 		coordLine2=coordLine+1;
-		if (coordColl1>=0&&checkEndCoord(coordColl1,coordLine,2)) {
+		if (coordColl1>=0&&checkEndCoord(coord1, coordColl1,coordLine,2)) {
 			str1=Game.IntToLetter(coordColl1)+coordLine;
 		}
-		if (coordColl2<=9&&checkEndCoord(coordColl2,coordLine,2)) {
+		if (coordColl2<=9&&checkEndCoord(coord1, coordColl2,coordLine,2)) {
 			str2=Game.IntToLetter(coordColl2)+coordLine;
 		}
-		if (coordLine1>=1&&checkEndCoord(coordColl,coordLine1,2)) {
+		if (coordLine1>=1&&checkEndCoord(coord1, coordColl,coordLine1,2)) {
 			str3=Game.IntToLetter(coordColl)+coordLine1;
 		}
-		if (coordLine2<=10&&checkEndCoord(coordColl,coordLine2,2)) {
+		if (coordLine2<=10&&checkEndCoord(coord1, coordColl,coordLine2,2)) {
 			str4=Game.IntToLetter(coordColl)+coordLine2;
 		}
 			
