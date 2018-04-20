@@ -72,7 +72,8 @@ public class Player {
 		this.spaceOccupied = spaceOccupied;
 	}
 	
-	public boolean checkStartCoord(String coord, int size){//ERREUR
+	public boolean checkStartCoord(String coord, int size){
+		//check if there are some space available around the coordinate for a ship of the given size.
 		boolean end=false;
 		for (int n=0;n<this.spaceOccupied.size();n++){
 			if (this.spaceOccupied.get(n).equals(coord)){
@@ -102,23 +103,17 @@ public class Player {
 	
 		    if (coordColl1>=0) {
 		    	spaces1=checkSpacesArray(coordLine,coordColl,coordLine,coordColl1,size,spaces1);
-		    	System.out.println("coordline:"+coordLine+"coordcoll:"+coordColl+"coordline:"+coordLine+"coordcoll:"+coordColl1+"");
 		    }
 		    if (coordColl2<=9){
-		    	spaces2=checkSpacesArray(coordLine,coordColl,coordLine,coordColl2,size,spaces2);
-		    	System.out.println("coordline:"+coordLine+"coordcoll:"+coordColl+"coordline:"+coordLine+"coordcoll:"+coordColl2+"");
-	
+		    	spaces2=checkSpacesArray(coordLine,coordColl,coordLine,coordColl2,size,spaces2);	
 		    }
 		    if (coordLine1>=1){
-		    	spaces3=checkSpacesArray(coordLine,coordColl,coordLine1,coordColl,size,spaces3);
-		    	System.out.println("coordline:"+coordLine+"coordcoll:"+coordColl+"coordline:"+coordLine1+"coordcoll:"+coordColl+"");
-	
+		    	spaces3=checkSpacesArray(coordLine,coordColl,coordLine1,coordColl,size,spaces3);	
 		    }
 		    if (coordLine2<=10){
-		    	spaces4=checkSpacesArray(coordLine,coordColl,coordLine2,coordColl,size,spaces4);
-		    	System.out.println("coordline:"+coordLine+"coordcoll:"+coordColl+"coordline:"+coordLine2+"coordcoll:"+coordColl+"");
-	
+		    	spaces4=checkSpacesArray(coordLine,coordColl,coordLine2,coordColl,size,spaces4);	
 		    }
+		    
 		    boolean notFind1=true;
 		    boolean notFind2=true;
 		    boolean notFind3=true;
@@ -156,8 +151,27 @@ public class Player {
 		}
 	}
 	
+	public boolean checkEndCoord(String startCoord, int endCoordColl, int endCoordLine, int size){
+	    int startCoordColl=(int)startCoord.charAt(0)-65;
+	    int startCoordLine = startCoord.charAt(1) - '0';
+	    ArrayList<String> spaces = new ArrayList<String>();
+	    spaces = checkSpacesArray(startCoordLine,startCoordColl,endCoordLine,endCoordColl,size,spaces);
+	    int j=0;
+	    int i=0;
+	    boolean notFind=true;
+	    while(i<this.spaceOccupied.size()&&(notFind)){
+	    	for (j=0;j<spaces.size();j++){
+	    		if (this.spaceOccupied.get(i).equals(spaces.get(j))) {
+	    			notFind=false;
+	    		}
+	    	}
+	    i++;
+	    }
+	    return notFind;
+	}    
+	
 	public ArrayList<String> checkSpacesArray(int startCoordLine, int startCoordColl, int endCoordLine, int endCoordColl, int size, ArrayList<String> spaces){
-		spaces.add(Game.IntToLetter(startCoordColl)+startCoordLine);//ERREUR
+		spaces.add(Game.IntToLetter(startCoordColl)+startCoordLine);
 		spaces.add(Game.IntToLetter(endCoordColl)+endCoordLine);
 
 		switch(size){
@@ -210,78 +224,9 @@ public class Player {
 		    }
 		    break;
 	    }
-	    affiche(spaces);
 	    return spaces;
 	}
-	
-	public boolean checkEndCoord(String startCoord, int endCoordColl, int endCoordLine, int size){
-	    int startCoordColl=(int)startCoord.charAt(0)-65;
-	    int startCoordLine = startCoord.charAt(1) - '0';
-	    ArrayList<String> spaces = new ArrayList<String>();
-	    switch(size){
-    	case 4:
-	    if (endCoordLine==startCoordLine) {
-	    	if (endCoordColl>startCoordColl) {
-	    		startCoordColl++;
-	    		spaces.add(Game.IntToLetter(startCoordColl++)+startCoordLine);
-	    		spaces.add(Game.IntToLetter(startCoordColl++)+startCoordLine);
-	    	}
-	    	else {
-	    		startCoordColl--;
-	    		spaces.add(Game.IntToLetter(startCoordColl--)+startCoordLine);
-	    		spaces.add(Game.IntToLetter(startCoordColl--)+startCoordLine);
-	    	}
-	    }
-	    else {
-	    	if (endCoordLine>startCoordLine) {
-	    		startCoordLine++;
-	    		spaces.add(Game.IntToLetter(startCoordColl)+startCoordLine++);
-	    		spaces.add(Game.IntToLetter(startCoordColl)+startCoordLine++);
-	    	}
-	    	else {
-	    		startCoordLine--;
-	    		spaces.add(Game.IntToLetter(startCoordColl)+startCoordLine--);
-	    		spaces.add(Game.IntToLetter(startCoordColl)+startCoordLine--);
-	    	}
-	    }
-	    break;
-		case 3:
-		    if (endCoordLine==startCoordLine) {
-		    	if (endCoordColl>startCoordColl) {
-		    		startCoordColl++;
-		    		spaces.add(Game.IntToLetter(startCoordColl++)+startCoordLine);
-		    	}
-		    	else {
-		    		startCoordColl--;
-		    		spaces.add(Game.IntToLetter(startCoordColl--)+startCoordLine);
-		    	}
-		    }
-		    else {
-		    	if (endCoordLine>startCoordLine) {
-		    		startCoordLine++;
-		    		spaces.add(Game.IntToLetter(startCoordColl)+startCoordLine++);
-		    	}
-		    	else {
-		    		startCoordLine--;
-		    		spaces.add(Game.IntToLetter(startCoordColl)+startCoordLine--);
-		    	}
-		    }
-		    break;
-	    }
-	    int j=0;
-	    int i=0;
-	    boolean notFind=true;
-	    while(i<this.spaceOccupied.size()&&(notFind)){
-	    	for (j=0;j<spaces.size();j++){
-	    		if (this.spaceOccupied.get(i).equals(spaces.get(j))) {
-	    			notFind=false;
-	    		}
-	    	}
-	    i++;
-	    }
-	    return notFind;
-	}    
-	    
+		    
 	public void addSpace(String startCoord, String endCoord, int size){
 		this.spaceOccupied.add(startCoord);
 		this.spaceOccupied.add(endCoord);
@@ -445,9 +390,7 @@ public class Player {
 		
 		this.Carrier= new Ship(coord1,coord2);
 		addSpace(coord1,coord2,5);
-		affiche(this.spaceOccupied);
 		
-
 		
 		//Battleship:
 
@@ -506,7 +449,6 @@ public class Player {
 		
 		this.Battleship= new Ship(coord1,coord2);
 		addSpace(coord1,coord2,4);
-		affiche(this.spaceOccupied);
 
 
 		//Cruiser:
@@ -566,7 +508,6 @@ public class Player {
 		
 		this.Cruiser= new Ship(coord1,coord2);
 		addSpace(coord1,coord2,3);
-		affiche(this.spaceOccupied);
 
 		
 		//Submarine:
@@ -626,7 +567,6 @@ public class Player {
 		
 		this.Submarine= new Ship(coord1,coord2);
 		addSpace(coord1,coord2,3);
-		affiche(this.spaceOccupied);
 
 				
 		//Destroyer:
@@ -686,7 +626,6 @@ public class Player {
 		
 		this.Destroyer= new Ship(coord1,coord2);
 		addSpace(coord1,coord2,2);
-		affiche(this.spaceOccupied);
 
 		
 		sc1.close();
