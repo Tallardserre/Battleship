@@ -10,10 +10,10 @@ public class Ship {
 		setEndCoord(endCoord);
 	}
 	
-	public boolean isHit(String missileCoord) {
-		return true;
-		//si le bateau est touche ou non
-	}
+	/*public boolean isHit(String missileCoord) {
+		int missileCoordColl =
+		int missileCoordLine =
+	}*/
 	
 	
 	public String getStartCoord() {

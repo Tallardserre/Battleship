@@ -392,37 +392,48 @@ public class Player {
 		int coordColl=11;
 		int coordLine=11;
 		String coord1="";
-		while (!correct) {
-			System.out.println("Give the first coordinates of your Carrier (size : 5)");
-			coord1 = sc1.nextLine();
-		    coordColl=(int)coord1.charAt(0)-65;
-		    coordLine = coord1.charAt(1) - '0';
-		    if (coord1.length()==3) {
-		    	coordLine=(coord1.charAt(1)- '0')*10+coord1.charAt(2)- '0';
-		    }
-		    if ((coordColl<=9&&coordColl>=0&&coordLine>=1&&coordLine<=10)&&coord1!="") {
-		    	correct=true;
-		    }
-		}
-		int coordColl1=coordColl-4;
-		int coordLine1=coordLine-4;
-		int coordColl2=coordColl+4;
-		int coordLine2=coordLine+4;
-		if (coordColl1>=0) {
-			str1=Game.IntToLetter(coordColl1)+coordLine;
-		}
-		if (coordColl2<=9) {
-			str2=Game.IntToLetter(coordColl2)+coordLine;
-		}
-		if (coordLine1>=1) {
-			str3=Game.IntToLetter(coordColl)+coordLine1;
-		}
-		if (coordLine2<=10) {
-			str4=Game.IntToLetter(coordColl)+coordLine2;
-		}
-		
-		correct=false;
 		String coord2="";
+		int coordColl1;
+		int coordLine1;
+		int coordColl2;
+		int coordLine2;
+			
+		
+			while (!correct) {
+				System.out.println("Give the first coordinates of your Carrier (size : 5)");
+				coord1 = sc1.nextLine();
+				if (coord1.length()!=3&&coord1.length()!=2)	{
+					System.out.println("Bad coordinates!");
+				}
+				else{
+				    coordColl=(int)coord1.charAt(0)-65;
+				    coordLine = coord1.charAt(1) - '0';
+				    if (coord1.length()==3) {
+				    	coordLine=(coord1.charAt(1)- '0')*10+coord1.charAt(2)- '0';
+				    }
+				    if ((coordColl<=9&&coordColl>=0&&coordLine>=1&&coordLine<=10)&&coord1!="") {
+				    	correct=true;
+				    }
+				}
+			}
+			coordColl1=coordColl-4;
+			coordLine1=coordLine-4;
+			coordColl2=coordColl+4;
+			coordLine2=coordLine+4;
+			if (coordColl1>=0) {
+				str1=Game.IntToLetter(coordColl1)+coordLine;
+			}
+			if (coordColl2<=9) {
+				str2=Game.IntToLetter(coordColl2)+coordLine;
+			}
+			if (coordLine1>=1) {
+				str3=Game.IntToLetter(coordColl)+coordLine1;
+			}
+			if (coordLine2<=10) {
+				str4=Game.IntToLetter(coordColl)+coordLine2;
+			}
+
+		correct=false;
 		while(!correct){
 			System.out.println("Give the last coordinates of your Carrier (choose between : "+str1+" "+str2+" "+str3+" "+str4+")");
 			coord2 = sc2.nextLine();
@@ -431,9 +442,12 @@ public class Player {
 			}	
 		}
 		
+		
 		this.Carrier= new Ship(coord1,coord2);
 		addSpace(coord1,coord2,5);
 		affiche(this.spaceOccupied);
+		
+
 		
 		//Battleship:
 
@@ -446,17 +460,22 @@ public class Player {
 		while (!correct) {
 			System.out.println("Give the first coordinates of your Battleship (size : 4)");
 			coord1 = sc1.nextLine();
-		    coordColl=(int)coord1.charAt(0)-65;
-		    coordLine = coord1.charAt(1) - '0';
-		    if (coord1.length()==3) {
-		    	coordLine=(coord1.charAt(1)- '0')*10+coord1.charAt(2)- '0';
-		    }
-		    if ((coordColl<=9&&coordColl>=0&&coordLine>=1&&coordLine<=10)&&coord1!=""&&checkStartCoord(coord1,4)) {
-		    	correct=true;
-		    }
-		    else if (!checkStartCoord(coord1,4)){
-		    	System.out.println("Not enough space available for your ship here");
-		    }
+			if (coord1.length()!=3&&coord1.length()!=2)	{
+				System.out.println("Bad coordinates!");
+			}
+			else{
+			    coordColl=(int)coord1.charAt(0)-65;
+			    coordLine = coord1.charAt(1) - '0';
+			    if (coord1.length()==3) {
+			    	coordLine=(coord1.charAt(1)- '0')*10+coord1.charAt(2)- '0';
+			    }
+			    if ((coordColl<=9&&coordColl>=0&&coordLine>=1&&coordLine<=10)&&coord1!=""&&checkStartCoord(coord1,4)) {
+			    	correct=true;
+			    }
+			    else if (!checkStartCoord(coord1,4)){
+			    	System.out.println("Not enough space available for your ship here");
+			    }
+			}
 		}
 		coordColl1=coordColl-3;
 		coordLine1=coordLine-3;
@@ -501,17 +520,22 @@ public class Player {
 		while (!correct) {
 			System.out.println("Give the first coordinates of your Cruiser (size : 3)");
 			coord1 = sc1.nextLine();
-		    coordColl=(int)coord1.charAt(0)-65;
-		    coordLine = coord1.charAt(1) - '0';
-		    if (coord1.length()==3) {
-		    	coordLine=(coord1.charAt(1)- '0')*10+coord1.charAt(2)- '0';
-		    }
-		    if ((coordColl<=9&&coordColl>=0&&coordLine>=1&&coordLine<=10)&&coord1!=""&&checkStartCoord(coord1,3)) {
-		    	correct=true;
-		    }
-		    else if (!checkStartCoord(coord1,3)){
-		    	System.out.println("Not enough space available for your ship here");
-		    }
+			if (coord1.length()!=3&&coord1.length()!=2)	{
+				System.out.println("Bad coordinates!");
+			}
+			else{
+			    coordColl=(int)coord1.charAt(0)-65;
+			    coordLine = coord1.charAt(1) - '0';
+			    if (coord1.length()==3) {
+			    	coordLine=(coord1.charAt(1)- '0')*10+coord1.charAt(2)- '0';
+			    }
+			    if ((coordColl<=9&&coordColl>=0&&coordLine>=1&&coordLine<=10)&&coord1!=""&&checkStartCoord(coord1,3)) {
+			    	correct=true;
+			    }
+			    else if (!checkStartCoord(coord1,3)){
+			    	System.out.println("Not enough space available for your ship here");
+			    }
+			}
 		}
 		coordColl1=coordColl-3;
 		coordLine1=coordLine-2;
@@ -556,17 +580,22 @@ public class Player {
 		while (!correct) {
 			System.out.println("Give the first coordinates of your Submarine (size : 3)");
 			coord1 = sc1.nextLine();
-		    coordColl=(int)coord1.charAt(0)-65;
-		    coordLine = coord1.charAt(1) - '0';
-		    if (coord1.length()==3) {
-		    	coordLine=(coord1.charAt(1)- '0')*10+coord1.charAt(2)- '0';
-		    }
-		    if ((coordColl<=9&&coordColl>=0&&coordLine>=1&&coordLine<=10)&&coord1!=""&&checkStartCoord(coord1,3)) {
-		    	correct=true;
-		    }
-		    else if (!checkStartCoord(coord1,3)){
-		    	System.out.println("Not enough space available for your ship here");
-		    }
+			if (coord1.length()!=3&&coord1.length()!=2)	{
+				System.out.println("Bad coordinates!");
+			}
+			else{
+			    coordColl=(int)coord1.charAt(0)-65;
+			    coordLine = coord1.charAt(1) - '0';
+			    if (coord1.length()==3) {
+			    	coordLine=(coord1.charAt(1)- '0')*10+coord1.charAt(2)- '0';
+			    }
+			    if ((coordColl<=9&&coordColl>=0&&coordLine>=1&&coordLine<=10)&&coord1!=""&&checkStartCoord(coord1,3)) {
+			    	correct=true;
+			    }
+			    else if (!checkStartCoord(coord1,3)){
+			    	System.out.println("Not enough space available for your ship here");
+			    }
+			}
 		}
 		coordColl1=coordColl-2;
 		coordLine1=coordLine-2;
@@ -611,17 +640,22 @@ public class Player {
 		while (!correct) {
 			System.out.println("Give the first coordinates of your Destroyer (size : 2)");
 			coord1 = sc1.nextLine();
-		    coordColl=(int)coord1.charAt(0)-65;
-		    coordLine = coord1.charAt(1) - '0';
-		    if (coord1.length()==3) {
-		    	coordLine=(coord1.charAt(1)- '0')*10+coord1.charAt(2)- '0';
-		    }
-		    if ((coordColl<=9&&coordColl>=0&&coordLine>=1&&coordLine<=10)&&coord1!=""&&checkStartCoord(coord1,2)) {
-		    	correct=true;
-		    }
-		    else if (!checkStartCoord(coord1,2)){
-		    	System.out.println("Not enough space available for your ship here");
-		    }
+			if (coord1.length()!=3&&coord1.length()!=2)	{
+				System.out.println("Bad coordinates!");
+			}
+			else{
+				coordColl=(int)coord1.charAt(0)-65;
+			    coordLine = coord1.charAt(1) - '0';
+			    if (coord1.length()==3) {
+			    	coordLine=(coord1.charAt(1)- '0')*10+coord1.charAt(2)- '0';
+			    }
+			    if ((coordColl<=9&&coordColl>=0&&coordLine>=1&&coordLine<=10)&&coord1!=""&&checkStartCoord(coord1,2)) {
+			    	correct=true;
+			    }
+			    else if (!checkStartCoord(coord1,2)){
+			    	System.out.println("Not enough space available for your ship here");
+			    }
+			}
 		}
 		coordColl1=coordColl-1;
 		coordLine1=coordLine-1;
