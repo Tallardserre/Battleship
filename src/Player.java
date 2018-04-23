@@ -479,7 +479,7 @@ public class Player {
 			    }
 			}
 		}
-		coordColl1=coordColl-3;
+		coordColl1=coordColl-2;
 		coordLine1=coordLine-2;
 		coordColl2=coordColl+2;
 		coordLine2=coordLine+2;
