@@ -1,6 +1,4 @@
 
-import java.util.*;
-
 
 public class Player {
 	private String name;
@@ -9,7 +7,6 @@ public class Player {
 	private Ship Cruiser;
 	private Ship Submarine;
 	private Ship Destroyer;
-	private ArrayList<String> spaceOccupied=new ArrayList<String>();
 	
 	public Player(String name){
 		setName(name);
@@ -64,12 +61,8 @@ public class Player {
 		this.name = name;
 	}
 
-	public ArrayList<String> getSpaceOccupied() {
-		return spaceOccupied;
-	}
-
-	public void setSpaceOccupied(ArrayList<String> spaceOccupied) {
-		this.spaceOccupied = spaceOccupied;
+	public boolean shipHit(String coord){
+		return this.Carrier.isHit(coord)||this.Battleship.isHit(coord)||this.Submarine.isHit(coord)||this.Cruiser.isHit(coord)||this.Destroyer.isHit(coord);
 	}
 	
 	

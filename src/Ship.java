@@ -5,6 +5,7 @@ public class Ship {
 
 	private String ShipCategory;
 	private ArrayList<String> coordShip = new ArrayList<String>();
+	private ArrayList<String> shotReceived = new ArrayList<String>();
 
 	public ArrayList<String> getCoordShip() {
 		return coordShip;
@@ -36,15 +37,10 @@ public class Ship {
 
 		}
 		int startCoordColl = (int) startCoord.charAt(0) - 65;
-		int startCoordLine = startCoord.charAt(1) - '0';
-		if (startCoord.length() == 3) {
-			startCoordLine = (startCoord.charAt(1) - '0') * 10 + startCoord.charAt(2) - '0';
-		}
+		int startCoordLine = Game.stringToInt(startCoord);
 		int endCoordColl = (int) endCoord.charAt(0) - 65;
-		int endCoordLine = endCoord.charAt(1) - '0';
-		if (endCoord.length() == 3) {
-			endCoordLine = (endCoord.charAt(1) - '0') * 10 + endCoord.charAt(2) - '0';
-		}
+		int endCoordLine = Game.stringToInt(endCoord);
+		
 
 		this.coordShip = Game.checkSpacesArray(startCoordLine, startCoordColl, endCoordLine, endCoordColl, size,
 				this.coordShip);
@@ -58,16 +54,16 @@ public class Ship {
 		}
 		return false;
 	}
+	
+	public void saveHit(String missileCoord) {
+		if (isHit(missileCoord)) {
+			this.shotReceived.add(missileCoord);
+		}
+	}
+	
 
 	public boolean isDestroyed() {
-		int i = 0;
-		boolean destroyed = true;
-		while (i < this.coordShip.size() || destroyed) {
-			if (this.coordShip.get(i).contains("-hit")) {
-				destroyed = false;
-			}
-		}
-		return destroyed;
+		return this.coordShip.size()==this.shotReceived.size();
 	}
 
 	public String getShipCategory() {

@@ -3,17 +3,18 @@ import java.util.*;
 
 public class Game {
 	
-
-
-	public int StringToInt(String letter){
-		int value=10;
-		if (letter.length()==1) {
-			value = (int)letter.charAt(0)-65;
+	public static int stringToInt(String str){
+		int length=str.length();
+		int value=0;
+		int tmp=0;
+		for (int i=1;i<length;i++) {
+			tmp = str.charAt(i)- '0';
+			value = tmp + value*10;
 		}
 		return value;
 	}	
 		
-	public static String IntToString(int value){
+	public static String intToString(int value){
 		String str="";
 		switch(value){
 			case 0:
@@ -51,37 +52,37 @@ public class Game {
 	}
 	
 	public static ArrayList<String> checkSpacesArray(int startCoordLine, int startCoordColl, int endCoordLine, int endCoordColl, int size, ArrayList<String> spaces){
-		spaces.add(Game.IntToString(startCoordColl)+startCoordLine);
-		spaces.add(Game.IntToString(endCoordColl)+endCoordLine);
+		spaces.add(intToString(startCoordColl)+startCoordLine);
+		spaces.add(intToString(endCoordColl)+endCoordLine);
 
 		switch(size){
     	case 5:
 	    if (endCoordLine==startCoordLine) {
 	    	if (endCoordColl>startCoordColl) {
 	    		startCoordColl++;
-	    		spaces.add(Game.IntToString(startCoordColl++)+startCoordLine);
-	    		spaces.add(Game.IntToString(startCoordColl++)+startCoordLine);
-	    		spaces.add(Game.IntToString(startCoordColl++)+startCoordLine);
+	    		spaces.add(intToString(startCoordColl++)+startCoordLine);
+	    		spaces.add(intToString(startCoordColl++)+startCoordLine);
+	    		spaces.add(intToString(startCoordColl++)+startCoordLine);
 	    	}
 	    	else {
 	    		startCoordColl--;
-	    		spaces.add(Game.IntToString(startCoordColl--)+startCoordLine);
-	    		spaces.add(Game.IntToString(startCoordColl--)+startCoordLine);
-	    		spaces.add(Game.IntToString(startCoordColl--)+startCoordLine);
+	    		spaces.add(intToString(startCoordColl--)+startCoordLine);
+	    		spaces.add(intToString(startCoordColl--)+startCoordLine);
+	    		spaces.add(intToString(startCoordColl--)+startCoordLine);
 	    	}
 	    }
 	    else {
 	    	if (endCoordLine>startCoordLine) {
 	    		startCoordLine++;
-	    		spaces.add(Game.IntToString(startCoordColl)+startCoordLine++);
-	    		spaces.add(Game.IntToString(startCoordColl)+startCoordLine++);
-	    		spaces.add(Game.IntToString(startCoordColl)+startCoordLine++);
+	    		spaces.add(intToString(startCoordColl)+startCoordLine++);
+	    		spaces.add(intToString(startCoordColl)+startCoordLine++);
+	    		spaces.add(intToString(startCoordColl)+startCoordLine++);
 	    	}
 	    	else {
 	    		startCoordLine--;
-	    		spaces.add(Game.IntToString(startCoordColl)+startCoordLine--);
-	    		spaces.add(Game.IntToString(startCoordColl)+startCoordLine--);
-	    		spaces.add(Game.IntToString(startCoordColl)+startCoordLine--);
+	    		spaces.add(intToString(startCoordColl)+startCoordLine--);
+	    		spaces.add(intToString(startCoordColl)+startCoordLine--);
+	    		spaces.add(intToString(startCoordColl)+startCoordLine--);
 	    	}
 	    }
 	    break;
@@ -89,25 +90,25 @@ public class Game {
 		    if (endCoordLine==startCoordLine) {
 		    	if (endCoordColl>startCoordColl) {
 		    		startCoordColl++;
-		    		spaces.add(Game.IntToString(startCoordColl++)+startCoordLine);
-		    		spaces.add(Game.IntToString(startCoordColl++)+startCoordLine);
+		    		spaces.add(intToString(startCoordColl++)+startCoordLine);
+		    		spaces.add(intToString(startCoordColl++)+startCoordLine);
 		    	}
 		    	else {
 		    		startCoordColl--;
-		    		spaces.add(Game.IntToString(startCoordColl--)+startCoordLine);
-		    		spaces.add(Game.IntToString(startCoordColl--)+startCoordLine);
+		    		spaces.add(intToString(startCoordColl--)+startCoordLine);
+		    		spaces.add(intToString(startCoordColl--)+startCoordLine);
 		    	}
 		    }
 		    else {
 		    	if (endCoordLine>startCoordLine) {
 		    		startCoordLine++;
-		    		spaces.add(Game.IntToString(startCoordColl)+startCoordLine++);
-		    		spaces.add(Game.IntToString(startCoordColl)+startCoordLine++);
+		    		spaces.add(intToString(startCoordColl)+startCoordLine++);
+		    		spaces.add(intToString(startCoordColl)+startCoordLine++);
 		    	}
 		    	else {
 		    		startCoordLine--;
-		    		spaces.add(Game.IntToString(startCoordColl)+startCoordLine--);
-		    		spaces.add(Game.IntToString(startCoordColl)+startCoordLine--);
+		    		spaces.add(intToString(startCoordColl)+startCoordLine--);
+		    		spaces.add(intToString(startCoordColl)+startCoordLine--);
 		    	}
 		    }
 		    break;
@@ -115,21 +116,21 @@ public class Game {
 		    if (endCoordLine==startCoordLine) {
 		    	if (endCoordColl>startCoordColl) {
 		    		startCoordColl++;
-		    		spaces.add(Game.IntToString(startCoordColl++)+startCoordLine);
+		    		spaces.add(intToString(startCoordColl++)+startCoordLine);
 		    	}
 		    	else {
 		    		startCoordColl--;
-		    		spaces.add(Game.IntToString(startCoordColl--)+startCoordLine);
+		    		spaces.add(intToString(startCoordColl--)+startCoordLine);
 		    	}
 		    }
 		    else {
 		    	if (endCoordLine>startCoordLine) {
 		    		startCoordLine++;
-		    		spaces.add(Game.IntToString(startCoordColl)+startCoordLine++);
+		    		spaces.add(intToString(startCoordColl)+startCoordLine++);
 		    	}
 		    	else {
 		    		startCoordLine--;
-		    		spaces.add(Game.IntToString(startCoordColl)+startCoordLine--);
+		    		spaces.add(intToString(startCoordColl)+startCoordLine--);
 		    	}
 		    }
 		    break;
@@ -161,10 +162,7 @@ public class Game {
 			ArrayList<String> spaces4 = new ArrayList<String>();
 	
 			int coordColl=(int)coord.charAt(0)-65;
-		    int coordLine = coord.charAt(1) - '0';
-		    if (coord.length()==3) {
-		    	coordLine=(coord.charAt(1)- '0')*10+coord.charAt(2)- '0';
-		    }
+		    int coordLine = stringToInt(coord);
 		    
 		    int coordColl1=coordColl-(size-1);
 		    int coordLine1=coordLine-(size-1);
@@ -243,49 +241,42 @@ public class Game {
 	    }
 	    return notFind;
 	}    
-	
-		    
+			    
 	public void addSpace(String startCoord, String endCoord, int size, ArrayList<String> spaceOccupied){
 		/*Ajoute les coordonnées du bateau créé au tableau spaceOccupied */
 		spaceOccupied.add(startCoord);
 	    int startCoordColl=(int)startCoord.charAt(0)-65;
-	    int startCoordLine = startCoord.charAt(1) - '0';
-	    if (startCoord.length()==3) {
-	    	startCoordLine=(startCoord.charAt(1)- '0')*10+startCoord.charAt(2)- '0';
-	    }
+	    int startCoordLine = stringToInt(startCoord);
 	    int endCoordColl=(int)endCoord.charAt(0)-65;
-	    int endCoordLine = endCoord.charAt(1) - '0';
-	    if (endCoord.length()==3) {
-	    	endCoordLine=(endCoord.charAt(1)- '0')*10+endCoord.charAt(2)- '0';
-	    }
+	    int endCoordLine = stringToInt(endCoord);
 	    switch(size){
 	    case 5:
 		    if (endCoordLine==startCoordLine) {
 		    	if (endCoordColl>startCoordColl) {
 		    		startCoordColl++;
-		    		spaceOccupied.add(Game.IntToString(startCoordColl++)+startCoordLine);
-		    		spaceOccupied.add(Game.IntToString(startCoordColl++)+startCoordLine);
-		    		spaceOccupied.add(Game.IntToString(startCoordColl++)+startCoordLine);
+		    		spaceOccupied.add(Game.intToString(startCoordColl++)+startCoordLine);
+		    		spaceOccupied.add(Game.intToString(startCoordColl++)+startCoordLine);
+		    		spaceOccupied.add(Game.intToString(startCoordColl++)+startCoordLine);
 		    	}
 		    	else {
 		    		startCoordColl--;
-		    		spaceOccupied.add(Game.IntToString(startCoordColl--)+startCoordLine);
-		    		spaceOccupied.add(Game.IntToString(startCoordColl--)+startCoordLine);
-		    		spaceOccupied.add(Game.IntToString(startCoordColl--)+startCoordLine);
+		    		spaceOccupied.add(Game.intToString(startCoordColl--)+startCoordLine);
+		    		spaceOccupied.add(Game.intToString(startCoordColl--)+startCoordLine);
+		    		spaceOccupied.add(Game.intToString(startCoordColl--)+startCoordLine);
 		    	}
 		    }
 		    else {
 		    	if (endCoordLine>startCoordLine) {
 		    		startCoordLine++;
-		    		spaceOccupied.add(Game.IntToString(startCoordColl)+startCoordLine++);
-		    		spaceOccupied.add(Game.IntToString(startCoordColl)+startCoordLine++);
-		    		spaceOccupied.add(Game.IntToString(startCoordColl)+startCoordLine++);
+		    		spaceOccupied.add(Game.intToString(startCoordColl)+startCoordLine++);
+		    		spaceOccupied.add(Game.intToString(startCoordColl)+startCoordLine++);
+		    		spaceOccupied.add(Game.intToString(startCoordColl)+startCoordLine++);
 		    	}
 		    	else {
 		    		startCoordLine--;
-		    		spaceOccupied.add(Game.IntToString(startCoordColl)+startCoordLine--);
-		    		spaceOccupied.add(Game.IntToString(startCoordColl)+startCoordLine--);
-		    		spaceOccupied.add(Game.IntToString(startCoordColl)+startCoordLine--);
+		    		spaceOccupied.add(Game.intToString(startCoordColl)+startCoordLine--);
+		    		spaceOccupied.add(Game.intToString(startCoordColl)+startCoordLine--);
+		    		spaceOccupied.add(Game.intToString(startCoordColl)+startCoordLine--);
 		    	}
 		    }
 		    break;
@@ -293,25 +284,25 @@ public class Game {
 		    if (endCoordLine==startCoordLine) {
 		    	if (endCoordColl>startCoordColl) {
 		    		startCoordColl++;
-		    		spaceOccupied.add(Game.IntToString(startCoordColl++)+startCoordLine);
-		    		spaceOccupied.add(Game.IntToString(startCoordColl++)+startCoordLine);
+		    		spaceOccupied.add(Game.intToString(startCoordColl++)+startCoordLine);
+		    		spaceOccupied.add(Game.intToString(startCoordColl++)+startCoordLine);
 		    	}
 		    	else {
 		    		startCoordColl--;
-		    		spaceOccupied.add(Game.IntToString(startCoordColl--)+startCoordLine);
-		    		spaceOccupied.add(Game.IntToString(startCoordColl--)+startCoordLine);
+		    		spaceOccupied.add(Game.intToString(startCoordColl--)+startCoordLine);
+		    		spaceOccupied.add(Game.intToString(startCoordColl--)+startCoordLine);
 		    	}
 		    }
 		    else {
 		    	if (endCoordLine>startCoordLine) {
 		    		startCoordLine++;
-		    		spaceOccupied.add(Game.IntToString(startCoordColl)+startCoordLine++);
-		    		spaceOccupied.add(Game.IntToString(startCoordColl)+startCoordLine++);
+		    		spaceOccupied.add(Game.intToString(startCoordColl)+startCoordLine++);
+		    		spaceOccupied.add(Game.intToString(startCoordColl)+startCoordLine++);
 		    	}
 		    	else {
 		    		startCoordLine--;
-		    		spaceOccupied.add(Game.IntToString(startCoordColl)+startCoordLine--);
-		    		spaceOccupied.add(Game.IntToString(startCoordColl)+startCoordLine--);
+		    		spaceOccupied.add(Game.intToString(startCoordColl)+startCoordLine--);
+		    		spaceOccupied.add(Game.intToString(startCoordColl)+startCoordLine--);
 		    	}
 		    }
 		    break;
@@ -319,21 +310,21 @@ public class Game {
 		    if (endCoordLine==startCoordLine) {
 		    	if (endCoordColl>startCoordColl) {
 		    		startCoordColl++;
-		    		spaceOccupied.add(Game.IntToString(startCoordColl++)+startCoordLine);
+		    		spaceOccupied.add(Game.intToString(startCoordColl++)+startCoordLine);
 		    	}
 		    	else {
 		    		startCoordColl--;
-		    		spaceOccupied.add(Game.IntToString(startCoordColl--)+startCoordLine);
+		    		spaceOccupied.add(Game.intToString(startCoordColl--)+startCoordLine);
 		    	}
 		    }
 		    else {
 		    	if (endCoordLine>startCoordLine) {
 		    		startCoordLine++;
-		    		spaceOccupied.add(Game.IntToString(startCoordColl)+startCoordLine++);
+		    		spaceOccupied.add(Game.intToString(startCoordColl)+startCoordLine++);
 		    	}
 		    	else {
 		    		startCoordLine--;
-		    		spaceOccupied.add(Game.IntToString(startCoordColl)+startCoordLine--);
+		    		spaceOccupied.add(Game.intToString(startCoordColl)+startCoordLine--);
 		    	}
 		    }
 		    break;
@@ -368,10 +359,7 @@ public class Game {
 				}
 				else{
 				    coordColl=(int)coord1.charAt(0)-65;
-				    coordLine = coord1.charAt(1) - '0';
-				    if (coord1.length()==3) {
-				    	coordLine=(coord1.charAt(1)- '0')*10+coord1.charAt(2)- '0';
-				    }
+				    coordLine = stringToInt(coord1);
 				    if ((coordColl<=9&&coordColl>=0&&coordLine>=1&&coordLine<=10)&&coord1!="") {
 				    	correct=true;
 				    }
@@ -382,16 +370,16 @@ public class Game {
 			coordColl2=coordColl+4;
 			coordLine2=coordLine+4;
 			if (coordColl1>=0) {
-				str1=Game.IntToString(coordColl1)+coordLine;
+				str1=Game.intToString(coordColl1)+coordLine;
 			}
 			if (coordColl2<=9) {
-				str2=Game.IntToString(coordColl2)+coordLine;
+				str2=Game.intToString(coordColl2)+coordLine;
 			}
 			if (coordLine1>=1) {
-				str3=Game.IntToString(coordColl)+coordLine1;
+				str3=Game.intToString(coordColl)+coordLine1;
 			}
 			if (coordLine2<=10) {
-				str4=Game.IntToString(coordColl)+coordLine2;
+				str4=Game.intToString(coordColl)+coordLine2;
 			}
 
 		correct=false;
@@ -424,10 +412,8 @@ public class Game {
 			}
 			else{
 			    coordColl=(int)coord1.charAt(0)-65;
-			    coordLine = coord1.charAt(1) - '0';
-			    if (coord1.length()==3) {
-			    	coordLine=(coord1.charAt(1)- '0')*10+coord1.charAt(2)- '0';
-			    }
+			    coordLine = stringToInt(coord1);
+
 			    if ((coordColl<=9&&coordColl>=0&&coordLine>=1&&coordLine<=10)&&coord1!=""&&checkStartCoord(coord1,4,spaceOccupied)) {
 			    	correct=true;
 			    }
@@ -441,16 +427,16 @@ public class Game {
 		coordColl2=coordColl+3;
 		coordLine2=coordLine+3;
 		if (coordColl1>=0&&checkEndCoord(coord1, coordColl1,coordLine,4,spaceOccupied)) {
-			str1=Game.IntToString(coordColl1)+coordLine;
+			str1=Game.intToString(coordColl1)+coordLine;
 		}
 		if (coordColl2<=9&&checkEndCoord(coord1, coordColl2,coordLine,4,spaceOccupied)) {
-			str2=Game.IntToString(coordColl2)+coordLine;
+			str2=Game.intToString(coordColl2)+coordLine;
 		}
 		if (coordLine1>=1&&checkEndCoord(coord1, coordColl,coordLine1,4,spaceOccupied)) {
-			str3=Game.IntToString(coordColl)+coordLine1;
+			str3=Game.intToString(coordColl)+coordLine1;
 		}
 		if (coordLine2<=10&&checkEndCoord(coord1, coordColl,coordLine2,4,spaceOccupied)) {
-			str4=Game.IntToString(coordColl)+coordLine2;
+			str4=Game.intToString(coordColl)+coordLine2;
 		}
 			
 		correct=false;
@@ -483,10 +469,7 @@ public class Game {
 			}
 			else{
 			    coordColl=(int)coord1.charAt(0)-65;
-			    coordLine = coord1.charAt(1) - '0';
-			    if (coord1.length()==3) {
-			    	coordLine=(coord1.charAt(1)- '0')*10+coord1.charAt(2)- '0';
-			    }
+			    coordLine = stringToInt(coord1);
 			    if ((coordColl<=9&&coordColl>=0&&coordLine>=1&&coordLine<=10)&&coord1!=""&&checkStartCoord(coord1,3,spaceOccupied)) {
 			    	correct=true;
 			    }
@@ -500,16 +483,16 @@ public class Game {
 		coordColl2=coordColl+2;
 		coordLine2=coordLine+2;
 		if (coordColl1>=0&&checkEndCoord(coord1, coordColl1,coordLine,3,spaceOccupied)) {
-			str1=Game.IntToString(coordColl1)+coordLine;
+			str1=Game.intToString(coordColl1)+coordLine;
 		}
 		if (coordColl2<=9&&checkEndCoord(coord1, coordColl2,coordLine,3,spaceOccupied)) {
-			str2=Game.IntToString(coordColl2)+coordLine;
+			str2=Game.intToString(coordColl2)+coordLine;
 		}
 		if (coordLine1>=1&&checkEndCoord(coord1, coordColl,coordLine1,3,spaceOccupied)) {
-			str3=Game.IntToString(coordColl)+coordLine1;
+			str3=Game.intToString(coordColl)+coordLine1;
 		}
 		if (coordLine2<=10&&checkEndCoord(coord1, coordColl,coordLine2,3,spaceOccupied)) {
-			str4=Game.IntToString(coordColl)+coordLine2;
+			str4=Game.intToString(coordColl)+coordLine2;
 		}
 			
 		correct=false;
@@ -542,10 +525,7 @@ public class Game {
 			}
 			else{
 			    coordColl=(int)coord1.charAt(0)-65;
-			    coordLine = coord1.charAt(1) - '0';
-			    if (coord1.length()==3) {
-			    	coordLine=(coord1.charAt(1)- '0')*10+coord1.charAt(2)- '0';
-			    }
+			    coordLine = stringToInt(coord1);
 			    if ((coordColl<=9&&coordColl>=0&&coordLine>=1&&coordLine<=10)&&coord1!=""&&checkStartCoord(coord1,3,spaceOccupied)) {
 			    	correct=true;
 			    }
@@ -559,16 +539,16 @@ public class Game {
 		coordColl2=coordColl+2;
 		coordLine2=coordLine+2;
 		if (coordColl1>=0&&checkEndCoord(coord1, coordColl1,coordLine,3,spaceOccupied)) {
-			str1=Game.IntToString(coordColl1)+coordLine;
+			str1=Game.intToString(coordColl1)+coordLine;
 		}
 		if (coordColl2<=9&&checkEndCoord(coord1, coordColl2,coordLine,3,spaceOccupied)) {
-			str2=Game.IntToString(coordColl2)+coordLine;
+			str2=Game.intToString(coordColl2)+coordLine;
 		}
 		if (coordLine1>=1&&checkEndCoord(coord1, coordColl,coordLine1,3,spaceOccupied)) {
-			str3=Game.IntToString(coordColl)+coordLine1;
+			str3=Game.intToString(coordColl)+coordLine1;
 		}
 		if (coordLine2<=10&&checkEndCoord(coord1, coordColl,coordLine2,3,spaceOccupied)) {
-			str4=Game.IntToString(coordColl)+coordLine2;
+			str4=Game.intToString(coordColl)+coordLine2;
 		}
 			
 		correct=false;
@@ -601,10 +581,7 @@ public class Game {
 			}
 			else{
 				coordColl=(int)coord1.charAt(0)-65;
-			    coordLine = coord1.charAt(1) - '0';
-			    if (coord1.length()==3) {
-			    	coordLine=(coord1.charAt(1)- '0')*10+coord1.charAt(2)- '0';
-			    }
+			    coordLine = stringToInt(coord1);
 			    if ((coordColl<=9&&coordColl>=0&&coordLine>=1&&coordLine<=10)&&coord1!=""&&checkStartCoord(coord1,2,spaceOccupied)) {
 			    	correct=true;
 			    }
@@ -618,16 +595,16 @@ public class Game {
 		coordColl2=coordColl+1;
 		coordLine2=coordLine+1;
 		if (coordColl1>=0&&checkEndCoord(coord1, coordColl1,coordLine,2,spaceOccupied)) {
-			str1=Game.IntToString(coordColl1)+coordLine;
+			str1=Game.intToString(coordColl1)+coordLine;
 		}
 		if (coordColl2<=9&&checkEndCoord(coord1, coordColl2,coordLine,2,spaceOccupied)) {
-			str2=Game.IntToString(coordColl2)+coordLine;
+			str2=Game.intToString(coordColl2)+coordLine;
 		}
 		if (coordLine1>=1&&checkEndCoord(coord1, coordColl,coordLine1,2,spaceOccupied)) {
-			str3=Game.IntToString(coordColl)+coordLine1;
+			str3=Game.intToString(coordColl)+coordLine1;
 		}
 		if (coordLine2<=10&&checkEndCoord(coord1, coordColl,coordLine2,2,spaceOccupied)) {
-			str4=Game.IntToString(coordColl)+coordLine2;
+			str4=Game.intToString(coordColl)+coordLine2;
 		}
 			
 		correct=false;
@@ -642,10 +619,11 @@ public class Game {
 		
 		player.setDestroyer(new Ship(coord1,coord2,"Destroyer"));
 		addSpace(coord1,coord2,2,spaceOccupied);
-
+		System.out.println("All you ships are initialised!");
 		
 		sc1.close();
 		sc2.close();
 	}
 
+	
 }
