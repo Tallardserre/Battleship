@@ -625,5 +625,8 @@ public class Game {
 		sc2.close();
 	}
 
-	
+	public void shotAttempt(Player p1, Player p2){
+		System.out.println(p1.getName()+" enter a coordinates to shot :");
+		
+	}
 }
