@@ -6,6 +6,7 @@ public class Ship {
 	private String ShipCategory;
 	private ArrayList<String> coordShip = new ArrayList<String>();
 	private ArrayList<String> shotReceived = new ArrayList<String>();
+	private int size;
 
 	public ArrayList<String> getCoordShip() {
 		return coordShip;
@@ -15,27 +16,8 @@ public class Ship {
 		this.coordShip = coordShip;
 	}
 
-	public Ship(String startCoord, String endCoord, String category) {
-		int size = 0;
+	public Ship(String startCoord, String endCoord, int size, String category) {
 
-		switch (category) {
-		case "Carrier":
-			size = 5;
-			break;
-		case "Battleship":
-			size = 4;
-			break;
-		case "Cruiser":
-			size = 3;
-			break;
-		case "Submarine":
-			size = 3;
-			break;
-		case "Destroyer":
-			size = 2;
-			break;
-
-		}
 		int startCoordColl = (int) startCoord.charAt(0) - 65;
 		int startCoordLine = Game.stringToInt(startCoord);
 		int endCoordColl = (int) endCoord.charAt(0) - 65;
@@ -72,6 +54,14 @@ public class Ship {
 
 	public void setShipCategory(String shipCategory) {
 		ShipCategory = shipCategory;
+	}
+
+	public int getSize() {
+		return size;
+	}
+
+	public void setSize(int size) {
+		this.size = size;
 	}
 
 }

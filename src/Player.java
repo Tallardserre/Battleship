@@ -1,5 +1,4 @@
 
-
 public class Player {
 	private String name;
 	private Ship Carrier;

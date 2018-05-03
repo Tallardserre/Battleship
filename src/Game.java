@@ -51,7 +51,70 @@ public class Game {
 		return str;
 	}
 	
-	public static ArrayList<String> checkSpacesArray(int startCoordLine, int startCoordColl, int endCoordLine, int endCoordColl, int size, ArrayList<String> spaces){
+	
+	public static ArrayList<String> listShips(Player p){
+		ArrayList<String> list= new ArrayList<String>();
+		int j;
+		for(j=0;j<p.getCarrier().getSize();j++) {
+			list.add(p.getCarrier().getCoordShip().get(j));
+		}
+		/*for(j=0;j<p.getBattleship().getSize();j++) {
+			list.add(p.getBattleship().getCoordShip().get(j));
+		}
+		for(j=0;j<p.getCruiser().getSize();j++) {
+			list.add(p.getCruiser().getCoordShip().get(j));
+		}
+		for(j=0;j<p.getDestroyer().getSize();j++) {
+			list.add(p.getDestroyer().getCoordShip().get(j));
+		}
+		for(j=0;j<p.getSubmarine().getSize();j++) {
+			list.add(p.getSubmarine().getCoordShip().get(j));
+		}*/
+		return list;
+	}
+
+	
+	public static void printmap(Player p, int x, int y){
+		String coord;
+		System.out.print("  |");
+		for(int k=0;k<x;k++) {
+			System.out.print(" "+intToString(k)+" ");
+		}
+		System.out.println();
+		System.out.print("--|");
+		for(int l=0;l<x;l++) {
+			System.out.print("---");
+		}
+		System.out.println();
+		for(int i=1;i<=x;i++) { //colonnes
+			if (i<10) {
+			System.out.print(" "+i+"|");
+			}
+			else {
+			System.out.print(i+"|");
+
+			}
+			for(int j=0;j<y;j++) { //lignes
+				coord=intToString(j)+i;
+				if (p.getCarrier().getCoordShip().contains(coord)||
+					p.getBattleship().getCoordShip().contains(coord)||
+					p.getCruiser().getCoordShip().contains(coord)||
+					p.getSubmarine().getCoordShip().contains(coord)||
+					p.getDestroyer().getCoordShip().contains(coord)) {
+					System.out.print(" O "); //pas touché
+					//System.out.print(" X "); touché
+
+				}
+				else {
+					System.out.print(" - ");
+				}
+			}
+			System.out.println();
+		}
+	}
+	
+	
+ 	public static ArrayList<String> checkSpacesArray(int startCoordLine, int startCoordColl, int endCoordLine, int endCoordColl, int size, ArrayList<String> spaces){
 		spaces.add(intToString(startCoordColl)+startCoordLine);
 		spaces.add(intToString(endCoordColl)+endCoordLine);
 
@@ -215,17 +278,7 @@ public class Game {
 		    		}
 		    	}
 		    	i=i+1;
-		    }
-		    affiche(spaces1);
-		    affiche(spaces2);
-		    affiche(spaces3);
-		    affiche(spaces4);
-		    System.out.println(notFind1);
-		    System.out.println(notFind2);
-		    System.out.println(notFind3);
-		    System.out.println(notFind4);
-
-		    
+		    }    
 		    return (notFind1||notFind2||notFind3||notFind4);
 		}
 	}
@@ -406,10 +459,8 @@ public class Game {
 		}
 		
 		
-		player.setCarrier(new Ship(coord1,coord2,"Carrier"));
+		player.setCarrier(new Ship(coord1,coord2,5,"Carrier"));
 		spaceOccupied=checkSpacesArray(stringToInt(coord1),(int)coord1.charAt(0)-65,stringToInt(coord2),(int)coord2.charAt(0)-65,5,spaceOccupied);
-		//addSpace(coord1,coord2,5,spaceOccupied);
-		affiche(spaceOccupied);
 		
 		//Battleship:
 
@@ -469,10 +520,8 @@ public class Game {
 			}	
 		}
 		
-		player.setBattleship(new Ship(coord1,coord2,"Battleship"));
-		//addSpace(coord1,coord2,4,spaceOccupied);
+		player.setBattleship(new Ship(coord1,coord2,4,"Battleship"));
 		spaceOccupied=checkSpacesArray(stringToInt(coord1),(int)coord1.charAt(0)-65,stringToInt(coord2),(int)coord2.charAt(0)-65,4,spaceOccupied);
-		affiche(spaceOccupied);
 
 
 		//Cruiser:
@@ -532,10 +581,8 @@ public class Game {
 			}	
 		}
 		
-		player.setCruiser(new Ship(coord1,coord2,"Cruiser"));
-		//addSpace(coord1,coord2,3,spaceOccupied);
+		player.setCruiser(new Ship(coord1,coord2,3,"Cruiser"));
 		spaceOccupied=checkSpacesArray(stringToInt(coord1),(int)coord1.charAt(0)-65,stringToInt(coord2),(int)coord2.charAt(0)-65,3,spaceOccupied);
-		affiche(spaceOccupied);
 		
 		//Submarine:
 
@@ -594,10 +641,8 @@ public class Game {
 			}	
 		}
 		
-		player.setSubmarine(new Ship(coord1,coord2,"Submarine"));
-		//addSpace(coord1,coord2,3,spaceOccupied);
+		player.setSubmarine(new Ship(coord1,coord2,3,"Submarine"));
 		spaceOccupied=checkSpacesArray(stringToInt(coord1),(int)coord1.charAt(0)-65,stringToInt(coord2),(int)coord2.charAt(0)-65,3,spaceOccupied);
-		affiche(spaceOccupied);
 				
 		//Destroyer:
 
@@ -656,11 +701,11 @@ public class Game {
 			}	
 		}
 		
-		player.setDestroyer(new Ship(coord1,coord2,"Destroyer"));
-		//addSpace(coord1,coord2,2,spaceOccupied);
+		player.setDestroyer(new Ship(coord1,coord2,2,"Destroyer"));
 		spaceOccupied=checkSpacesArray(stringToInt(coord1),(int)coord1.charAt(0)-65,stringToInt(coord2),(int)coord2.charAt(0)-65,2,spaceOccupied);
-		affiche(spaceOccupied);
 		System.out.println("All you ships are initialised!");
+		printmap(player,10,10);
+
 		
 		sc1.close();
 		sc2.close();
