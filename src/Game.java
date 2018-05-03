@@ -51,29 +51,6 @@ public class Game {
 		return str;
 	}
 	
-	
-	public static ArrayList<String> listShips(Player p){
-		ArrayList<String> list= new ArrayList<String>();
-		int j;
-		for(j=0;j<p.getCarrier().getSize();j++) {
-			list.add(p.getCarrier().getCoordShip().get(j));
-		}
-		/*for(j=0;j<p.getBattleship().getSize();j++) {
-			list.add(p.getBattleship().getCoordShip().get(j));
-		}
-		for(j=0;j<p.getCruiser().getSize();j++) {
-			list.add(p.getCruiser().getCoordShip().get(j));
-		}
-		for(j=0;j<p.getDestroyer().getSize();j++) {
-			list.add(p.getDestroyer().getCoordShip().get(j));
-		}
-		for(j=0;j<p.getSubmarine().getSize();j++) {
-			list.add(p.getSubmarine().getCoordShip().get(j));
-		}*/
-		return list;
-	}
-
-	
 	public static void printmap(Player p, int x, int y){
 		String coord;
 		System.out.print("  |");
