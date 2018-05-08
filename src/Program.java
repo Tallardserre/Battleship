@@ -4,13 +4,24 @@ import java.util.*;
 
 public class Program {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) {/*
+		int coordShotLine,coordShotColl;
+		String coordShot="";
+		Random rand = new Random();
+		for(int i=0;i<50;i++) {
+		coordShotLine=rand.nextInt((10-0));
+		coordShotColl=rand.nextInt((10-1)+1)+1;
+		coordShot=Game.intToString(coordShotLine)+coordShotColl;
+		System.out.println("coordShotcolonne"+ coordShotColl);
+		System.out.println("coordShotligne"+ coordShotLine);
+		System.out.println(coordShot);
+		}*/
 		Scanner sc1 = new Scanner(System.in);
 		Scanner sc2 = new Scanner(System.in);
 		System.out.print("Enter your name here: ");
 		String name = sc1.nextLine();
 		Player p1=new Player(name);
-		IA p2=new IA("Opponent");
+		Player p2=new Player("Opponent");
 		ArrayList<String> spaceOccupied = new ArrayList<String>();
 		int stop=0;
 		String coord1="";
@@ -174,10 +185,18 @@ public class Program {
 		
 		//GAME START
 		System.out.println("Game start !");
-		while(!Game.endGame(p1,p2)) {
-			String hitShip="";
-			Boolean isDestroyed=false;
+		String hitShip="";
+		Boolean isDestroyed=false;
+		stop=0;
+		int tour=1;
+		int coordShotLine=0;
+		int coordShotColl=0;
+		while(!Game.endGame(p1,p2)){
+			//JOUEUR qui joue.
 			stop=0;
+			System.out.println();
+			System.out.println("Tour "+tour);
+			System.out.println();
 			while(stop==0) {
 				System.out.println(p1.getName()+" enter where you want to shoot: ");
 				coordShot = sc1.nextLine();
@@ -225,8 +244,66 @@ public class Program {
 			else {
 				System.out.println("Missed!");
 			}
+			System.out.println();
 			p1.getShotFired().add(coordShot);
 			Game.printShotMap(p1,p2,10,10);
+			
+			
+			//IA qui joue.
+			System.out.println();
+			System.out.println("The opponent is playing!");
+			stop=0;
+			while(stop==0) {
+				coordShotLine=rand.nextInt((10-0));
+				coordShotColl=rand.nextInt((10-1)+1)+1;
+				coordShot=Game.intToString(coordShotLine)+coordShotColl;
+				if (Game.checkInputCoordShot(coordShot,p2)) {
+					stop=1;
+					System.out.println("Opponent shooted at "+coordShot);
+				}
+			}	
+			if (p1.shipHit(coordShot)) {
+				if(Game.isCarrierHere(coordShot,p1)) {
+					p1.getCarrier().getShotReceived().add(coordShot);
+					hitShip=p1.getCarrier().getShipCategory();
+					isDestroyed=p1.getCarrier().isDestroyed();
+				}
+				if(Game.isBattleshipHere(coordShot,p1)) {
+					p1.getBattleship().getShotReceived().add(coordShot);
+					hitShip=p1.getBattleship().getShipCategory();
+					isDestroyed=p1.getBattleship().isDestroyed();
+
+				}
+				if(Game.isCruiserHere(coordShot,p1)) {
+					p1.getCruiser().getShotReceived().add(coordShot);
+					hitShip=p1.getCruiser().getShipCategory();
+					isDestroyed=p1.getCruiser().isDestroyed();
+				}
+				if(Game.isSubmarineHere(coordShot,p1)) {
+					p1.getSubmarine().getShotReceived().add(coordShot);
+					hitShip=p1.getSubmarine().getShipCategory();
+					isDestroyed=p1.getSubmarine().isDestroyed();
+				}
+				if(Game.isDestroyerHere(coordShot,p1)) {
+					p1.getDestroyer().getShotReceived().add(coordShot);
+					hitShip=p1.getDestroyer().getShipCategory();
+					isDestroyed=p1.getDestroyer().isDestroyed();
+				}
+				if (isDestroyed) {
+					System.out.println("Your "+hitShip+" is destroyed!");
+				}
+				else {
+					System.out.println("Hit!");
+				}
+			}
+			else {
+				System.out.println("Missed!");
+			}
+			System.out.println();
+			p2.getShotFired().add(coordShot);
+			Game.printShipsMap(p1,p2,10,10);
+			System.out.println();
+			tour++;
 		}
 		if (p1.shipsAllDestroyed()) {
 			System.out.println(p2.getName()+" won!");
