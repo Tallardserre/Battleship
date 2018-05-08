@@ -51,8 +51,9 @@ public class Game {
 		return str;
 	}
 	
-	public static void printmap(Player p, int x, int y){
+	public static void printShipsMap(Player p1, Player p2, int x, int y){
 		String coord;
+		System.out.println("Map with your ships (\"O\" ship, \"X\" ship hit, \"!\" enemy's shot attempt)");
 		System.out.print("  |");
 		for(int k=0;k<x;k++) {
 			System.out.print(" "+intToString(k)+" ");
@@ -73,24 +74,79 @@ public class Game {
 			}
 			for(int j=0;j<y;j++) { //lignes
 				coord=intToString(j)+i;
-				if (p.getCarrier().getCoordShip().contains(coord)||
-					p.getBattleship().getCoordShip().contains(coord)||
-					p.getCruiser().getCoordShip().contains(coord)||
-					p.getSubmarine().getCoordShip().contains(coord)||
-					p.getDestroyer().getCoordShip().contains(coord)) {
-					System.out.print(" O "); //pas touché
-					//System.out.print(" X "); touché
-
+				if (p1.getCarrier().getShotReceived().contains(coord)||
+				p1.getBattleship().getShotReceived().contains(coord)||
+				p1.getCruiser().getShotReceived().contains(coord)||
+				p1.getSubmarine().getShotReceived().contains(coord)||
+				p1.getDestroyer().getShotReceived().contains(coord)) {
+					System.out.print(" X "); //touché
 				}
 				else {
-					System.out.print(" - ");
+					if (p1.getCarrier().getCoordShip().contains(coord)||
+					p1.getBattleship().getCoordShip().contains(coord)||
+					p1.getCruiser().getCoordShip().contains(coord)||
+					p1.getSubmarine().getCoordShip().contains(coord)||
+					p1.getDestroyer().getCoordShip().contains(coord)) {
+						System.out.print(" O "); //pas touché
+					}
+					else {
+						if (p2.getShotFired().contains(coord)) {
+							System.out.print(" ! "); //tir de l'adversaire
+						}
+						else {
+							System.out.print(" - "); //rien
+						}
+					}	
 				}
 			}
-			System.out.println();
+		System.out.println();
 		}
 	}
+
+	public static void printShotMap(Player p1, Player p2, int x, int y) {
+		String coord;
+		System.out.println("Map with your shots (\"!\" missed, \"X\" hit)");
+		System.out.print("  |");
+		for(int k=0;k<x;k++) {
+			System.out.print(" "+intToString(k)+" ");
+		}
+		System.out.println();
+		System.out.print("--|");
+		for(int l=0;l<x;l++) {
+			System.out.print("---");
+		}
+		System.out.println();
+		for(int i=1;i<=x;i++) { //colonnes
+			if (i<10) {
+			System.out.print(" "+i+"|");
+			}
+			else {
+			System.out.print(i+"|");
+
+			}
+			for(int j=0;j<y;j++) {
+				coord=intToString(j)+i; //lignes
+				if (p1.getShotFired().contains(coord)&&(p2.getCarrier().getCoordShip().contains(coord)||
+						p2.getBattleship().getCoordShip().contains(coord)||
+						p2.getCruiser().getCoordShip().contains(coord)||
+						p2.getSubmarine().getCoordShip().contains(coord)||
+						p2.getDestroyer().getCoordShip().contains(coord))) {
+					System.out.print(" X "); //touché
+				}
+				else {
+					if (p1.getShotFired().contains(coord)) {
+						System.out.print(" ! "); //pas touché
+					}
+					else {
+						System.out.print(" - "); //rien
+						}
+					}	
+				}
+			System.out.println();
+			}
+		}
 	
-	
+			
  	public static ArrayList<String> checkSpacesArray(int startCoordLine, int startCoordColl, int endCoordLine, int endCoordColl, int size, ArrayList<String> spaces){
 		spaces.add(intToString(startCoordColl)+startCoordLine);
 		spaces.add(intToString(endCoordColl)+endCoordLine);
@@ -177,13 +233,17 @@ public class Game {
 	    }
 	    return spaces;
 	}
-
+ 	
+ 	public static boolean endGame(Player p1, Player p2) {
+ 		return p1.shipsAllDestroyed()||p2.shipsAllDestroyed();
+ 	}
+ 	
 	public static void affiche(ArrayList<String> liste){
 		for(int i=0;i<liste.size();i++)
 			System.out.println(liste.get(i));
 	}
 	
-	public boolean checkStartCoord(String coord, int size,ArrayList<String> spaceOccupied){
+	public static boolean checkStartCoord(String coord, int size,ArrayList<String> spaceOccupied){
 		/*verifie si il y a de la place autour et sur la case donnee pour un bateau de la taille donnee.*/
 		boolean end=false;
 		for (int n=0;n<spaceOccupied.size();n++){
@@ -260,7 +320,7 @@ public class Game {
 		}
 	}
 	
-	public boolean checkEndCoord(String startCoord, int endCoordColl, int endCoordLine, int size, ArrayList<String> spaceOccupied){
+	public static boolean checkEndCoord(String startCoord, int endCoordColl, int endCoordLine, int size, ArrayList<String> spaceOccupied){
 		/*verifie si la derniere coordonnées est valide : si aucun bateau ne se trouve entre la premiere coord et la derniere coord*/
 	    int startCoordColl=(int)startCoord.charAt(0)-65;
 	    int startCoordLine = startCoord.charAt(1) - '0';
@@ -283,413 +343,111 @@ public class Game {
 	    return notFind;
 	}    
 			    
-	public void addSpace(String startCoord, String endCoord, int size, ArrayList<String> spaceOccupied){
-		/*Ajoute les coordonnees du bateau cree au tableau spaceOccupied */
-		spaceOccupied.add(startCoord);
-	    int startCoordColl=(int)startCoord.charAt(0)-65;
-	    int startCoordLine = stringToInt(startCoord);
-	    int endCoordColl=(int)endCoord.charAt(0)-65;
-	    int endCoordLine = stringToInt(endCoord);
-	    switch(size){
-	    case 5:
-		    if (endCoordLine==startCoordLine) {
-		    	if (endCoordColl>startCoordColl) {
-		    		startCoordColl++;
-		    		spaceOccupied.add(Game.intToString(startCoordColl++)+startCoordLine);
-		    		spaceOccupied.add(Game.intToString(startCoordColl++)+startCoordLine);
-		    		spaceOccupied.add(Game.intToString(startCoordColl++)+startCoordLine);
-		    	}
-		    	else {
-		    		startCoordColl--;
-		    		spaceOccupied.add(Game.intToString(startCoordColl--)+startCoordLine);
-		    		spaceOccupied.add(Game.intToString(startCoordColl--)+startCoordLine);
-		    		spaceOccupied.add(Game.intToString(startCoordColl--)+startCoordLine);
-		    	}
+	public static boolean checkInputStartCoord(ArrayList<String> spaceOccupied, String coord1, int size) {			
+		boolean check=false;
+		if (coord1.length()==3||coord1.length()==2)	{
+			int coordColl=(int)coord1.charAt(0)-65;
+			int coordLine = stringToInt(coord1);
+		    if ((coordColl<=9&&coordColl>=0&&coordLine>=1&&coordLine<=10)&&coord1!=""&&checkStartCoord(coord1,size,spaceOccupied)) {
+		    	check=true;
 		    }
-		    else {
-		    	if (endCoordLine>startCoordLine) {
-		    		startCoordLine++;
-		    		spaceOccupied.add(Game.intToString(startCoordColl)+startCoordLine++);
-		    		spaceOccupied.add(Game.intToString(startCoordColl)+startCoordLine++);
-		    		spaceOccupied.add(Game.intToString(startCoordColl)+startCoordLine++);
-		    	}
-		    	else {
-		    		startCoordLine--;
-		    		spaceOccupied.add(Game.intToString(startCoordColl)+startCoordLine--);
-		    		spaceOccupied.add(Game.intToString(startCoordColl)+startCoordLine--);
-		    		spaceOccupied.add(Game.intToString(startCoordColl)+startCoordLine--);
-		    	}
-		    }
-		    break;
-	    case 4:
-		    if (endCoordLine==startCoordLine) {
-		    	if (endCoordColl>startCoordColl) {
-		    		startCoordColl++;
-		    		spaceOccupied.add(Game.intToString(startCoordColl++)+startCoordLine);
-		    		spaceOccupied.add(Game.intToString(startCoordColl++)+startCoordLine);
-		    	}
-		    	else {
-		    		startCoordColl--;
-		    		spaceOccupied.add(Game.intToString(startCoordColl--)+startCoordLine);
-		    		spaceOccupied.add(Game.intToString(startCoordColl--)+startCoordLine);
-		    	}
-		    }
-		    else {
-		    	if (endCoordLine>startCoordLine) {
-		    		startCoordLine++;
-		    		spaceOccupied.add(Game.intToString(startCoordColl)+startCoordLine++);
-		    		spaceOccupied.add(Game.intToString(startCoordColl)+startCoordLine++);
-		    	}
-		    	else {
-		    		startCoordLine--;
-		    		spaceOccupied.add(Game.intToString(startCoordColl)+startCoordLine--);
-		    		spaceOccupied.add(Game.intToString(startCoordColl)+startCoordLine--);
-		    	}
-		    }
-		    break;
-		case 3:
-		    if (endCoordLine==startCoordLine) {
-		    	if (endCoordColl>startCoordColl) {
-		    		startCoordColl++;
-		    		spaceOccupied.add(Game.intToString(startCoordColl++)+startCoordLine);
-		    	}
-		    	else {
-		    		startCoordColl--;
-		    		spaceOccupied.add(Game.intToString(startCoordColl--)+startCoordLine);
-		    	}
-		    }
-		    else {
-		    	if (endCoordLine>startCoordLine) {
-		    		startCoordLine++;
-		    		spaceOccupied.add(Game.intToString(startCoordColl)+startCoordLine++);
-		    	}
-		    	else {
-		    		startCoordLine--;
-		    		spaceOccupied.add(Game.intToString(startCoordColl)+startCoordLine--);
-		    	}
-		    }
-		    break;
-	    }
-		spaceOccupied.add(endCoord);
+		}
+	return check;
 	}
 	
-	public void initializePlayer(Player player){
-		Scanner sc1 = new Scanner(System.in);
-		Scanner sc2 = new Scanner(System.in);
-		ArrayList<String> spaceOccupied = new ArrayList<String>();
-
-		//Carrier:
-
-		String str1="",str2="",str3="",str4="";
-		boolean correct=false;
-		int coordColl=11;
-		int coordLine=11;
-		String coord1="";
-		String coord2="";
-		int coordColl1;
-		int coordLine1;
-		int coordColl2;
-		int coordLine2;
-			
-		
-			while (!correct) {
-				System.out.println("Give the first coordinates of your Carrier (size : 5)");
-				coord1 = sc1.nextLine();
-				if (coord1.length()!=3&&coord1.length()!=2)	{
-					System.out.println("Bad coordinates!");
-				}
-				else{
-				    coordColl=(int)coord1.charAt(0)-65;
-				    coordLine = stringToInt(coord1);
-				    if ((coordColl<=9&&coordColl>=0&&coordLine>=1&&coordLine<=10)&&coord1!="") {
-				    	correct=true;
-				    }
-				    else {
-				    	System.out.println("Bad coordinates!");
-				    }
-				}
-			}
-			coordColl1=coordColl-4;
-			coordLine1=coordLine-4;
-			coordColl2=coordColl+4;
-			coordLine2=coordLine+4;
-			if (coordColl1>=0) {
-				str1=Game.intToString(coordColl1)+coordLine;
-			}
-			if (coordColl2<=9) {
-				str2=Game.intToString(coordColl2)+coordLine;
-			}
-			if (coordLine1>=1) {
-				str3=Game.intToString(coordColl)+coordLine1;
-			}
-			if (coordLine2<=10) {
-				str4=Game.intToString(coordColl)+coordLine2;
-			}
-
-		correct=false;
-		while(!correct){
-			System.out.println("Give the last coordinates of your Carrier (choose between : "+str1+" "+str2+" "+str3+" "+str4+")");
-			coord2 = sc2.nextLine();
-			if ((coord2.equals(str1)||coord2.equals(str2)||coord2.equals(str3)||coord2.equals(str4))&&coord2!=""){
-				correct=true;
-			}	
+	public static boolean checkInputCoordShot(String coord, Player player) {
+		boolean check=true;
+		if (coord.length()==3||coord.length()==2)	{
+			int coordColl=(int)coord.charAt(0)-65;
+			int coordLine = stringToInt(coord);
+		    if ((coordColl<=9&&coordColl>=0&&coordLine>=1&&coordLine<=10)&&coord!="") {
+		    	for(String str : player.getShotFired()) {
+		    		if(str.equals(coord)) {
+		    			check=false;
+		    		}
+		    	}
+		    }
+		    else {
+		    	check=false;
+		    }
 		}
-		
-		
-		player.setCarrier(new Ship(coord1,coord2,5,"Carrier"));
-		spaceOccupied=checkSpacesArray(stringToInt(coord1),(int)coord1.charAt(0)-65,stringToInt(coord2),(int)coord2.charAt(0)-65,5,spaceOccupied);
-		
-		//Battleship:
-
-		str1="";
-		str2="";
-		str3="";
-		str4="";
-		coord1="";
-		correct=false;
-		while (!correct) {
-			System.out.println("Give the first coordinates of your Battleship (size : 4)");
-			coord1 = sc1.nextLine();
-			if (coord1.length()!=3&&coord1.length()!=2)	{
-				System.out.println("Bad coordinates!");
-			}
-			else{
-			    coordColl=(int)coord1.charAt(0)-65;
-			    coordLine = stringToInt(coord1);
-
-			    if ((coordColl<=9&&coordColl>=0&&coordLine>=1&&coordLine<=10)&&coord1!=""&&checkStartCoord(coord1,4,spaceOccupied)) {
-			    	correct=true;
-			    }
-			    else {
-			    	if (!checkStartCoord(coord1,4,spaceOccupied)){
-			    		System.out.println("Not enough space available for your ship here");
-			    	}	
-			    	else {
-				    	System.out.println("Bad coordinates!");
-				    }
-			    }
-			}
+		else {
+			check=false;
 		}
-		coordColl1=coordColl-3;
-		coordLine1=coordLine-3;
-		coordColl2=coordColl+3;
-		coordLine2=coordLine+3;
-		if (coordColl1>=0&&checkEndCoord(coord1, coordColl1,coordLine,4,spaceOccupied)) {
-			str1=Game.intToString(coordColl1)+coordLine;
-		}
-		if (coordColl2<=9&&checkEndCoord(coord1, coordColl2,coordLine,4,spaceOccupied)) {
-			str2=Game.intToString(coordColl2)+coordLine;
-		}
-		if (coordLine1>=1&&checkEndCoord(coord1, coordColl,coordLine1,4,spaceOccupied)) {
-			str3=Game.intToString(coordColl)+coordLine1;
-		}
-		if (coordLine2<=10&&checkEndCoord(coord1, coordColl,coordLine2,4,spaceOccupied)) {
-			str4=Game.intToString(coordColl)+coordLine2;
-		}
-			
-		correct=false;
-		coord2="";
-		while(!correct){
-			System.out.println("Give the last coordinates of your Battleship (choose between : "+str1+" "+str2+" "+str3+" "+str4+")");
-			coord2 = sc2.nextLine();
-			if ((coord2.equals(str1)||coord2.equals(str2)||coord2.equals(str3)||coord2.equals(str4))&&coord2!=""){
-				correct=true;
-			}	
-		}
-		
-		player.setBattleship(new Ship(coord1,coord2,4,"Battleship"));
-		spaceOccupied=checkSpacesArray(stringToInt(coord1),(int)coord1.charAt(0)-65,stringToInt(coord2),(int)coord2.charAt(0)-65,4,spaceOccupied);
-
-
-		//Cruiser:
-
-		str1="";
-		str2="";
-		str3="";
-		str4="";
-		coord1="";
-		correct=false;
-		while (!correct) {
-			System.out.println("Give the first coordinates of your Cruiser (size : 3)");
-			coord1 = sc1.nextLine();
-			if (coord1.length()!=3&&coord1.length()!=2)	{
-				System.out.println("Bad coordinates!");
-			}
-			else{
-			    coordColl=(int)coord1.charAt(0)-65;
-			    coordLine = stringToInt(coord1);
-			    if ((coordColl<=9&&coordColl>=0&&coordLine>=1&&coordLine<=10)&&coord1!=""&&checkStartCoord(coord1,3,spaceOccupied)) {
-			    	correct=true;
-			    }
-			    else {
-			    	if (!checkStartCoord(coord1,3,spaceOccupied)){
-			    		System.out.println("Not enough space available for your ship here");
-			    	}
-				    else {
-				    	System.out.println("Bad coordinates!");
-				    }
-			    }
-			}
-		}
-		coordColl1=coordColl-2;
-		coordLine1=coordLine-2;
-		coordColl2=coordColl+2;
-		coordLine2=coordLine+2;
-		if (coordColl1>=0&&checkEndCoord(coord1, coordColl1,coordLine,3,spaceOccupied)) {
-			str1=Game.intToString(coordColl1)+coordLine;
-		}
-		if (coordColl2<=9&&checkEndCoord(coord1, coordColl2,coordLine,3,spaceOccupied)) {
-			str2=Game.intToString(coordColl2)+coordLine;
-		}
-		if (coordLine1>=1&&checkEndCoord(coord1, coordColl,coordLine1,3,spaceOccupied)) {
-			str3=Game.intToString(coordColl)+coordLine1;
-		}
-		if (coordLine2<=10&&checkEndCoord(coord1, coordColl,coordLine2,3,spaceOccupied)) {
-			str4=Game.intToString(coordColl)+coordLine2;
-		}
-			
-		correct=false;
-		coord2="";
-		while(!correct){
-			System.out.println("Give the last coordinates of your Cruiser (choose between : "+str1+" "+str2+" "+str3+" "+str4+")");
-			coord2 = sc2.nextLine();
-			if ((coord2.equals(str1)||coord2.equals(str2)||coord2.equals(str3)||coord2.equals(str4))&&coord2!=""){
-				correct=true;
-			}	
-		}
-		
-		player.setCruiser(new Ship(coord1,coord2,3,"Cruiser"));
-		spaceOccupied=checkSpacesArray(stringToInt(coord1),(int)coord1.charAt(0)-65,stringToInt(coord2),(int)coord2.charAt(0)-65,3,spaceOccupied);
-		
-		//Submarine:
-
-		str1="";
-		str2="";
-		str3="";
-		str4="";
-		coord1="";
-		correct=false;
-		while (!correct) {
-			System.out.println("Give the first coordinates of your Submarine (size : 3)");
-			coord1 = sc1.nextLine();
-			if (coord1.length()!=3&&coord1.length()!=2)	{
-				System.out.println("Bad coordinates!");
-			}
-			else{
-			    coordColl=(int)coord1.charAt(0)-65;
-			    coordLine = stringToInt(coord1);
-			    if ((coordColl<=9&&coordColl>=0&&coordLine>=1&&coordLine<=10)&&coord1!=""&&checkStartCoord(coord1,3,spaceOccupied)) {
-			    	correct=true;
-			    }
-			    else {
-			    	if (!checkStartCoord(coord1,3,spaceOccupied)){
-			        	System.out.println("Not enough space available for your ship here");
-			    	}
-				    else {
-				    	System.out.println("Bad coordinates!");
-				    }
-			    }
-			}
-		}
-		coordColl1=coordColl-2;
-		coordLine1=coordLine-2;
-		coordColl2=coordColl+2;
-		coordLine2=coordLine+2;
-		if (coordColl1>=0&&checkEndCoord(coord1, coordColl1,coordLine,3,spaceOccupied)) {
-			str1=Game.intToString(coordColl1)+coordLine;
-		}
-		if (coordColl2<=9&&checkEndCoord(coord1, coordColl2,coordLine,3,spaceOccupied)) {
-			str2=Game.intToString(coordColl2)+coordLine;
-		}
-		if (coordLine1>=1&&checkEndCoord(coord1, coordColl,coordLine1,3,spaceOccupied)) {
-			str3=Game.intToString(coordColl)+coordLine1;
-		}
-		if (coordLine2<=10&&checkEndCoord(coord1, coordColl,coordLine2,3,spaceOccupied)) {
-			str4=Game.intToString(coordColl)+coordLine2;
-		}
-			
-		correct=false;
-		coord2="";
-		while(!correct){
-			System.out.println("Give the last coordinates of your Submarine (choose between : "+str1+" "+str2+" "+str3+" "+str4+")");
-			coord2 = sc2.nextLine();
-			if ((coord2.equals(str1)||coord2.equals(str2)||coord2.equals(str3)||coord2.equals(str4))&&coord2!=""){
-				correct=true;
-			}	
-		}
-		
-		player.setSubmarine(new Ship(coord1,coord2,3,"Submarine"));
-		spaceOccupied=checkSpacesArray(stringToInt(coord1),(int)coord1.charAt(0)-65,stringToInt(coord2),(int)coord2.charAt(0)-65,3,spaceOccupied);
-				
-		//Destroyer:
-
-		str1="";
-		str2="";
-		str3="";
-		str4="";
-		coord1="";
-		correct=false;
-		while (!correct) {
-			System.out.println("Give the first coordinates of your Destroyer (size : 2)");
-			coord1 = sc1.nextLine();
-			if (coord1.length()!=3&&coord1.length()!=2)	{
-				System.out.println("Bad coordinates!");
-			}
-			else{
-				coordColl=(int)coord1.charAt(0)-65;
-			    coordLine = stringToInt(coord1);
-			    if ((coordColl<=9&&coordColl>=0&&coordLine>=1&&coordLine<=10)&&coord1!=""&&checkStartCoord(coord1,2,spaceOccupied)) {
-			    	correct=true;
-			    }
-			    else {
-			    	if (!checkStartCoord(coord1,2,spaceOccupied)){
-			    		System.out.println("Not enough space available for your ship here");
-			    	}
-				    else {
-				    	System.out.println("Bad coordinates!");
-				    }
-			    }
-			}
-		}
-		coordColl1=coordColl-1;
-		coordLine1=coordLine-1;
-		coordColl2=coordColl+1;
-		coordLine2=coordLine+1;
-		if (coordColl1>=0&&checkEndCoord(coord1, coordColl1,coordLine,2,spaceOccupied)) {
-			str1=Game.intToString(coordColl1)+coordLine;
-		}
-		if (coordColl2<=9&&checkEndCoord(coord1, coordColl2,coordLine,2,spaceOccupied)) {
-			str2=Game.intToString(coordColl2)+coordLine;
-		}
-		if (coordLine1>=1&&checkEndCoord(coord1, coordColl,coordLine1,2,spaceOccupied)) {
-			str3=Game.intToString(coordColl)+coordLine1;
-		}
-		if (coordLine2<=10&&checkEndCoord(coord1, coordColl,coordLine2,2,spaceOccupied)) {
-			str4=Game.intToString(coordColl)+coordLine2;
-		}
-			
-		correct=false;
-		coord2="";
-		while(!correct){
-			System.out.println("Give the last coordinates of your Destroyer (choose between : "+str1+" "+str2+" "+str3+" "+str4+")");
-			coord2 = sc2.nextLine();
-			if ((coord2.equals(str1)||coord2.equals(str2)||coord2.equals(str3)||coord2.equals(str4))&&coord2!=""){
-				correct=true;
-			}	
-		}
-		
-		player.setDestroyer(new Ship(coord1,coord2,2,"Destroyer"));
-		spaceOccupied=checkSpacesArray(stringToInt(coord1),(int)coord1.charAt(0)-65,stringToInt(coord2),(int)coord2.charAt(0)-65,2,spaceOccupied);
-		System.out.println("All you ships are initialised!");
-		printmap(player,10,10);
-
-		
-		sc1.close();
-		sc2.close();
+	return check;
 	}
+	
+	public static Boolean isCarrierHere(String coord, Player p) {
+		Boolean isHere=false;
+		for(String str : p.getCarrier().getCoordShip())
+			if(str.equals(coord)) {
+				isHere=true;
+			}
+		return isHere;
+	}
+	
+	public static Boolean isBattleshipHere(String coord, Player p) {
+		Boolean isHere=false;
+		for(String str : p.getBattleship().getCoordShip())
+			if(str.equals(coord)) {
+				isHere=true;
+			}
+		return isHere;
+	}
+	
+	public static Boolean isCruiserHere(String coord, Player p) {
+		Boolean isHere=false;
+		for(String str : p.getCruiser().getCoordShip())
+			if(str.equals(coord)) {
+				isHere=true;
+			}
+		return isHere;
+	}
+	
+	public static Boolean isSubmarineHere(String coord, Player p) {
+		Boolean isHere=false;
+		for(String str : p.getSubmarine().getCoordShip())
+			if(str.equals(coord)) {
+				isHere=true;
+			}
+		return isHere;
+	}
+	
+	public static Boolean isDestroyerHere(String coord, Player p) {
+		Boolean isHere=false;
+		for(String str : p.getDestroyer().getCoordShip())
+			if(str.equals(coord)) {
+				isHere=true;
+			}
+		return isHere;
+	}
+	
+	public static ArrayList<String> GenerateEndCoord(ArrayList<String> spaceOccupied, String coord1, int size){	
+		int coordColl=(int)coord1.charAt(0)-65;
+		int coordLine = stringToInt(coord1);
+		int coordColl1=coordColl-(size-1);
+		int coordLine1=coordLine-(size-1);
+		int coordColl2=coordColl+(size-1);
+		int coordLine2=coordLine+(size-1);
+		String str1="",str2="",str3="",str4="";
+		ArrayList<String> result = new ArrayList<String>();
 
-	public void shotAttempt(Player p1, Player p2){
-		System.out.println(p1.getName()+" enter a coordinates to shot :");
-		
+		if (coordColl1>=0&&checkEndCoord(coord1, coordColl1,coordLine,size,spaceOccupied)) {
+			str1=Game.intToString(coordColl1)+coordLine;
+			result.add(str1);
+		}
+		if (coordColl2<=9&&checkEndCoord(coord1, coordColl2,coordLine,size,spaceOccupied)) {
+			str2=Game.intToString(coordColl2)+coordLine;
+			result.add(str2);
+		}
+		if (coordLine1>=1&&checkEndCoord(coord1, coordColl,coordLine1,size,spaceOccupied)) {
+			str3=Game.intToString(coordColl)+coordLine1;
+			result.add(str3);
+		}
+		if (coordLine2<=10&&checkEndCoord(coord1, coordColl,coordLine2,size,spaceOccupied)) {
+			str4=Game.intToString(coordColl)+coordLine2;				
+			result.add(str4);
+		}
+		return result;
 	}
 }

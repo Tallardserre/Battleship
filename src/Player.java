@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 
 public class Player {
 	private String name;
@@ -6,6 +7,8 @@ public class Player {
 	private Ship Cruiser;
 	private Ship Submarine;
 	private Ship Destroyer;
+	private ArrayList<String> shotFired = new ArrayList<String>();
+
 	
 	public Player(String name){
 		setName(name);
@@ -60,9 +63,23 @@ public class Player {
 		this.name = name;
 	}
 
+	public ArrayList<String> getShotFired() {
+		return shotFired;
+	}
+
+	public void setShotFired(ArrayList<String> shotFired) {
+		this.shotFired = shotFired;
+	}
+	
 	public boolean shipHit(String coord){
 		return this.Carrier.isHit(coord)||this.Battleship.isHit(coord)||this.Submarine.isHit(coord)||this.Cruiser.isHit(coord)||this.Destroyer.isHit(coord);
 	}
 	
+	public boolean shipsAllDestroyed() {
+		return this.Carrier.isDestroyed()&&this.Battleship.isDestroyed()&&this.Submarine.isDestroyed()&&this.Cruiser.isDestroyed()&&this.Destroyer.isDestroyed();
+	}
 	
+ 	
 }
+		
+
