@@ -1,4 +1,6 @@
 
+package Battleship;
+
 import java.util.*;
 
 public class Ship {
@@ -54,7 +56,24 @@ public class Ship {
 	}
 
 	public boolean isDestroyed() {
-		return this.coordShip.size()==this.shotReceived.size();
+		//besoin d'ajouter d'autres verifs pour le mode IA vs IA en facile
+		boolean find=false;
+		String shot="";
+		int i=0;
+		ArrayList<String> checkDestroyed = new ArrayList<String>();
+		for(String coord : this.coordShip) {
+			i=0;
+			find=false;
+			while(i<this.shotReceived.size()&&!find) {
+				shot=shotReceived.get(i);
+				if (shot.equals(coord)) {
+					checkDestroyed.add(coord);
+					find=true;
+				}
+				i++;
+			}
+		}
+		return this.coordShip.size()==checkDestroyed.size();
 	}
 	
 	public boolean isHit(String missileCoord) {

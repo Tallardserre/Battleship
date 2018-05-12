@@ -1,3 +1,6 @@
+
+package Battleship;
+
 import java.util.ArrayList;
 
 public class Player {
@@ -9,6 +12,8 @@ public class Player {
 	private Ship Destroyer;
 	private ArrayList<String> shotFired = new ArrayList<String>();
 
+	public Player(){
+	}
 	
 	public Player(String name){
 		setName(name);

@@ -1,4 +1,6 @@
 
+package Battleship;
+
 import java.util.*;
 
 public class Game {
@@ -51,102 +53,7 @@ public class Game {
 		return str;
 	}
 	
-	public static void printShipsMap(Player p1, Player p2, int x, int y){
-		String coord;
-		System.out.println("Map with your ships (\"O\" ship, \"X\" ship hit, \"!\" enemy's shot attempt)");
-		System.out.print("  |");
-		for(int k=0;k<x;k++) {
-			System.out.print(" "+intToString(k)+" ");
-		}
-		System.out.println();
-		System.out.print("--|");
-		for(int l=0;l<x;l++) {
-			System.out.print("---");
-		}
-		System.out.println();
-		for(int i=1;i<=x;i++) { //colonnes
-			if (i<10) {
-			System.out.print(" "+i+"|");
-			}
-			else {
-			System.out.print(i+"|");
 
-			}
-			for(int j=0;j<y;j++) { //lignes
-				coord=intToString(j)+i;
-				if (p1.getCarrier().getShotReceived().contains(coord)||
-				p1.getBattleship().getShotReceived().contains(coord)||
-				p1.getCruiser().getShotReceived().contains(coord)||
-				p1.getSubmarine().getShotReceived().contains(coord)||
-				p1.getDestroyer().getShotReceived().contains(coord)) {
-					System.out.print(" X "); //touché
-				}
-				else {
-					if (p1.getCarrier().getCoordShip().contains(coord)||
-					p1.getBattleship().getCoordShip().contains(coord)||
-					p1.getCruiser().getCoordShip().contains(coord)||
-					p1.getSubmarine().getCoordShip().contains(coord)||
-					p1.getDestroyer().getCoordShip().contains(coord)) {
-						System.out.print(" O "); //pas touché
-					}
-					else {
-						if (p2.getShotFired().contains(coord)) {
-							System.out.print(" ! "); //tir de l'adversaire
-						}
-						else {
-							System.out.print(" - "); //rien
-						}
-					}	
-				}
-			}
-		System.out.println();
-		}
-	}
-
-	public static void printShotMap(Player p1, Player p2, int x, int y) {
-		String coord;
-		System.out.println("Map with your shots (\"!\" missed, \"X\" hit)");
-		System.out.print("  |");
-		for(int k=0;k<x;k++) {
-			System.out.print(" "+intToString(k)+" ");
-		}
-		System.out.println();
-		System.out.print("--|");
-		for(int l=0;l<x;l++) {
-			System.out.print("---");
-		}
-		System.out.println();
-		for(int i=1;i<=x;i++) { //colonnes
-			if (i<10) {
-			System.out.print(" "+i+"|");
-			}
-			else {
-			System.out.print(i+"|");
-
-			}
-			for(int j=0;j<y;j++) {
-				coord=intToString(j)+i; //lignes
-				if (p1.getShotFired().contains(coord)&&(p2.getCarrier().getCoordShip().contains(coord)||
-						p2.getBattleship().getCoordShip().contains(coord)||
-						p2.getCruiser().getCoordShip().contains(coord)||
-						p2.getSubmarine().getCoordShip().contains(coord)||
-						p2.getDestroyer().getCoordShip().contains(coord))) {
-					System.out.print(" X "); //touché
-				}
-				else {
-					if (p1.getShotFired().contains(coord)) {
-						System.out.print(" ! "); //pas touché
-					}
-					else {
-						System.out.print(" - "); //rien
-						}
-					}	
-				}
-			System.out.println();
-			}
-		}
-	
-			
  	public static ArrayList<String> checkSpacesArray(int startCoordLine, int startCoordColl, int endCoordLine, int endCoordColl, int size, ArrayList<String> spaces){
 		spaces.add(intToString(startCoordColl)+startCoordLine);
 		spaces.add(intToString(endCoordColl)+endCoordLine);
@@ -355,26 +262,31 @@ public class Game {
 	return check;
 	}
 	
-	public static boolean checkInputCoordShot(String coord, Player player) {
-		boolean check=true;
+	public static boolean checkCoord(String coord) {
+		Boolean check=false;
 		if (coord.length()==3||coord.length()==2)	{
 			int coordColl=(int)coord.charAt(0)-65;
 			int coordLine = stringToInt(coord);
 		    if ((coordColl<=9&&coordColl>=0&&coordLine>=1&&coordLine<=10)&&coord!="") {
-		    	for(String str : player.getShotFired()) {
-		    		if(str.equals(coord)) {
-		    			check=false;
-		    		}
+		    	check=true;
+		    }
+		}	    
+	return check;
+	}
+	
+	public static boolean checkInputCoordShot(String coord, Player player) {
+		boolean check=true;
+		if (checkCoord(coord))	{
+			for(String str : player.getShotFired()) {
+		    	if(str.equals(coord)) {
+		    		check=false;
 		    	}
 		    }
-		    else {
-		    	check=false;
-		    }
-		}
+		} 
 		else {
 			check=false;
 		}
-	return check;
+		return check;
 	}
 	
 	public static Boolean isCarrierHere(String coord, Player p) {
