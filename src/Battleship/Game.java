@@ -52,9 +52,17 @@ public class Game {
 		}
 		return str;
 	}
-	
-
- 	public static ArrayList<String> checkSpacesArray(int startCoordLine, int startCoordColl, int endCoordLine, int endCoordColl, int size, ArrayList<String> spaces){
+	 	
+ 	public static boolean endGame(Player p1, Player p2) {
+ 		return p1.shipsAllDestroyed()||p2.shipsAllDestroyed();
+ 	}
+ 	
+	public static void affiche(ArrayList<String> liste){
+		for(int i=0;i<liste.size();i++)
+			System.out.println(liste.get(i));
+	}
+ 	
+	public static ArrayList<String> checkSpacesArray(int startCoordLine, int startCoordColl, int endCoordLine, int endCoordColl, int size, ArrayList<String> spaces){
 		spaces.add(intToString(startCoordColl)+startCoordLine);
 		spaces.add(intToString(endCoordColl)+endCoordLine);
 
@@ -140,16 +148,7 @@ public class Game {
 	    }
 	    return spaces;
 	}
- 	
- 	public static boolean endGame(Player p1, Player p2) {
- 		return p1.shipsAllDestroyed()||p2.shipsAllDestroyed();
- 	}
- 	
-	public static void affiche(ArrayList<String> liste){
-		for(int i=0;i<liste.size();i++)
-			System.out.println(liste.get(i));
-	}
-	
+
 	public static boolean checkStartCoord(String coord, int size,ArrayList<String> spaceOccupied){
 		/*verifie si il y a de la place autour et sur la case donnee pour un bateau de la taille donnee.*/
 		boolean end=false;

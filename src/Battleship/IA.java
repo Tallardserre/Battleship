@@ -6,11 +6,12 @@ import java.util.Random;
 
 public class IA extends Player{
 	private int level;
-	private ArrayList<ArrayList<String>> shotArray; 
+	private ArrayList<ArrayList<String>> shotArray = new ArrayList<ArrayList<String>>(); 
 		//case 0: coord
 		//case 1: touche oui/non 
-		//case 2: vertical 1/horizontal 2/inconnu 0
+		//case 2: vertical 1/horizontal 2/inconnu NULL
 		//case 3: coulé oui/non
+	private ArrayList<String> generateShot = new ArrayList<String>();
 
 	public int getLevel() {
 		return level;
@@ -27,7 +28,15 @@ public class IA extends Player{
 	public void setShotArray(ArrayList<ArrayList<String>> shotArray) {
 		this.shotArray = shotArray;
 	}
-	
+
+	public ArrayList<String> getGenerateShot() {
+		return generateShot;
+	}
+
+	public void setGenerateShot(ArrayList<String> generateShot) {
+		this.generateShot = generateShot;
+	}
+
 	public IA(String name, int level) {
 		super(name);
 		this.level = level;
@@ -161,8 +170,26 @@ public class IA extends Player{
 		Random rand = new Random();
 		int stop=0;
 		int coordShotLine,coordShotColl;
+		String coordShot1="";
+		String coordShot2="";
 		String coordShot="";//GENERER LES TIRS!
+		
+		if(this.getShotArray().get(this.getShotArray().size()-1).get(1)=="true") {
+			if(this.getShotArray().get(this.getShotArray().size()-1).get(3)=="false") {
+				if(this.getShotArray().get(this.getShotArray().size()-1).get(2)=="1") {
+					generateShot.clear();
+					generateShot.add(coordShot1);
+					generateShot.add(coordShot2);
+				}
+			}
+		}
 		while(stop==0) {
+			if(this.getShotArray().size()>0) {
+				if (this.getShotArray().get(this.getShotArray().size()-1).get(3)=="false") {
+				}
+			}
+			
+			
 			coordShotLine=rand.nextInt((10-0));
 			coordShotColl=rand.nextInt((10-1)+1)+1;
 			coordShot=Game.intToString(coordShotLine)+coordShotColl;
