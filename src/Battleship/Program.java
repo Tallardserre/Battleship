@@ -338,6 +338,7 @@ public class Program {
 		Boolean isDestroyed=false;
 		int stop=0;
 		int tour=1;
+		int i=0;
 		while(!Game.endGame(p1,p2)){
 			//JOUEUR qui joue.
 			stop=0;
@@ -438,6 +439,13 @@ public class Program {
 				else {
 					System.out.println("Missed!");
 				}
+				if(p2.getLevel()==3) {
+					p2.getShotArray().get(i).add(coordShot);
+					p2.getShotArray().get(i).add(Boolean.toString(p1.shipHit(coordShot)));
+					p2.getShotArray().get(i).add("");
+					p2.getShotArray().get(i).add(Boolean.toString(isDestroyed));
+					i++;
+				}
 				System.out.println();
 				p2.getShotFired().add(coordShot);
 				printShipsMap(p1,p2,10,10);
@@ -460,8 +468,11 @@ public class Program {
 		String hitShip="";
 		Boolean isDestroyed=false;
 		int tour=1;
+		int i=0;
+		int j=0;
+		
 		while(!Game.endGame(p1,p2)){
-			//IA qui joue.
+			//IA numero 1 qui joue.
 			System.out.println();
 			System.out.println("*********************** Tour "+tour+" ***********************");
 			System.out.println();
@@ -506,12 +517,20 @@ public class Program {
 			else {
 				System.out.println("Missed!");
 			}
+			if(p1.getLevel()==3) {
+				p1.getShotArray().get(i).add(coordShot);
+				p1.getShotArray().get(i).add(Boolean.toString(p2.shipHit(coordShot)));
+				p1.getShotArray().get(i).add("");
+				p1.getShotArray().get(i).add(Boolean.toString(isDestroyed));
+				i++;
+			}
 			System.out.println();
 			p1.getShotFired().add(coordShot);
 			System.out.println();
 			
+			
 			if (!Game.endGame(p1,p2)) {
-				//IA qui joue.
+				//IA numero 2 qui joue.
 				System.out.println();
 				System.out.println(p2.getName()+" is playing!");
 				printShotMap(p2,p1,10,10);
@@ -553,6 +572,13 @@ public class Program {
 				}
 				else {
 					System.out.println("Missed!");
+				}
+				if(p2.getLevel()==3) {
+					p2.getShotArray().get(j).add(coordShot);
+					p2.getShotArray().get(j).add(Boolean.toString(p1.shipHit(coordShot)));
+					p2.getShotArray().get(j).add("");
+					p2.getShotArray().get(j).add(Boolean.toString(isDestroyed));
+					j++;
 				}
 				System.out.println();
 				p2.getShotFired().add(coordShot);

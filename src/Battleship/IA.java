@@ -6,6 +6,11 @@ import java.util.Random;
 
 public class IA extends Player{
 	private int level;
+	private ArrayList<ArrayList<String>> shotArray; 
+		//case 0: coord
+		//case 1: touche oui/non 
+		//case 2: vertical 1/horizontal 2/inconnu 0
+		//case 3: coulé oui/non
 
 	public int getLevel() {
 		return level;
@@ -13,6 +18,14 @@ public class IA extends Player{
 
 	public void setLevel(int level) {
 		this.level = level;
+	}
+
+	public ArrayList<ArrayList<String>> getShotArray() {
+		return shotArray;
+	}
+
+	public void setShotArray(ArrayList<ArrayList<String>> shotArray) {
+		this.shotArray = shotArray;
 	}
 	
 	public IA(String name, int level) {
@@ -145,7 +158,21 @@ public class IA extends Player{
 	}
 	
 	public String generateShotCoord3() {
-		return "aa";
+		Random rand = new Random();
+		int stop=0;
+		int coordShotLine,coordShotColl;
+		String coordShot="";//GENERER LES TIRS!
+		while(stop==0) {
+			coordShotLine=rand.nextInt((10-0));
+			coordShotColl=rand.nextInt((10-1)+1)+1;
+			coordShot=Game.intToString(coordShotLine)+coordShotColl;
+			if (Game.checkInputCoordShot(coordShot,this)) {
+				// on verifie si la coordonnée est valide et si elle n'a jamais été utilisée
+				stop=1;
+			}
+		}
+		return coordShot;
 	}
+
 
 }
