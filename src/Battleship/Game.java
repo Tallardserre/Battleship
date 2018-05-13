@@ -273,10 +273,10 @@ public class Game {
 	return check;
 	}
 	
-	public static boolean checkInputCoordShot(String coord, Player player) {
+	public static boolean checkInputCoordShot(String coord, ArrayList<String> shotFired) {
 		boolean check=true;
 		if (checkCoord(coord))	{
-			for(String str : player.getShotFired()) {
+			for(String str : shotFired) {
 		    	if(str.equals(coord)) {
 		    		check=false;
 		    	}
@@ -356,9 +356,86 @@ public class Game {
 			result.add(str3);
 		}
 		if (coordLine2<=10&&checkEndCoord(coord1, coordColl,coordLine2,size,spaceOccupied)) {
-			str4=Game.intToString(coordColl)+coordLine2;				
+			str4=Game.intToString(coordColl)+coordLine2;		
 			result.add(str4);
 		}
 		return result;
+	}
+	
+	public static boolean nearCoord(String coord1, String coord2) {
+		int coord1Coll=(int)coord1.charAt(0)-65;
+		int coord1Line = stringToInt(coord1);		
+		int coord2Coll=(int)coord2.charAt(0)-65;
+		int coord2Line = stringToInt(coord2);
+		Boolean check=false;
+		if(coord1Line==coord2Line) {
+			if(coord1Coll==coord2Coll+1||coord1Coll+1==coord2Coll) {
+				check=true;
+			}
+		}
+		if(coord1Coll==coord2Coll) {
+			if(coord1Line==coord2Line+1||coord1Line+1==coord2Line) {
+				check=true;
+			}
+		}
+		return check;
+	}
+	
+	public static ArrayList<String> GenerateShotArray(ArrayList<String> shotFired, String coordShot){	
+		int coordColl=(int)coordShot.charAt(0)-65;
+		int coordLine = stringToInt(coordShot);
+		int coordColl1=coordColl-1;
+		int coordLine1=coordLine-1;
+		int coordColl2=coordColl+1;
+		int coordLine2=coordLine+1;
+		ArrayList<String> result = new ArrayList<String>();
+		String coord1=Game.intToString(coordColl1)+coordLine;
+		String coord2=Game.intToString(coordColl2)+coordLine;
+		String coord3=Game.intToString(coordColl)+coordLine1;
+		String coord4=Game.intToString(coordColl)+coordLine2;	
+
+		if (coordColl1>=0&&checkInputCoordShot(coord1,shotFired)) {
+			result.add(coord1);
+		}
+		if (coordColl2<=9&&checkInputCoordShot(coord2,shotFired)) {
+			result.add(coord2);
+		}
+		if (coordLine1>=1&&checkInputCoordShot(coord3,shotFired)) {
+			result.add(coord3);
+		}
+		if (coordLine2<=10&&checkInputCoordShot(coord4,shotFired)) {
+			result.add(coord4);
+		}
+		return result;
+	}
+	
+	public static ArrayList<String> GenerateSmartShotArray(ArrayList<String> shotFired, String coordShot, String coordLastShotHit){
+		//coordLastShotHit avant dernier hit
+		//coordShot dernier hit
+		//genere des coordonnees de tir en se basant sur les deux derniers tirs touchés (pour savoir si horizontal ou vertical)
+		ArrayList<String> generatedShotArray = new ArrayList<String>();
+		generatedShotArray=GenerateShotArray(shotFired,coordShot);
+		
+		int coordShotColl=(int)coordShot.charAt(0)-65;
+		int coordShotLine=stringToInt(coordShot);
+		int coordLastShotHitColl=(int)coordLastShotHit.charAt(0)-65;
+		
+		if (coordShotColl==coordLastShotHitColl) {		
+			for(int i=0;i<generatedShotArray.size();i++) {
+				int generatedCoordColl=(int)generatedShotArray.get(i).charAt(0)-65;
+				if(generatedCoordColl!=coordShotColl) {
+					generatedShotArray.remove(i);
+				}
+			}
+		}
+		else {
+			for(int i=0;i<generatedShotArray.size();i++) {
+				int generatedCoordLine=stringToInt(generatedShotArray.get(i));
+				if(generatedCoordLine!=coordShotLine) {
+					generatedShotArray.remove(i);
+				}
+			}
+		}
+	return generatedShotArray;
 	}
 }

@@ -222,7 +222,7 @@ public class Program {
 			while(stop==0) {
 				System.out.println(p1.getName()+" enter where you want to shoot:");
 				coordShot = sc2.nextLine();
-				if (Game.checkInputCoordShot(coordShot,p1)) {
+				if (Game.checkInputCoordShot(coordShot,p1.getShotFired())) {
 					stop=1;
 				}
 				else {
@@ -279,7 +279,7 @@ public class Program {
 				while(stop==0) {
 					System.out.println(p2.getName()+" enter where you want to shoot:");
 					coordShot = sc2.nextLine();
-					if (Game.checkInputCoordShot(coordShot,p1)) {
+					if (Game.checkInputCoordShot(coordShot,p2.getShotFired())) {
 						stop=1;
 					}
 					else {
@@ -348,7 +348,7 @@ public class Program {
 			while(stop==0) {
 				System.out.println(p1.getName()+" enter where you want to shoot:");
 				coordShot = sc2.nextLine();
-				if (Game.checkInputCoordShot(coordShot,p1)) {
+				if (Game.checkInputCoordShot(coordShot,p1.getShotFired())) {
 					stop=1;
 				}
 				else {
@@ -429,6 +429,13 @@ public class Program {
 						hitShip=p1.getDestroyer().getShipCategory();
 						isDestroyed=p1.getDestroyer().isDestroyed();
 					}
+					if(p2.getLevel()==3) {
+						ArrayList<String> shotArray = new ArrayList<String>();
+						shotArray.add(coordShot);
+						shotArray.add(Boolean.toString(isDestroyed));
+						p2.getShotArray().add(shotArray);			
+						p2.setLastHit(coordShot);
+					}
 					if (isDestroyed) {
 						System.out.println("Your "+hitShip+" is destroyed!");
 					}
@@ -438,14 +445,6 @@ public class Program {
 				}
 				else {
 					System.out.println("Missed!");
-				}
-				if(p2.getLevel()==3) {
-					ArrayList<String> shotArray = new ArrayList<String>();
-					shotArray.add(coordShot);
-					shotArray.add(Boolean.toString(p1.shipHit(coordShot)));
-					shotArray.add("");
-					shotArray.add(Boolean.toString(isDestroyed));
-					p2.getShotArray().add(shotArray);			
 				}
 				System.out.println();
 				p2.getShotFired().add(coordShot);
@@ -469,8 +468,9 @@ public class Program {
 		String hitShip="";
 		Boolean isDestroyed=false;
 		int tour=1;
+		Boolean continuer=true;
 		
-		while(!Game.endGame(p1,p2)){
+		while(!Game.endGame(p1,p2)&&continuer){
 			//IA numero 1 qui joue.
 			System.out.println();
 			System.out.println("*********************** Tour "+tour+" ***********************");
@@ -506,6 +506,13 @@ public class Program {
 					hitShip=p2.getDestroyer().getShipCategory();
 					isDestroyed=p2.getDestroyer().isDestroyed();
 				}
+				if(p1.getLevel()==3) {
+					ArrayList<String> shotArray = new ArrayList<String>();
+					shotArray.add(coordShot);
+					shotArray.add(Boolean.toString(isDestroyed));
+					p1.setLastHit(coordShot);
+					p1.getShotArray().add(shotArray);			
+				}
 				if (isDestroyed) {
 					System.out.println("Your "+hitShip+" is destroyed!");
 				}
@@ -515,14 +522,6 @@ public class Program {
 			}
 			else {
 				System.out.println("Missed!");
-			}
-			if(p1.getLevel()==3) {
-				ArrayList<String> shotArray = new ArrayList<String>();
-				shotArray.add(coordShot);
-				shotArray.add(Boolean.toString(p2.shipHit(coordShot)));
-				shotArray.add("");
-				shotArray.add(Boolean.toString(isDestroyed));
-				p1.getShotArray().add(shotArray);			
 			}
 			System.out.println();
 			p1.getShotFired().add(coordShot);
@@ -563,6 +562,13 @@ public class Program {
 						hitShip=p1.getDestroyer().getShipCategory();
 						isDestroyed=p1.getDestroyer().isDestroyed();
 					}
+					if(p2.getLevel()==3) {
+						ArrayList<String> shotArray = new ArrayList<String>();
+						shotArray.add(coordShot);
+						shotArray.add(Boolean.toString(isDestroyed));
+						p2.getShotArray().add(shotArray);			
+						p2.setLastHit(coordShot);
+					}
 					if (isDestroyed) {
 						System.out.println("Your "+hitShip+" is destroyed!");
 					}
@@ -573,17 +579,12 @@ public class Program {
 				else {
 					System.out.println("Missed!");
 				}
-				if(p2.getLevel()==3) {
-					ArrayList<String> shotArray = new ArrayList<String>();
-					shotArray.add(coordShot);
-					shotArray.add(Boolean.toString(p1.shipHit(coordShot)));
-					shotArray.add("");
-					shotArray.add(Boolean.toString(isDestroyed));
-					p2.getShotArray().add(shotArray);			
-				}
 				System.out.println();
 				p2.getShotFired().add(coordShot);
 				System.out.println();
+				if (coordShot.length()!=3&&coordShot.length()!=2) {
+					continuer=false;
+				}
 				tour++;
 			}
 		}
