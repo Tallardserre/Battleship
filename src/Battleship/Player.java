@@ -19,7 +19,6 @@ public class Player {
 		setName(name);
 	}
 
-
 	public Ship getCarrier() {
 		return Carrier;
 	}

@@ -1,0 +1,102 @@
+public static void main(String[] args) {
+		int tour=0;
+		for(int i=0;i<50;i++) {
+		//Selection du mode de jeu
+		System.out.println("Choose one game mode");
+		System.out.println("1 for : Player vs Player");
+		System.out.println("2 for : Player vs AI");
+		System.out.println("3 for : AI vs AI");
+		String gameMode="";
+		int gameModeNumber=3;
+		String levelIA="";
+		int stop=0;/*
+		while(stop==0) {
+			gameMode= sc1.nextLine();
+			gameModeNumber=gameMode.charAt(0)-'0';
+			if (gameModeNumber<1||gameModeNumber>3) {
+				System.out.println("Invalid!");
+			}
+			else {
+				stop=1;
+			}
+		}*/
+		
+		switch(gameModeNumber) {
+		case 1:
+			//Joueur contre joueur
+			Player p1PVP=new Player();
+			p1PVP=setupPlayer(p1PVP);
+			Player p2PVP=new Player();
+			p2PVP=setupPlayer(p2PVP);
+			playPvP(p1PVP,p2PVP);
+			break;
+		
+		case 2:
+			//Joueur contre IA
+			int levelIANumber=0;
+			Player playerPVM=new Player();
+			System.out.println("Select the level of your opponent");
+			System.out.println("1 - Beginner");
+			System.out.println("2 - Easy");
+			System.out.println("3 - Normal");
+			stop=0;
+			while(stop==0) {
+				levelIA= sc1.nextLine();
+				levelIANumber=levelIA.charAt(0)-'0';
+				if (levelIANumber<1||levelIANumber>3) {
+					System.out.println("Invalid!");
+				}
+				else {
+					stop=1;
+				}
+			}
+			IA iaPVM=new IA("Opponent",levelIANumber);
+			playerPVM=setupPlayer(playerPVM);
+			playPvM(playerPVM,iaPVM);
+			break;
+		case 3:
+			//IA contre IA
+			System.out.println("Select the level of the IA number 1");
+			System.out.println("1 - Beginner");
+			System.out.println("2 - Easy");
+			System.out.println("3 - Normal");
+			int levelIA1Number=3;
+			stop=0;/*
+			while(stop==0) {
+				levelIA= sc1.nextLine();
+				levelIA1Number=levelIA.charAt(0)-'0';
+				if (levelIA1Number<1||levelIA1Number>3) {
+					System.out.println("Invalid!");
+				}
+				else {
+					stop=1;
+				}
+			}*/
+			IA ia1=new IA("IA number 1",levelIA1Number);
+			
+			System.out.println("Select the level of the IA number 2");
+			System.out.println("1 - Beginner");
+			System.out.println("2 - Easy");
+			System.out.println("3 - Normal");
+			int levelIA2Number=3;
+			stop=0;/*
+			while(stop==0) {
+				levelIA= sc1.nextLine();
+				levelIA2Number=levelIA.charAt(0)-'0';
+				if (levelIA2Number<1||levelIA2Number>3) {
+					System.out.println("Invalid!");
+				}
+				else {
+					stop=1;
+				}
+			}*/
+			IA ia2=new IA("IA number 2",levelIA2Number);
+			tour=tour+playIAvIA(ia1,ia2);
+			
+		}
+		sc1.close();	
+		sc2.close();
+		int res =tour/50;
+		System.out.println(res);
+		}
+	}

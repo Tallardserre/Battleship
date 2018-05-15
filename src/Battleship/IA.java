@@ -177,152 +177,126 @@ public class IA extends Player{
 		Random rand = new Random();
 		int stop=0;
 		int i=0;
+		boolean check=false;
 		String coordShot="";//GENERER LES TIRS!		
-				
-		if(this.getShotArray().size()>0&&this.getLastHit()==this.getShotArray().get(this.getShotArray().size()-1).get(0)) {
-			//si la liste de tir touchés est pas vide et si le dernier tir touché correspond au dernier tir de la liste de tir touchés
-			
-			if(this.getShotArray().get(this.getShotArray().size()-1).get(1)=="false") {
-				//si la le dernier tir de la liste de tir n'a pas coulé le bateau touché
-				
-				if(this.getGenerateShot().size()>0) {
-					System.out.println("G");
-					//si la liste de tir generee est pas vide
-					if(super.getShotFired().get(super.getShotFired().size()-1)==this.getLastHit()) {
-						System.out.println("F");
-						//si le dernier tir est touché et correspond a un tir de la liste de tir 
-						i=this.getShotArray().size()-1;
-						if (Game.GenerateSmartShotArray(this.getShotFired(),this.getLastHit(),this.getShotArray().get(i).get(0)).isEmpty()) {
-							System.out.println("D");
-							while (Game.GenerateSmartShotArray(this.getShotFired(),this.getLastHit(),this.getShotArray().get(i).get(0)).isEmpty()) {
+		if(this.getShotArray().size()>0&&this.getShotArray().get(this.getShotArray().size()-1).get(1)=="false") {
+			//si la liste de tir touché n'est pas vide		
+			if(this.getGenerateShot().isEmpty()) {//si la liste de tir genere est vide
+				if(this.getShotFired().get(this.getShotFired().size()-1).equals(this.getLastHit())) {//si le dernier tir est touché
+					if(this.getShotArray().size()>1) {//si on a au moins 2 tir touché
+						check=false;
+						if(this.getShotArray().get(this.getShotArray().size()-1).get(1)=="false") {	//si le dernier tir n'a pas coulé le bateau
+							i=this.getShotArray().size()-1;
+							while(i>0&&!check) {
+								if(Game.nearCoord(this.getShotArray().get(i).get(0), lastHit)) {
+									check=true;
+								}
 								i--;
-								this.setGenerateShot(Game.GenerateSmartShotArray(this.getShotFired(),this.getLastHit(),this.getShotArray().get(i).get(0)));
+							}
+							if(this.getShotArray().size()<1||!check) {
+								//si nb shot touché <1 OU deux derniers tirs non voisins
+								this.setGenerateShot(Game.GenerateShotArray(this.getShotFired(), this.getLastHit()));
+								//generer nouvelle liste avec lasthit
+							}
+							else if(this.getShotArray().size()>1&&check) {
+									this.setGenerateShot(Game.GenerateSmartShotArray(this.getShotFired(), this.getLastHit(), this.getShotArray().get(i).get(0)));
+									//generer nouvelle "smart" liste	
+							}
+							if(this.getGenerateShot().isEmpty()) {
+								this.setGenerateShot(Game.GenerateSmartShotArray(this.getShotFired(), this.getShotArray().get(i).get(0), this.getLastHit()));
 							}
 						}
-						else {
-							System.out.println("O");
-							this.setGenerateShot(Game.GenerateSmartShotArray(this.getShotFired(),this.getLastHit(),this.getShotArray().get(i-1).get(0)));
-						}//on genere des tirs autour du dernier tir touché
-						i=-1;
-						while(i<0) {
-						i=rand.nextInt(this.getGenerateShot().size()+1)-1;
-						}
-						//on prend au hasard une coordonnée generée.
-						Game.affiche(this.getGenerateShot());
-						coordShot=this.getGenerateShot().get(i);
-						this.getGenerateShot().remove(i);
 					}
 					else {
-					i=rand.nextInt(this.getGenerateShot().size());
-					//on prend au hasard une coordonnée generée.
-					coordShot=this.getGenerateShot().get(i);
-					Game.affiche(this.getGenerateShot());
-					this.getGenerateShot().remove(i);
+						this.setGenerateShot(Game.GenerateShotArray(this.getShotFired(), this.getLastHit()));
 					}
-				}
-				else { //pas de liste de tir generée
-					i=this.getShotArray().size()-1;
-					stop=1;
-					if (i>=1) {
-						if (Game.GenerateSmartShotArray(this.getShotFired(),this.getLastHit(),this.getShotArray().get(i-1).get(0)).isEmpty()) {
-							while(Game.GenerateSmartShotArray(this.getShotFired(),this.getShotArray().get(i).get(0),this.getShotArray().get(i-1).get(0)).isEmpty()) {
-								i=i-1;
-								if(Game.nearCoord(this.getShotArray().get(i).get(0),this.getShotArray().get(i-1).get(0))) {
-									if (Game.GenerateSmartShotArray(this.getShotFired(),this.getShotArray().get(i).get(0),this.getShotArray().get(i-1).get(0)).isEmpty()) {
-										this.setGenerateShot(Game.GenerateSmartShotArray(this.getShotFired(),this.getShotArray().get(i).get(0),this.getShotArray().get(i-1).get(0)));
-									}
-								}
-								else {
-									this.setGenerateShot(Game.GenerateSmartShotArray(this.getShotFired(),this.getShotArray().get(i).get(0),this.getShotArray().get(i-1).get(0)));
-
+				}	
+				else{//si le dernier tir n'est pas touché
+					if(this.getShotArray().size()>1) {
+						check=false;
+						if(this.getShotArray().get(this.getShotArray().size()-1).get(1)=="false") {
+							for(ArrayList<String> arrayStr:this.getShotArray()) {
+								if(Game.nearCoord(arrayStr.get(0), lastHit)) {
+									check=true;
 								}
 							}
 						}
-						/*
-						System.out.println("A");
-						System.out.println("i="+i);
-						if (Game.GenerateSmartShotArray(this.getShotFired(),this.getLastHit(),this.getShotArray().get(i-1).get(0)).isEmpty()) {
-							System.out.println("B");
-							//si toute les cases autour de la derniere touchées ont ete testées et que le bateau n'est toujours pas coulé
-							while (Game.GenerateSmartShotArray(this.getShotFired(),this.getShotArray().get(i-1).get(0),this.getShotArray().get(i).get(0)).isEmpty()&&stop!=0) {
-								System.out.println("i="+i);
+						if(check){//si 2 derniers tirs touchés sont voisins	
+							this.setGenerateShot(Game.GenerateSmartShotArray(this.getShotFired(), this.getLastHit(), this.getShotArray().get(this.getShotArray().size()-2).get(0)));
+							//generer nouvelle "smart" liste
+							if(this.getGenerateShot().isEmpty()) {//si liste vide on inverse les deux derniers tirs dans la fonction
+								i=this.getShotArray().size()-1;
+								while(i>0&&this.getGenerateShot().isEmpty()){	
+									this.setGenerateShot(
+											Game.GenerateSmartShotArray(this.getShotFired(), this.getShotArray().get(i-1).get(0), this.getLastHit()));
 								i--;
-								if(!Game.nearCoord(this.getShotArray().get(i-1).get(0), this.getShotArray().get(i).get(0))||i<1) {
-									System.out.println("STOP");
-									stop=0;
 								}
-								else {
-									System.out.println("10");
-									this.setGenerateShot(Game.GenerateSmartShotArray(this.getShotFired(),this.getShotArray().get(i-1).get(0),this.getShotArray().get(i).get(0)));
-									Game.affiche(this.getGenerateShot());
-								}
-							}							
-						}
-						else {
-							System.out.println("2");
-							if (Game.GenerateShotArray(this.getShotFired(),this.getLastHit()).isEmpty()){
-								System.out.println("94");
-								while (Game.GenerateShotArray(this.getShotFired(),this.getShotArray().get(i).get(0)).isEmpty()) {
-									i--;
-									this.setGenerateShot(Game.GenerateShotArray(this.getShotFired(),this.getShotArray().get(i).get(0)));
-								}
-							}
-							else {
-								System.out.println("89");
-								this.setGenerateShot(Game.GenerateShotArray(this.getShotFired(),this.getShotArray().get(i).get(0)));
-							}
-						}
-					*/}
-					else {
-						System.out.println("3");
-						i=this.getShotArray().size()-1;
-						if (Game.GenerateShotArray(this.getShotFired(),this.getLastHit()).isEmpty()){
-							System.out.println("4");
-							while (Game.GenerateShotArray(this.getShotFired(),this.getShotArray().get(i).get(0)).isEmpty()) {
-								i--;
-								this.setGenerateShot(Game.GenerateShotArray(this.getShotFired(),this.getShotArray().get(i).get(0)));
-							}
-						}
-						else {
-							System.out.println("5");
-							this.setGenerateShot(Game.GenerateShotArray(this.getShotFired(),this.getLastHit()));
+							} 
 						}
 					}
-					//on genere des tirs autour du dernier tir touché
-					i=-1;
-					while(i<0) {
-					i=rand.nextInt(this.getGenerateShot().size()+1)-1;
-					}
-					//on prend au hasard une coordonnée generée.
-					Game.affiche(this.getGenerateShot());
-					coordShot=this.getGenerateShot().get(i);
-					this.getGenerateShot().remove(i);
 				}
 			}
-			else {
-				while(stop==0) {
+			else {//si liste de tir genere non vide		
+				if(this.getLastHit().equals(this.getShotFired().get(this.getShotFired().size()-1))) {//si le dernier tir est touché
+					if(this.getShotArray().size()<1||!Game.nearCoord(this.getShotArray().get(this.getShotArray().size()-1).get(0), this.getShotArray().get(this.getShotArray().size()-2).get(0))) {
+						//si nb shot<1 OU deux derniers tirs non voisins
+						this.setGenerateShot(Game.GenerateShotArray(this.getShotFired(), this.getLastHit()));
+					}
+					else {//si 2 derniers tirs voisins
+						this.setGenerateShot(Game.GenerateSmartShotArray(this.getShotFired(), this.getShotArray().get(this.getShotArray().size()-1).get(0), this.getShotArray().get(this.getShotArray().size()-2).get(0)));
+						//generer nouvelle "smart" liste
+						if(this.getGenerateShot().isEmpty()) {//si liste vide on inverse les deux derniers tirs dans la fonction
+							i=this.getShotArray().size()-1;
+							while(i>0&&this.getGenerateShot().isEmpty()&&Game.nearCoord(this.getShotArray().get(i-1).get(0), this.getShotArray().get(i).get(0))){
+								this.setGenerateShot(
+										Game.GenerateSmartShotArray(this.getShotFired(), this.getShotArray().get(i-1).get(0), this.getShotArray().get(i).get(0)));
+							i--;
+							}
+						}
+					}
+				}
+			}
+		}
+		if (this.getGenerateShot().isEmpty()) {//pas de coord de tir generées
+			if(this.getShotArray().isEmpty()) {//aucun tir n'a touché de bateau
+				while(stop==0) {//on genere des coordonnées qui concernent une case sur 2
+					int coordShotLine=rand.nextInt((10-0));
+					int coordShotColl=rand.nextInt((10-1)+1)+1;
+					if(coordShotLine%2!=0||coordShotColl%2==0) {
+						coordShot=Game.intToString(coordShotLine)+coordShotColl;
+						if (Game.checkInputCoordShot(coordShot,this.getShotFired())) {
+							stop=1;
+						}
+					}
+					else if(coordShotLine%2==0||coordShotColl%2!=0) {
+						coordShot=Game.intToString(coordShotLine)+coordShotColl;
+						if (Game.checkInputCoordShot(coordShot,this.getShotFired())) {
+							stop=1;
+						}
+					}
+				}
+			}
+			else {//si on a deja un tir touché
+				stop=0;
+				while(stop==0) {//genere des coordonnées aleatoires
 					int coordShotLine=rand.nextInt((10-0));
 					int coordShotColl=rand.nextInt((10-1)+1)+1;
 					coordShot=Game.intToString(coordShotLine)+coordShotColl;
 					if (Game.checkInputCoordShot(coordShot,this.getShotFired())) {
-						// on verifie si la coordonnée est valide et si elle n'a jamais été utilisée
 						stop=1;
 					}
-				}				
-			}
-		}
-		else {
-			while(stop==0) {
-				int coordShotLine=rand.nextInt((10-0));
-				int coordShotColl=rand.nextInt((10-1)+1)+1;
-				coordShot=Game.intToString(coordShotLine)+coordShotColl;
-				if (Game.checkInputCoordShot(coordShot,this.getShotFired())) {
-					// on verifie si la coordonnée est valide et si elle n'a jamais été utilisée
-					stop=1;
 				}
 			}
 		}
+		if(coordShot.equals("")) {//si la liste de tir generées n'est pas vide
+			i=0;
+			while(i<0||i>this.getGenerateShot().size()) {// on choisit au hasard une des coordonnées 
+				i=rand.nextInt(this.getGenerateShot().size()+1)-1;
+			}
+			Game.affiche(this.getGenerateShot());;
+			coordShot=this.getGenerateShot().get(i);
+			this.getGenerateShot().remove(i);
+		}
 		return coordShot;
 	}
-
 }

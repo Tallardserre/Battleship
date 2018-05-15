@@ -43,6 +43,10 @@ public class Ship {
 		this.coordShip = coordShip;
 	}
 	
+	public Ship() {
+		
+	}
+	
 	public Ship(String startCoord, String endCoord, int size, String category) {
 		this.ShipCategory=category;
 		int startCoordColl = (int) startCoord.charAt(0) - 65;

@@ -415,27 +415,30 @@ public class Game {
 		//genere des coordonnees de tir en se basant sur les deux derniers tirs touchés (pour savoir si horizontal ou vertical)
 		ArrayList<String> generatedShotArray = new ArrayList<String>();
 		generatedShotArray=GenerateShotArray(shotFired,coordShot);
+		ArrayList<String> generatedShotArray2 = new ArrayList<String>();
+
 		
 		int coordShotColl=(int)coordShot.charAt(0)-65;
 		int coordShotLine=stringToInt(coordShot);
 		int coordLastShotHitColl=(int)coordLastShotHit.charAt(0)-65;
 		
 		if (coordShotColl==coordLastShotHitColl) {		
-			for(int i=0;i<generatedShotArray.size();i++) {
-				int generatedCoordColl=(int)generatedShotArray.get(i).charAt(0)-65;
-				if(generatedCoordColl!=coordShotColl) {
-					generatedShotArray.remove(i);
+			for(String str:generatedShotArray) {
+				int generatedCoordColl=(int)str.charAt(0)-65;
+				if(generatedCoordColl==coordShotColl) {
+					generatedShotArray2.add(str);
 				}
 			}
 		}
 		else {
-			for(int i=0;i<generatedShotArray.size();i++) {
-				int generatedCoordLine=stringToInt(generatedShotArray.get(i));
-				if(generatedCoordLine!=coordShotLine) {
-					generatedShotArray.remove(i);
+			for(String str:generatedShotArray) {
+				int generatedCoordLine=stringToInt(str);
+				if(generatedCoordLine==coordShotLine) {
+					generatedShotArray2.add(str);
 				}
 			}
 		}
-	return generatedShotArray;
+
+	return generatedShotArray2;
 	}
 }

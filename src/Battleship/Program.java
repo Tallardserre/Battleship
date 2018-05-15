@@ -10,6 +10,9 @@ public class Program {
 	static Scanner sc2 = new Scanner(System.in);
 
 	public static void main(String[] args) {
+		Player p1 = new Player();
+		Player p2 = new Player();
+		int tour=0;
 		//Selection du mode de jeu
 		System.out.println("Choose one game mode");
 		System.out.println("1 for : Player vs Player");
@@ -33,17 +36,14 @@ public class Program {
 		switch(gameModeNumber) {
 		case 1:
 			//Joueur contre joueur
-			Player p1PVP=new Player();
-			p1PVP=setupPlayer(p1PVP);
-			Player p2PVP=new Player();
-			p2PVP=setupPlayer(p2PVP);
-			playPvP(p1PVP,p2PVP);
+			p1=setupPlayer(p1);
+			p2=setupPlayer(p2);
 			break;
 		
 		case 2:
 			//Joueur contre IA
 			int levelIANumber=0;
-			Player playerPVM=new Player();
+			p1=new Player();
 			System.out.println("Select the level of your opponent");
 			System.out.println("1 - Beginner");
 			System.out.println("2 - Easy");
@@ -59,9 +59,8 @@ public class Program {
 					stop=1;
 				}
 			}
-			IA iaPVM=new IA("Opponent",levelIANumber);
-			playerPVM=setupPlayer(playerPVM);
-			playPvM(playerPVM,iaPVM);
+			p2=new IA("Opponent",levelIANumber);
+			p1=setupPlayer(p1);
 			break;
 		case 3:
 			//IA contre IA
@@ -69,7 +68,7 @@ public class Program {
 			System.out.println("1 - Beginner");
 			System.out.println("2 - Easy");
 			System.out.println("3 - Normal");
-			int levelIA1Number=0;
+			int levelIA1Number=3;
 			stop=0;
 			while(stop==0) {
 				levelIA= sc1.nextLine();
@@ -81,13 +80,13 @@ public class Program {
 					stop=1;
 				}
 			}
-			IA ia1=new IA("IA number 1",levelIA1Number);
+			p1=new IA("IA number 1",levelIA1Number);
 			
 			System.out.println("Select the level of the IA number 2");
 			System.out.println("1 - Beginner");
 			System.out.println("2 - Easy");
 			System.out.println("3 - Normal");
-			int levelIA2Number=0;
+			int levelIA2Number=3;
 			stop=0;
 			while(stop==0) {
 				levelIA= sc1.nextLine();
@@ -99,16 +98,189 @@ public class Program {
 					stop=1;
 				}
 			}
-			IA ia2=new IA("IA number 2",levelIA2Number);
-			playIAvIA(ia1,ia2);
+			p2=new IA("IA number 2",levelIA2Number);
+			System.out.println("Win in "+tour+" rounds");
+			break;
+		}
+		
+		
+		//GAME START
+		String coordShot="";
+		System.out.println("Game start !");
+		String hitShip="";
+		Boolean isDestroyed=false;
+		stop=0;
+		tour=1;
+
+		while(!Game.endGame(p1,p2)){
+			//JOUEUR qui joue.
+			stop=0;
+			System.out.println();
+			System.out.println("*********************** Tour "+tour+" ***********************");
+			System.out.println();
+			System.out.println(p1.getName()+" is playing!");
+			System.out.println();
+			printShipsMap(p1,p2,10,10);
+			printShotMap(p1,p2,10,10);
+			if(p1 instanceof IA) {
+				coordShot=((IA) p1).generateShotCoord(((IA) p1).getLevel());
+			}
+			else {
+				while(stop==0) {
+					System.out.println(p1.getName()+" enter where you want to shoot:");
+					coordShot = sc2.nextLine();
+					if (Game.checkInputCoordShot(coordShot,p1.getShotFired())) {
+						stop=1;
+					}
+					else {
+						System.out.println("Bad coordinate!");
+					}		
+				}
+			}
+			System.out.println(p1.getName()+" shooted at "+coordShot);
+			if (p2.shipHit(coordShot)) {
+				if(Game.isCarrierHere(coordShot,p2)) {
+					p2.getCarrier().getShotReceived().add(coordShot);
+					hitShip=p2.getCarrier().getShipCategory();
+					isDestroyed=p2.getCarrier().isDestroyed();
+				}
+				if(Game.isBattleshipHere(coordShot,p2)) {
+					p2.getBattleship().getShotReceived().add(coordShot);
+					hitShip=p2.getBattleship().getShipCategory();
+					isDestroyed=p2.getBattleship().isDestroyed();
+	
+				}
+				if(Game.isCruiserHere(coordShot,p2)) {
+					p2.getCruiser().getShotReceived().add(coordShot);
+					hitShip=p2.getCruiser().getShipCategory();
+					isDestroyed=p2.getCruiser().isDestroyed();
+				}
+				if(Game.isSubmarineHere(coordShot,p2)) {
+					p2.getSubmarine().getShotReceived().add(coordShot);
+					hitShip=p2.getSubmarine().getShipCategory();
+					isDestroyed=p2.getSubmarine().isDestroyed();
+				}
+				if(Game.isDestroyerHere(coordShot,p2)) {
+					p2.getDestroyer().getShotReceived().add(coordShot);
+					hitShip=p2.getDestroyer().getShipCategory();
+					isDestroyed=p2.getDestroyer().isDestroyed();
+				}
+				if(p1 instanceof IA) {
+					if(((IA) p1).getLevel()==3) {
+						ArrayList<String> shotArray = new ArrayList<String>();
+						shotArray.add(coordShot);
+						shotArray.add(Boolean.toString(isDestroyed));
+						((IA) p1).getShotArray().add(shotArray);			
+						((IA) p1).setLastHit(coordShot);
+					}
+				}
+				if (isDestroyed) {
+					System.out.println("****** Enemy "+hitShip+" is destroyed! ******");
+				}
+				else {
+					System.out.println("Hit!");
+				}
+			}
+			else {
+				System.out.println("Missed!");
+			}
+			System.out.println();
+			p1.getShotFired().add(coordShot);
+			
+			if (!Game.endGame(p1,p2)) {
+				System.out.println();
+				System.out.println(p2.getName()+" is playing!");
+				System.out.println();
+				printShipsMap(p2,p1,10,10);
+				printShotMap(p2,p1,10,10);
+				if(p2 instanceof IA) {
+				//IA qui joue.
+				coordShot=((IA) p2).generateShotCoord(((IA) p2).getLevel());
+				}
+				else {
+					stop=0;
+					while(stop==0) {
+						System.out.println(p2.getName()+" enter where you want to shoot:");
+						coordShot = sc2.nextLine();
+						if (Game.checkInputCoordShot(coordShot,p2.getShotFired())) {
+							stop=1;
+						}
+						else {
+							System.out.println("Bad coordinate!");
+						}		
+					}
+				}
+				System.out.println(p2.getName()+" shooted at "+coordShot);
+				if (p1.shipHit(coordShot)) {
+					if(Game.isCarrierHere(coordShot,p1)) {
+						p1.getCarrier().getShotReceived().add(coordShot);
+						hitShip=p1.getCarrier().getShipCategory();
+						isDestroyed=p1.getCarrier().isDestroyed();
+					}
+					if(Game.isBattleshipHere(coordShot,p1)) {
+						p1.getBattleship().getShotReceived().add(coordShot);
+						hitShip=p1.getBattleship().getShipCategory();
+						isDestroyed=p1.getBattleship().isDestroyed();
+		
+					}
+					if(Game.isCruiserHere(coordShot,p1)) {
+						p1.getCruiser().getShotReceived().add(coordShot);
+						hitShip=p1.getCruiser().getShipCategory();
+						isDestroyed=p1.getCruiser().isDestroyed();
+					}
+					if(Game.isSubmarineHere(coordShot,p1)) {
+						p1.getSubmarine().getShotReceived().add(coordShot);
+						hitShip=p1.getSubmarine().getShipCategory();
+						isDestroyed=p1.getSubmarine().isDestroyed();
+					}
+					if(Game.isDestroyerHere(coordShot,p1)) {
+						p1.getDestroyer().getShotReceived().add(coordShot);
+						hitShip=p1.getDestroyer().getShipCategory();
+						isDestroyed=p1.getDestroyer().isDestroyed();
+					}
+					if(p2 instanceof IA) {
+						if(((IA) p2).getLevel()==3) {
+							ArrayList<String> shotArray = new ArrayList<String>();
+							shotArray.add(coordShot);
+							shotArray.add(Boolean.toString(isDestroyed));
+							((IA) p2).getShotArray().add(shotArray);			
+							((IA) p2).setLastHit(coordShot);
+						}
+					}
+					if (isDestroyed) {
+						System.out.println("****** /!\\ Your "+hitShip+" is destroyed! /!\\ ******");
+					}
+					else {
+						System.out.println("Hit!");
+					}
+				}
+				else {
+					System.out.println("Missed!");
+				}
+				System.out.println();
+				p2.getShotFired().add(coordShot);
+				System.out.println();
+				tour++;
+			}
+		}
+		if (p1.shipsAllDestroyed()) {
+			System.out.println(p2.getName()+" won!");
+		}
+		else {
+			System.out.println(p1.getName()+" won!");
 		}
 		sc1.close();	
-		sc2.close();	
+		sc2.close();
 	}
 	
 	public static Player setupPlayer(Player p) {
 
 	int stop=0;
+	p.setCarrier(new Ship());
+	p.setBattleship(new Ship());
+	p.setCruiser(new Ship());
+	p.setDestroyer(new Ship());
+	p.setSubmarine(new Ship());
 	System.out.print("Enter your name here: ");
 	String name = sc1.nextLine();
 	p.setName(name);
@@ -118,8 +290,10 @@ public class Program {
 	boolean check;
 	int size=5;
 	String shipCategory="";
-	
 	for(int i=1;i<6;i++) {
+		if (i!=1) {
+			printInitShipsMap(p,10,10);
+		}
 		switch (i) {
 		case 1:
 			size=5;
@@ -203,404 +377,10 @@ public class Program {
 	return p;
 	}
 	
-	public static void playPvP(Player p1, Player p2) {
-		//GAME START
-		String coordShot="";
-		System.out.println("Game start !");
-		String hitShip="";
-		Boolean isDestroyed=false;
-		int stop=0;
-		int tour=1;
-		while(!Game.endGame(p1,p2)){
-			//JOUEUR 1 qui joue.
-			stop=0;
-			System.out.println();
-			System.out.println("*********************** Tour "+tour+" ***********************");
-			System.out.println();
-			System.out.println(p1.getName()+" it's your turn");
-			System.out.println();
-			while(stop==0) {
-				System.out.println(p1.getName()+" enter where you want to shoot:");
-				coordShot = sc2.nextLine();
-				if (Game.checkInputCoordShot(coordShot,p1.getShotFired())) {
-					stop=1;
-				}
-				else {
-					System.out.println("Bad coordinate!");
-				}		
-			}
-			if (p2.shipHit(coordShot)) {
-				if(Game.isCarrierHere(coordShot,p2)) {
-					p2.getCarrier().getShotReceived().add(coordShot);
-					hitShip=p2.getCarrier().getShipCategory();
-					isDestroyed=p2.getCarrier().isDestroyed();
-				}
-				if(Game.isBattleshipHere(coordShot,p2)) {
-					p2.getBattleship().getShotReceived().add(coordShot);
-					hitShip=p2.getBattleship().getShipCategory();
-					isDestroyed=p2.getBattleship().isDestroyed();
-	
-				}
-				if(Game.isCruiserHere(coordShot,p2)) {
-					p2.getCruiser().getShotReceived().add(coordShot);
-					hitShip=p2.getCruiser().getShipCategory();
-					isDestroyed=p2.getCruiser().isDestroyed();
-				}
-				if(Game.isSubmarineHere(coordShot,p2)) {
-					p2.getSubmarine().getShotReceived().add(coordShot);
-					hitShip=p2.getSubmarine().getShipCategory();
-					isDestroyed=p2.getSubmarine().isDestroyed();
-				}
-				if(Game.isDestroyerHere(coordShot,p2)) {
-					p2.getDestroyer().getShotReceived().add(coordShot);
-					hitShip=p2.getDestroyer().getShipCategory();
-					isDestroyed=p2.getDestroyer().isDestroyed();
-				}
-				if (isDestroyed) {
-					System.out.println("Enemy "+hitShip+" is destroyed!");
-				}
-				else {
-					System.out.println("Hit!");
-				}
-			}
-			else {
-				System.out.println("Missed!");
-			}
-			System.out.println();
-			p1.getShotFired().add(coordShot);
-			printShotMap(p1,p2,10,10);
-			
-			if (!Game.endGame(p1,p2)) {
-				//Joueur 2 qui joue
-				stop=0;
-				System.out.println();
-				System.out.println(p2.getName()+" it's your turn");
-				System.out.println();
-				while(stop==0) {
-					System.out.println(p2.getName()+" enter where you want to shoot:");
-					coordShot = sc2.nextLine();
-					if (Game.checkInputCoordShot(coordShot,p2.getShotFired())) {
-						stop=1;
-					}
-					else {
-						System.out.println("Bad coordinate!");
-					}		
-				}
-				if (p2.shipHit(coordShot)) {
-					if(Game.isCarrierHere(coordShot,p1)) {
-						p1.getCarrier().getShotReceived().add(coordShot);
-						hitShip=p1.getCarrier().getShipCategory();
-						isDestroyed=p1.getCarrier().isDestroyed();
-					}
-					if(Game.isBattleshipHere(coordShot,p1)) {
-						p1.getBattleship().getShotReceived().add(coordShot);
-						hitShip=p1.getBattleship().getShipCategory();
-						isDestroyed=p1.getBattleship().isDestroyed();
-		
-					}
-					if(Game.isCruiserHere(coordShot,p1)) {
-						p1.getCruiser().getShotReceived().add(coordShot);
-						hitShip=p1.getCruiser().getShipCategory();
-						isDestroyed=p1.getCruiser().isDestroyed();
-					}
-					if(Game.isSubmarineHere(coordShot,p1)) {
-						p1.getSubmarine().getShotReceived().add(coordShot);
-						hitShip=p1.getSubmarine().getShipCategory();
-						isDestroyed=p1.getSubmarine().isDestroyed();
-					}
-					if(Game.isDestroyerHere(coordShot,p1)) {
-						p1.getDestroyer().getShotReceived().add(coordShot);
-						hitShip=p1.getDestroyer().getShipCategory();
-						isDestroyed=p1.getDestroyer().isDestroyed();
-					}
-					if (isDestroyed) {
-						System.out.println("Enemy "+hitShip+" is destroyed!");
-					}
-					else {
-						System.out.println("Hit!");
-					}
-				}
-				else {
-					System.out.println("Missed!");
-				}
-				System.out.println();
-				p2.getShotFired().add(coordShot);
-				printShotMap(p2,p1,10,10);
-			}
-		}		
-	}
-	
-	public static void playPvM(Player p1, IA p2) {
-		//GAME START
-		String coordShot="";
-		System.out.println("Game start !");
-		String hitShip="";
-		Boolean isDestroyed=false;
-		int stop=0;
-		int tour=1;
-
-		while(!Game.endGame(p1,p2)){
-			//JOUEUR qui joue.
-			stop=0;
-			System.out.println();
-			System.out.println("*********************** Tour "+tour+" ***********************");
-			System.out.println();
-			while(stop==0) {
-				System.out.println(p1.getName()+" enter where you want to shoot:");
-				coordShot = sc2.nextLine();
-				if (Game.checkInputCoordShot(coordShot,p1.getShotFired())) {
-					stop=1;
-				}
-				else {
-					System.out.println("Bad coordinate!");
-				}		
-			}
-			if (p2.shipHit(coordShot)) {
-				if(Game.isCarrierHere(coordShot,p2)) {
-					p2.getCarrier().getShotReceived().add(coordShot);
-					hitShip=p2.getCarrier().getShipCategory();
-					isDestroyed=p2.getCarrier().isDestroyed();
-				}
-				if(Game.isBattleshipHere(coordShot,p2)) {
-					p2.getBattleship().getShotReceived().add(coordShot);
-					hitShip=p2.getBattleship().getShipCategory();
-					isDestroyed=p2.getBattleship().isDestroyed();
-	
-				}
-				if(Game.isCruiserHere(coordShot,p2)) {
-					p2.getCruiser().getShotReceived().add(coordShot);
-					hitShip=p2.getCruiser().getShipCategory();
-					isDestroyed=p2.getCruiser().isDestroyed();
-				}
-				if(Game.isSubmarineHere(coordShot,p2)) {
-					p2.getSubmarine().getShotReceived().add(coordShot);
-					hitShip=p2.getSubmarine().getShipCategory();
-					isDestroyed=p2.getSubmarine().isDestroyed();
-				}
-				if(Game.isDestroyerHere(coordShot,p2)) {
-					p2.getDestroyer().getShotReceived().add(coordShot);
-					hitShip=p2.getDestroyer().getShipCategory();
-					isDestroyed=p2.getDestroyer().isDestroyed();
-				}
-				if (isDestroyed) {
-					System.out.println("Enemy "+hitShip+" is destroyed!");
-				}
-				else {
-					System.out.println("Hit!");
-				}
-			}
-			else {
-				System.out.println("Missed!");
-			}
-			System.out.println();
-			p1.getShotFired().add(coordShot);
-			printShotMap(p1,p2,10,10);
-			
-			if (!Game.endGame(p1,p2)) {
-				//IA qui joue.
-				System.out.println();
-				System.out.println("The opponent is playing!");
-				coordShot=p2.generateShotCoord(p2.getLevel());
-				System.out.println("Opponent shooted at "+coordShot);
-				if (p1.shipHit(coordShot)) {
-					if(Game.isCarrierHere(coordShot,p1)) {
-						p1.getCarrier().getShotReceived().add(coordShot);
-						hitShip=p1.getCarrier().getShipCategory();
-						isDestroyed=p1.getCarrier().isDestroyed();
-					}
-					if(Game.isBattleshipHere(coordShot,p1)) {
-						p1.getBattleship().getShotReceived().add(coordShot);
-						hitShip=p1.getBattleship().getShipCategory();
-						isDestroyed=p1.getBattleship().isDestroyed();
-		
-					}
-					if(Game.isCruiserHere(coordShot,p1)) {
-						p1.getCruiser().getShotReceived().add(coordShot);
-						hitShip=p1.getCruiser().getShipCategory();
-						isDestroyed=p1.getCruiser().isDestroyed();
-					}
-					if(Game.isSubmarineHere(coordShot,p1)) {
-						p1.getSubmarine().getShotReceived().add(coordShot);
-						hitShip=p1.getSubmarine().getShipCategory();
-						isDestroyed=p1.getSubmarine().isDestroyed();
-					}
-					if(Game.isDestroyerHere(coordShot,p1)) {
-						p1.getDestroyer().getShotReceived().add(coordShot);
-						hitShip=p1.getDestroyer().getShipCategory();
-						isDestroyed=p1.getDestroyer().isDestroyed();
-					}
-					if(p2.getLevel()==3) {
-						ArrayList<String> shotArray = new ArrayList<String>();
-						shotArray.add(coordShot);
-						shotArray.add(Boolean.toString(isDestroyed));
-						p2.getShotArray().add(shotArray);			
-						p2.setLastHit(coordShot);
-					}
-					if (isDestroyed) {
-						System.out.println("Your "+hitShip+" is destroyed!");
-					}
-					else {
-						System.out.println("Hit!");
-					}
-				}
-				else {
-					System.out.println("Missed!");
-				}
-				System.out.println();
-				p2.getShotFired().add(coordShot);
-				printShipsMap(p1,p2,10,10);
-				System.out.println();
-				tour++;
-			}
-		}
-		if (p1.shipsAllDestroyed()) {
-			System.out.println(p2.getName()+" won!");
-		}
-		else {
-			System.out.println(p1.getName()+" won!");
-		}
-	}
-	
-	public static int playIAvIA(IA p1, IA p2) {
-		//GAME START
-		String coordShot="";
-		System.out.println("Game start !");
-		String hitShip="";
-		Boolean isDestroyed=false;
-		int tour=1;
-		Boolean continuer=true;
-		
-		while(!Game.endGame(p1,p2)&&continuer){
-			//IA numero 1 qui joue.
-			System.out.println();
-			System.out.println("*********************** Tour "+tour+" ***********************");
-			System.out.println();
-			System.out.println(p1.getName()+" is playing!");
-			coordShot=p1.generateShotCoord(p1.getLevel());
-			printShotMap(p1,p2,10,10);
-			System.out.println(p1.getName()+" shooted at "+coordShot);
-			if (p2.shipHit(coordShot)) {
-				if(Game.isCarrierHere(coordShot,p2)) {
-					p2.getCarrier().getShotReceived().add(coordShot);
-					hitShip=p2.getCarrier().getShipCategory();
-					isDestroyed=p2.getCarrier().isDestroyed();
-				}
-				if(Game.isBattleshipHere(coordShot,p2)) {
-					p2.getBattleship().getShotReceived().add(coordShot);
-					hitShip=p2.getBattleship().getShipCategory();
-					isDestroyed=p2.getBattleship().isDestroyed();
-	
-				}
-				if(Game.isCruiserHere(coordShot,p2)) {
-					p2.getCruiser().getShotReceived().add(coordShot);
-					hitShip=p2.getCruiser().getShipCategory();
-					isDestroyed=p2.getCruiser().isDestroyed();
-				}
-				if(Game.isSubmarineHere(coordShot,p2)) {
-					p2.getSubmarine().getShotReceived().add(coordShot);
-					hitShip=p2.getSubmarine().getShipCategory();
-					isDestroyed=p2.getSubmarine().isDestroyed();
-				}
-				if(Game.isDestroyerHere(coordShot,p2)) {
-					p2.getDestroyer().getShotReceived().add(coordShot);
-					hitShip=p2.getDestroyer().getShipCategory();
-					isDestroyed=p2.getDestroyer().isDestroyed();
-				}
-				if(p1.getLevel()==3) {
-					ArrayList<String> shotArray = new ArrayList<String>();
-					shotArray.add(coordShot);
-					shotArray.add(Boolean.toString(isDestroyed));
-					p1.setLastHit(coordShot);
-					p1.getShotArray().add(shotArray);			
-				}
-				if (isDestroyed) {
-					System.out.println("Your "+hitShip+" is destroyed!");
-				}
-				else {
-					System.out.println("Hit!");
-				}
-			}
-			else {
-				System.out.println("Missed!");
-			}
-			System.out.println();
-			p1.getShotFired().add(coordShot);
-			System.out.println();
-			
-			
-			if (!Game.endGame(p1,p2)) {
-				//IA numero 2 qui joue.
-				System.out.println();
-				System.out.println(p2.getName()+" is playing!");
-				printShotMap(p2,p1,10,10);
-				coordShot=p2.generateShotCoord(p2.getLevel());
-				System.out.println(p2.getName()+" shooted at "+coordShot);
-				if (p1.shipHit(coordShot)) {
-					if(Game.isCarrierHere(coordShot,p1)) {
-						p1.getCarrier().getShotReceived().add(coordShot);
-						hitShip=p1.getCarrier().getShipCategory();
-						isDestroyed=p1.getCarrier().isDestroyed();
-					}
-					if(Game.isBattleshipHere(coordShot,p1)) {
-						p1.getBattleship().getShotReceived().add(coordShot);
-						hitShip=p1.getBattleship().getShipCategory();
-						isDestroyed=p1.getBattleship().isDestroyed();
-		
-					}
-					if(Game.isCruiserHere(coordShot,p1)) {
-						p1.getCruiser().getShotReceived().add(coordShot);
-						hitShip=p1.getCruiser().getShipCategory();
-						isDestroyed=p1.getCruiser().isDestroyed();
-					}
-					if(Game.isSubmarineHere(coordShot,p1)) {
-						p1.getSubmarine().getShotReceived().add(coordShot);
-						hitShip=p1.getSubmarine().getShipCategory();
-						isDestroyed=p1.getSubmarine().isDestroyed();
-					}
-					if(Game.isDestroyerHere(coordShot,p1)) {
-						p1.getDestroyer().getShotReceived().add(coordShot);
-						hitShip=p1.getDestroyer().getShipCategory();
-						isDestroyed=p1.getDestroyer().isDestroyed();
-					}
-					if(p2.getLevel()==3) {
-						ArrayList<String> shotArray = new ArrayList<String>();
-						shotArray.add(coordShot);
-						shotArray.add(Boolean.toString(isDestroyed));
-						p2.getShotArray().add(shotArray);			
-						p2.setLastHit(coordShot);
-					}
-					if (isDestroyed) {
-						System.out.println("Your "+hitShip+" is destroyed!");
-					}
-					else {
-						System.out.println("Hit!");
-					}
-				}
-				else {
-					System.out.println("Missed!");
-				}
-				System.out.println();
-				p2.getShotFired().add(coordShot);
-				System.out.println();
-				if (coordShot.length()!=3&&coordShot.length()!=2) {
-					continuer=false;
-				}
-				tour++;
-			}
-		}
-		if (p1.shipsAllDestroyed()) {
-			System.out.println(p2.getName()+" won!");
-			return 2;
-		}
-		else {
-			System.out.println(p1.getName()+" won!");
-			return 1;
-		}
-	}
-	
 	public static void printShotMap(Player p1, Player p2, int x, int y) {
 		String coord;
-		System.out.println(p1.getName()+", map with your shots (\"!\" missed, \"X\" hit)");
+		System.out.println(" ");
+		System.out.println(p1.getName()+"'s shots map (\"!\" missed, \"X\" hit)");
 		System.out.print("  |");
 		for(int k=0;k<x;k++) {
 			System.out.print(" "+Game.intToString(k)+" ");
@@ -643,7 +423,8 @@ public class Program {
 
 	public static void printShipsMap(Player p1, Player p2, int x, int y){
 		String coord;
-		System.out.println(p1.getName()+", map with your ships (\"O\" ship, \"X\" ship hit, \"!\" enemy's shot attempt)");
+		System.out.println(" ");
+		System.out.println(p1.getName()+"'s ships map (\"O\" ship, \"X\" ship hit, \"!\" enemy's shot attempt)");
 		System.out.print("  |");
 		for(int k=0;k<x;k++) {
 			System.out.print(" "+Game.intToString(k)+" ");
@@ -692,5 +473,46 @@ public class Program {
 		System.out.println();
 		}
 	}
-		
+	
+	public static void printInitShipsMap(Player p1, int x, int y){
+		String coord;
+		System.out.println(" ");
+		System.out.println(p1.getName()+"'s ships map");
+		System.out.print("  |");
+		for(int k=0;k<x;k++) {
+			System.out.print(" "+Game.intToString(k)+" ");
+		}
+		System.out.println();
+		System.out.print("--|");
+		for(int l=0;l<x;l++) {
+			System.out.print("---");
+		}
+		System.out.println();
+		for(int i=1;i<=x;i++) { //colonnes
+			if (i<10) {
+			System.out.print(" "+i+"|");
+			}
+			else {
+			System.out.print(i+"|");
+
+			}
+			for(int j=0;j<y;j++) { //lignes
+				coord=Game.intToString(j)+i;
+				if (p1.getCarrier().getCoordShip().contains(coord)||
+				p1.getBattleship().getCoordShip().contains(coord)||
+				p1.getCruiser().getCoordShip().contains(coord)||
+				p1.getSubmarine().getCoordShip().contains(coord)||
+				p1.getDestroyer().getCoordShip().contains(coord)) {
+					System.out.print(" O "); //pas touché
+				}
+				else {
+					System.out.print(" - "); //rien
+				}
+			}
+			System.out.println();
+		}
+		System.out.println();
+	}
 }
+		
+
