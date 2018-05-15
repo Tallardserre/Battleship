@@ -1,5 +1,5 @@
 
-package Battleship;
+package battleship;
 
 import java.util.*;
 
@@ -24,12 +24,17 @@ public class Program {
 		int stop=0;
 		while(stop==0) {
 			gameMode= sc1.nextLine();
-			gameModeNumber=gameMode.charAt(0)-'0';
-			if (gameModeNumber<1||gameModeNumber>3) {
-				System.out.println("Invalid!");
+			if (!gameMode.equals("")&&gameMode.length()<2) {
+				gameModeNumber=gameMode.charAt(0)-'0';
+				if (gameModeNumber<1||gameModeNumber>3) {
+					System.out.println("Invalid!");
+				}
+				else {
+					stop=1;
+				}
 			}
 			else {
-				stop=1;
+				System.out.println("Invalid!");
 			}
 		}
 		
@@ -51,12 +56,14 @@ public class Program {
 			stop=0;
 			while(stop==0) {
 				levelIA= sc1.nextLine();
-				levelIANumber=levelIA.charAt(0)-'0';
-				if (levelIANumber<1||levelIANumber>3) {
-					System.out.println("Invalid!");
-				}
-				else {
-					stop=1;
+				if (!levelIA.equals("")&&levelIA.length()<2) {
+					levelIANumber=levelIA.charAt(0)-'0';
+					if (levelIANumber<1||levelIANumber>3) {
+						System.out.println("Invalid!");
+					}
+					else {
+						stop=1;
+					}
 				}
 			}
 			p2=new IA("Opponent",levelIANumber);
@@ -72,12 +79,14 @@ public class Program {
 			stop=0;
 			while(stop==0) {
 				levelIA= sc1.nextLine();
-				levelIA1Number=levelIA.charAt(0)-'0';
-				if (levelIA1Number<1||levelIA1Number>3) {
-					System.out.println("Invalid!");
-				}
-				else {
-					stop=1;
+				if (!levelIA.equals("")&&levelIA.length()<2) {
+					levelIA1Number=levelIA.charAt(0)-'0';
+					if (levelIA1Number<1||levelIA1Number>3) {
+						System.out.println("Invalid!");
+					}
+					else {
+						stop=1;
+					}
 				}
 			}
 			p1=new IA("IA number 1",levelIA1Number);
@@ -90,21 +99,22 @@ public class Program {
 			stop=0;
 			while(stop==0) {
 				levelIA= sc1.nextLine();
-				levelIA2Number=levelIA.charAt(0)-'0';
-				if (levelIA2Number<1||levelIA2Number>3) {
-					System.out.println("Invalid!");
-				}
-				else {
-					stop=1;
+				if (!levelIA.equals("")&&levelIA.length()<2) {
+					levelIA2Number=levelIA.charAt(0)-'0';
+					if (levelIA2Number<1||levelIA2Number>3) {
+						System.out.println("Invalid!");
+					}
+					else {
+						stop=1;
+					}
 				}
 			}
 			p2=new IA("IA number 2",levelIA2Number);
-			System.out.println("Win in "+tour+" rounds");
 			break;
 		}
 		
 		
-		//GAME START
+		//*************************GAME START *******************************
 		String coordShot="";
 		System.out.println("Game start !");
 		String hitShip="";
@@ -116,12 +126,13 @@ public class Program {
 			//JOUEUR qui joue.
 			stop=0;
 			System.out.println();
-			System.out.println("*********************** Tour "+tour+" ***********************");
+			System.out.println("*********************** Round "+tour+" ***********************");
 			System.out.println();
 			System.out.println(p1.getName()+" is playing!");
-			System.out.println();
-			printShipsMap(p1,p2,10,10);
-			printShotMap(p1,p2,10,10);
+			if(!(p1 instanceof IA)) {
+				printShipsMap(p1,p2,10,10);
+				printShotMap(p1,p2,10,10);
+			}
 			if(p1 instanceof IA) {
 				coordShot=((IA) p1).generateShotCoord(((IA) p1).getLevel());
 			}
@@ -175,7 +186,7 @@ public class Program {
 					}
 				}
 				if (isDestroyed) {
-					System.out.println("****** Enemy "+hitShip+" is destroyed! ******");
+					System.out.println("****** "+p1.getName()+"'s "+hitShip+" is destroyed! ******");
 				}
 				else {
 					System.out.println("Hit!");
@@ -190,9 +201,11 @@ public class Program {
 			if (!Game.endGame(p1,p2)) {
 				System.out.println();
 				System.out.println(p2.getName()+" is playing!");
-				System.out.println();
-				printShipsMap(p2,p1,10,10);
-				printShotMap(p2,p1,10,10);
+				if(!(p2 instanceof IA)) {
+					printShipsMap(p2,p1,10,10);
+					printShotMap(p2,p1,10,10);
+
+				}
 				if(p2 instanceof IA) {
 				//IA qui joue.
 				coordShot=((IA) p2).generateShotCoord(((IA) p2).getLevel());
@@ -248,7 +261,7 @@ public class Program {
 						}
 					}
 					if (isDestroyed) {
-						System.out.println("****** /!\\ Your "+hitShip+" is destroyed! /!\\ ******");
+						System.out.println("****** /!\\ "+p2.getName()+"'s "+hitShip+" is destroyed! /!\\ ******");
 					}
 					else {
 						System.out.println("Hit!");
@@ -257,17 +270,18 @@ public class Program {
 				else {
 					System.out.println("Missed!");
 				}
-				System.out.println();
 				p2.getShotFired().add(coordShot);
 				System.out.println();
 				tour++;
 			}
 		}
 		if (p1.shipsAllDestroyed()) {
-			System.out.println(p2.getName()+" won!");
+			printShotMap(p2,p1,10,10);
+			System.out.println(p2.getName()+" won! in "+tour+" rounds.");
 		}
 		else {
-			System.out.println(p1.getName()+" won!");
+			printShotMap(p1,p2,10,10);
+			System.out.println(p1.getName()+" won! in "+tour+" rounds.");
 		}
 		sc1.close();	
 		sc2.close();
@@ -372,7 +386,7 @@ public class Program {
 				break;
 		}
 	}
-	System.out.println("All you ships are initialised!");
+	System.out.println("All your ships are initialised!");
 
 	return p;
 	}
@@ -419,6 +433,7 @@ public class Program {
 				}
 			System.out.println();
 			}
+		System.out.println();
 		}
 
 	public static void printShipsMap(Player p1, Player p2, int x, int y){
@@ -472,6 +487,7 @@ public class Program {
 			}
 		System.out.println();
 		}
+		System.out.println();
 	}
 	
 	public static void printInitShipsMap(Player p1, int x, int y){

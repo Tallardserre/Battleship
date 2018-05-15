@@ -1,5 +1,5 @@
 
-package Battleship;
+package battleship;
 
 import java.util.ArrayList;
 

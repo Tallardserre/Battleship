@@ -1,5 +1,5 @@
 
-package Battleship;
+package battleship;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -293,7 +293,6 @@ public class IA extends Player{
 			while(i<0||i>this.getGenerateShot().size()) {// on choisit au hasard une des coordonnées 
 				i=rand.nextInt(this.getGenerateShot().size()+1)-1;
 			}
-			Game.affiche(this.getGenerateShot());;
 			coordShot=this.getGenerateShot().get(i);
 			this.getGenerateShot().remove(i);
 		}
