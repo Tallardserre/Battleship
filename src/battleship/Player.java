@@ -1,5 +1,5 @@
 
-package battleship;
+package allardserre.thibaut;
 
 import java.util.ArrayList;
 
