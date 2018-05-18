@@ -120,7 +120,8 @@ public class AI extends Player{
 		}
 	}
 
-	public String generateShotCoord(int level) {
+	public String generateShotCoord() {
+		int level=this.getLevel();
 		String coordShot="";
 		switch(level) {
 		case 1:

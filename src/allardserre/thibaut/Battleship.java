@@ -93,15 +93,15 @@ public class Battleship {
 				System.out.println("*********************** Round "+tour+" ***********************");
 				System.out.println();
 				if(countingGame%2==0) {
-					round(p1,p2);
+					round(p1,p2,gameModeNumber);
 					if(!Tools.endGame(p1,p2)) {
-						round(p2,p1);
+						round(p2,p1,gameModeNumber);
 					}
 				}
 				else {
-					round(p2,p1);
+					round(p2,p1,gameModeNumber);
 					if(!Tools.endGame(p1,p2)) {
-						round(p1,p2);
+						round(p1,p2,gameModeNumber);
 					}
 				}
 				tour++;
@@ -132,18 +132,18 @@ public class Battleship {
 		sc2.close();
 	}
 	
-	public static void round(Player p1, Player p2) {	
+	public static void round(Player p1, Player p2, int gameModeNumber) {	
 		String coordShot="";
 		String hitShip="";
 		Boolean isDestroyed=false;
 		int stop=0;
 		System.out.println(p1.getName()+" is playing!");
-		if(!(p1 instanceof AI)) {
+		if(gameModeNumber==1) {
 			printShipsMap(p1,p2,10,10);
 			printShotMap(p1,p2,10,10);
 		}
-		if(p1 instanceof AI) {
-			coordShot=((AI) p1).generateShotCoord(((AI) p1).getLevel());
+		if(gameModeNumber==2) {
+			coordShot=((AI) p1).generateShotCoord();
 		}
 		else {
 			while(stop==0) {
@@ -186,13 +186,18 @@ public class Battleship {
 				isDestroyed=p2.getDestroyer().isDestroyed();
 			}
 			if(p1 instanceof AI) {
-				if(((AI) p1).getLevel()==3) {
-					ArrayList<String> shotArray = new ArrayList<String>();
-					shotArray.add(coordShot);
-					shotArray.add(Boolean.toString(isDestroyed));
-					((AI) p1).getShotArray().add(shotArray);			
-					((AI) p1).setLastHit(coordShot);
-				}
+				ArrayList<String> shotArray = new ArrayList<String>();
+				shotArray.add(coordShot);
+				shotArray.add(Boolean.toString(isDestroyed));
+				((AI) p1).getShotArray().add(shotArray);			
+				((AI) p1).setLastHit(coordShot);
+			}
+			if(p2 instanceof AI) {
+				ArrayList<String> shotArray = new ArrayList<String>();
+				shotArray.add(coordShot);
+				shotArray.add(Boolean.toString(isDestroyed));
+				((AI) p2).getShotArray().add(shotArray);			
+				((AI) p2).setLastHit(coordShot);
 			}
 			if (isDestroyed) {
 				System.out.println("****** "+p2.getName()+"'s "+hitShip+" is destroyed! ******");
@@ -209,7 +214,7 @@ public class Battleship {
 	}
 	
 	public static Player setupPlayer(Player p) {
-
+		
 		int stop=0;
 		p.setCarrier(new Ship());
 		p.setBattleship(new Ship());
@@ -228,7 +233,7 @@ public class Battleship {
 		System.out.println("Columns between A-J, Lines between 1-10");
 		for(int i=1;i<6;i++) {
 			if (i!=1) {
-				printInitShipsMap(p,10,10);
+				p.printInitShipsMap(10,10);
 			}
 			switch (i) {
 			case 1:
@@ -271,7 +276,7 @@ public class Battleship {
 			System.out.println("):");
 			stop=0;
 			while (stop==0) {
-				coord2 = sc2.nextLine();
+				coord2 = sc1.nextLine();
 				if (coord2.length()==3||coord2.length()==2)	{
 					for (String str : Tools.GenerateEndCoord(spaceOccupied, coord1, size)) {
 						if (coord2.equals(str)) {
@@ -309,9 +314,9 @@ public class Battleship {
 			}
 		}
 		System.out.println("All your ships are initialised!");
-
 		return p;
-		}
+	}
+	
 	
 	public static void printShotMap(Player p1, Player p2, int x, int y) {
 		String coord;
@@ -408,46 +413,6 @@ public class Battleship {
 				}
 			}
 		System.out.println();
-		}
-		System.out.println();
-	}
-	
-	public static void printInitShipsMap(Player p1, int x, int y){
-		String coord;
-		System.out.println(" ");
-		System.out.println(p1.getName()+"'s ships map");
-		System.out.print("  |");
-		for(int k=0;k<x;k++) {
-			System.out.print(" "+Tools.intToString(k)+" ");
-		}
-		System.out.println();
-		System.out.print("--|");
-		for(int l=0;l<x;l++) {
-			System.out.print("---");
-		}
-		System.out.println();
-		for(int i=1;i<=x;i++) { //colonnes
-			if (i<10) {
-			System.out.print(" "+i+"|");
-			}
-			else {
-			System.out.print(i+"|");
-
-			}
-			for(int j=0;j<y;j++) { //lignes
-				coord=Tools.intToString(j)+i;
-				if (p1.getCarrier().getCoordShip().contains(coord)||
-				p1.getBattleship().getCoordShip().contains(coord)||
-				p1.getCruiser().getCoordShip().contains(coord)||
-				p1.getSubmarine().getCoordShip().contains(coord)||
-				p1.getDestroyer().getCoordShip().contains(coord)) {
-					System.out.print(" O "); //pas touché
-				}
-				else {
-					System.out.print(" - "); //rien
-				}
-			}
-			System.out.println();
 		}
 		System.out.println();
 	}
