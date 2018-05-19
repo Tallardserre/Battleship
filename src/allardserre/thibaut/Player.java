@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 public class Player {
 	private String name;
-	private Ship Carrier;
-	private Ship Battleship;
-	private Ship Cruiser;
-	private Ship Submarine;
-	private Ship Destroyer;
+	private Ship carrier;
+	private Ship battleship;
+	private Ship cruiser;
+	private Ship submarine;
+	private Ship destroyer;
 	private ArrayList<String> shotFired = new ArrayList<String>();
 
 	public Player(){
@@ -19,43 +19,43 @@ public class Player {
 	}
 
 	public Ship getCarrier() {
-		return Carrier;
+		return carrier;
 	}
 
 	public void setCarrier(Ship carrier) {
-		Carrier = carrier;
+		this.carrier = carrier;
 	}
 
 	public Ship getBattleship() {
-		return Battleship;
+		return battleship;
 	}
 
 	public void setBattleship(Ship battleship) {
-		Battleship = battleship;
+		this.battleship = battleship;
 	}
 
 	public Ship getCruiser() {
-		return Cruiser;
+		return cruiser;
 	}
 
 	public void setCruiser(Ship cruiser) {
-		Cruiser = cruiser;
+		this.cruiser = cruiser;
 	}
 
 	public Ship getSubmarine() {
-		return Submarine;
+		return submarine;
 	}
 
 	public void setSubmarine(Ship submarine) {
-		Submarine = submarine;
+		this.submarine = submarine;
 	}
 
 	public Ship getDestroyer() {
-		return Destroyer;
+		return destroyer;
 	}
 
 	public void setDestroyer(Ship destroyer) {
-		Destroyer = destroyer;
+		this.destroyer = destroyer;
 	}
 
 	public String getName() {
@@ -75,11 +75,11 @@ public class Player {
 	}
 	
 	public boolean shipHit(String coord){
-		return this.Carrier.isHit(coord)||this.Battleship.isHit(coord)||this.Submarine.isHit(coord)||this.Cruiser.isHit(coord)||this.Destroyer.isHit(coord);
+		return this.carrier.isHit(coord)||this.battleship.isHit(coord)||this.submarine.isHit(coord)||this.cruiser.isHit(coord)||this.destroyer.isHit(coord);
 	}
 	
 	public boolean shipsAllDestroyed() {
-		return this.Carrier.isDestroyed()&&this.Battleship.isDestroyed()&&this.Submarine.isDestroyed()&&this.Cruiser.isDestroyed()&&this.Destroyer.isDestroyed();
+		return this.carrier.isDestroyed()&&this.battleship.isDestroyed()&&this.submarine.isDestroyed()&&this.cruiser.isDestroyed()&&this.destroyer.isDestroyed();
 	}
 	 		
 	public void printInitShipsMap(int x, int y){

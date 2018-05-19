@@ -270,7 +270,7 @@ public class Battleship {
 				}
 			}
 			System.out.print("Choose the last coordinate (you can only choose: ");
-			for (String str : Tools.GenerateEndCoord(spaceOccupied, coord1, size)) {
+			for (String str : Tools.generateEndCoord(spaceOccupied, coord1, size)) {
 				System.out.print(str+" ");
 			}
 			System.out.println("):");
@@ -278,7 +278,7 @@ public class Battleship {
 			while (stop==0) {
 				coord2 = sc1.nextLine();
 				if (coord2.length()==3||coord2.length()==2)	{
-					for (String str : Tools.GenerateEndCoord(spaceOccupied, coord1, size)) {
+					for (String str : Tools.generateEndCoord(spaceOccupied, coord1, size)) {
 						if (coord2.equals(str)) {
 							stop=1;
 						}
@@ -286,7 +286,7 @@ public class Battleship {
 					if (stop==0) {
 						System.out.println("Bad coordinate!");
 						System.out.print("Choose the end coord between : ");
-						for (String str : Tools.GenerateEndCoord(spaceOccupied, coord1, size)) {
+						for (String str : Tools.generateEndCoord(spaceOccupied, coord1, size)) {
 							System.out.print(str+" ");
 						}
 						System.out.println(":");

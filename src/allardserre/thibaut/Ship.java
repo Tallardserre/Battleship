@@ -4,17 +4,17 @@ import java.util.*;
 
 public class Ship {
 
-	private String ShipCategory;
+	private String shipCategory;
 	private ArrayList<String> coordShip = new ArrayList<String>();
 	private ArrayList<String> shotReceived = new ArrayList<String>();
 	private int size;
 
 	public String getShipCategory() {
-		return ShipCategory;
+		return shipCategory;
 	}
 
 	public void setShipCategory(String shipCategory) {
-		ShipCategory = shipCategory;
+		this.shipCategory = shipCategory;
 	}
 
 	public int getSize() {
@@ -47,7 +47,7 @@ public class Ship {
 	}
 	
 	public Ship(String startCoord, String endCoord, int size, String category) {
-		this.ShipCategory=category;
+		this.shipCategory=category;
 		int startCoordColl = (int) startCoord.charAt(0) - 65;
 		int startCoordLine = Tools.stringToInt(startCoord);
 		int endCoordColl = (int) endCoord.charAt(0) - 65;

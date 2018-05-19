@@ -92,7 +92,7 @@ public class AI extends Player{
 					startCoordColl=rand.nextInt((9-0)+1)+0;
 				}
 			}
-			endCoordGenerate=Tools.GenerateEndCoord(spaceOccupied,startCoord,size);
+			endCoordGenerate=Tools.generateEndCoord(spaceOccupied,startCoord,size);
 			int j=rand.nextInt((endCoordGenerate.size()));
 			endCoord=endCoordGenerate.get(j);
 			switch (i) {
@@ -195,20 +195,20 @@ public class AI extends Player{
 							}
 							if(this.getShotArray().size()<1||!check) {
 								//si nb shot touché <1 OU deux derniers tirs non voisins
-								this.setGenerateShot(Tools.GenerateShotArray(this.getShotFired(), this.getLastHit()));
+								this.setGenerateShot(Tools.generateShotArray(this.getShotFired(), this.getLastHit()));
 								//generer nouvelle liste avec lasthit
 							}
 							else if(this.getShotArray().size()>1&&check) {
-									this.setGenerateShot(Tools.GenerateSmartShotArray(this.getShotFired(), this.getLastHit(), this.getShotArray().get(i).get(0)));
+									this.setGenerateShot(Tools.generateSmartShotArray(this.getShotFired(), this.getLastHit(), this.getShotArray().get(i).get(0)));
 									//generer nouvelle "smart" liste	
 							}
 							if(this.getGenerateShot().isEmpty()) {
-								this.setGenerateShot(Tools.GenerateSmartShotArray(this.getShotFired(), this.getShotArray().get(i).get(0), this.getLastHit()));
+								this.setGenerateShot(Tools.generateSmartShotArray(this.getShotFired(), this.getShotArray().get(i).get(0), this.getLastHit()));
 							}
 						}
 					}
 					else {
-						this.setGenerateShot(Tools.GenerateShotArray(this.getShotFired(), this.getLastHit()));
+						this.setGenerateShot(Tools.generateShotArray(this.getShotFired(), this.getLastHit()));
 					}
 				}	
 				else{//si le dernier tir n'est pas touché
@@ -222,13 +222,13 @@ public class AI extends Player{
 							}
 						}
 						if(check){//si 2 derniers tirs touchés sont voisins	
-							this.setGenerateShot(Tools.GenerateSmartShotArray(this.getShotFired(), this.getLastHit(), this.getShotArray().get(this.getShotArray().size()-2).get(0)));
+							this.setGenerateShot(Tools.generateSmartShotArray(this.getShotFired(), this.getLastHit(), this.getShotArray().get(this.getShotArray().size()-2).get(0)));
 							//generer nouvelle "smart" liste
 							if(this.getGenerateShot().isEmpty()) {//si liste vide on inverse les deux derniers tirs dans la fonction
 								i=this.getShotArray().size()-1;
 								while(i>0&&this.getGenerateShot().isEmpty()){	
 									this.setGenerateShot(
-											Tools.GenerateSmartShotArray(this.getShotFired(), this.getShotArray().get(i-1).get(0), this.getLastHit()));
+											Tools.generateSmartShotArray(this.getShotFired(), this.getShotArray().get(i-1).get(0), this.getLastHit()));
 								i--;
 								}
 							} 
@@ -240,16 +240,16 @@ public class AI extends Player{
 				if(this.getLastHit().equals(this.getShotFired().get(this.getShotFired().size()-1))) {//si le dernier tir est touché
 					if(this.getShotArray().size()<1||!Tools.nearCoord(this.getShotArray().get(this.getShotArray().size()-1).get(0), this.getShotArray().get(this.getShotArray().size()-2).get(0))) {
 						//si nb shot<1 OU deux derniers tirs non voisins
-						this.setGenerateShot(Tools.GenerateShotArray(this.getShotFired(), this.getLastHit()));
+						this.setGenerateShot(Tools.generateShotArray(this.getShotFired(), this.getLastHit()));
 					}
 					else {//si 2 derniers tirs voisins
-						this.setGenerateShot(Tools.GenerateSmartShotArray(this.getShotFired(), this.getShotArray().get(this.getShotArray().size()-1).get(0), this.getShotArray().get(this.getShotArray().size()-2).get(0)));
+						this.setGenerateShot(Tools.generateSmartShotArray(this.getShotFired(), this.getShotArray().get(this.getShotArray().size()-1).get(0), this.getShotArray().get(this.getShotArray().size()-2).get(0)));
 						//generer nouvelle "smart" liste
 						if(this.getGenerateShot().isEmpty()) {//si liste vide on inverse les deux derniers tirs dans la fonction
 							i=this.getShotArray().size()-1;
 							while(i>0&&this.getGenerateShot().isEmpty()&&Tools.nearCoord(this.getShotArray().get(i-1).get(0), this.getShotArray().get(i).get(0))){
 								this.setGenerateShot(
-										Tools.GenerateSmartShotArray(this.getShotFired(), this.getShotArray().get(i-1).get(0), this.getShotArray().get(i).get(0)));
+										Tools.generateSmartShotArray(this.getShotFired(), this.getShotArray().get(i-1).get(0), this.getShotArray().get(i).get(0)));
 							i--;
 							}
 						}

@@ -333,7 +333,7 @@ public class Tools {
 		return isHere;
 	}
 	
-	public static ArrayList<String> GenerateEndCoord(ArrayList<String> spaceOccupied, String coord1, int size){	
+	public static ArrayList<String> generateEndCoord(ArrayList<String> spaceOccupied, String coord1, int size){	
 		int coordColl=(int)coord1.charAt(0)-65;
 		int coordLine = stringToInt(coord1);
 		int coordColl1=coordColl-(size-1);
@@ -381,7 +381,7 @@ public class Tools {
 		return check;
 	}
 	
-	public static ArrayList<String> GenerateShotArray(ArrayList<String> shotFired, String coordShot){	
+	public static ArrayList<String> generateShotArray(ArrayList<String> shotFired, String coordShot){	
 		int coordColl=(int)coordShot.charAt(0)-65;
 		int coordLine = stringToInt(coordShot);
 		int coordColl1=coordColl-1;
@@ -409,12 +409,12 @@ public class Tools {
 		return result;
 	}
 	
-	public static ArrayList<String> GenerateSmartShotArray(ArrayList<String> shotFired, String coordShot, String coordLastShotHit){
+	public static ArrayList<String> generateSmartShotArray(ArrayList<String> shotFired, String coordShot, String coordLastShotHit){
 		//coordLastShotHit avant dernier hit
 		//coordShot dernier hit
 		//genere des coordonnees de tir en se basant sur les deux derniers tirs touchés (pour savoir si horizontal ou vertical)
 		ArrayList<String> generatedShotArray = new ArrayList<String>();
-		generatedShotArray=GenerateShotArray(shotFired,coordShot);
+		generatedShotArray=generateShotArray(shotFired,coordShot);
 		ArrayList<String> generatedShotArray2 = new ArrayList<String>();
 
 		
