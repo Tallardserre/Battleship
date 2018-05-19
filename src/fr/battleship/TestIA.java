@@ -46,7 +46,7 @@ public class TestIA {
 	
 			while(!Tools.endGame(p1,p2)){
 				//JOUEUR qui joue.
-				coordShot=((AI) p1).generateShotCoord(((AI) p1).getLevel());
+				coordShot=((AI) p1).generateShotCoord();
 	
 				if (p2.shipHit(coordShot)) {
 					if(Tools.isCarrierHere(coordShot,p2)) {
@@ -89,7 +89,7 @@ public class TestIA {
 				if (!Tools.endGame(p1,p2)) {
 	
 					//IA qui joue.
-					coordShot=((AI) p2).generateShotCoord(((AI) p2).getLevel());
+					coordShot=((AI) p2).generateShotCoord();
 					
 					if (p1.shipHit(coordShot)) {
 						if(Tools.isCarrierHere(coordShot,p1)) {
@@ -160,10 +160,10 @@ public class TestIA {
 		String str2="AI Level Beginner; "+X1+"; AI Level Medium; "+Y1;
 		String str3="AI Level Beginner; "+X2+"; AI Level Hard; "+Y2;
 		String str4="AI Level Medium; "+X3+"; AI Level Hard; "+Y3;
-		
+
 		FileWriter writer = null;
 		try {
-			writer = new FileWriter("test.csv");
+			writer = new FileWriter("ai_proof.csv");
 			writer.write(str);
 			writer.write("\n");
 			writer.write(str2);
@@ -171,14 +171,17 @@ public class TestIA {
 			writer.write(str3);
 			writer.write("\n");
 			writer.write(str4);
-		} catch (IOException e) {
+		} 
+		catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} finally {
+		} 
+		finally {
 			try {
 				writer.flush();
 				writer.close();
-			} catch (IOException e) {
+			} 
+			catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
