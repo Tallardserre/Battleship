@@ -1,6 +1,7 @@
+
 package allardserre.thibaut;
 
-import java.util.*;
+import java.util.ArrayList;
 
 public class Ship {
 
@@ -52,14 +53,11 @@ public class Ship {
 		int startCoordLine = Tools.stringToInt(startCoord);
 		int endCoordColl = (int) endCoord.charAt(0) - 65;
 		int endCoordLine = Tools.stringToInt(endCoord);
-		
-
 		this.coordShip = Tools.checkSpacesArray(startCoordLine, startCoordColl, endCoordLine, endCoordColl, size,
-				this.coordShip);
+				this.coordShip);//cette fonction genere des tableaux entre les 2 coordonnées données 
 	}
 
 	public boolean isDestroyed() {
-		//besoin d'ajouter d'autres verifs pour le mode IA vs IA en facile
 		boolean find=false;
 		String shot="";
 		int i=0;

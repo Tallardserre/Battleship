@@ -1,6 +1,8 @@
+
 package allardserre.thibaut;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Battleship {
 	
@@ -142,10 +144,14 @@ public class Battleship {
 			printShipsMap(p1,p2,10,10);
 			printShotMap(p1,p2,10,10);
 		}
-		if(gameModeNumber==2) {
-			coordShot=((AI) p1).generateShotCoord();
+		if (p1 instanceof AI){
+			if(gameModeNumber==2) {
+				coordShot=((AI)p1).generateShotCoord();
+			}
 		}
 		else {
+			printShipsMap(p1,p2,10,10);
+			printShotMap(p1,p2,10,10);
 			while(stop==0) {
 				System.out.println(p1.getName()+" enter where you want to shoot:");
 				coordShot = sc2.nextLine();
@@ -347,11 +353,11 @@ public class Battleship {
 					p2.getCruiser().getCoordShip().contains(coord)||
 					p2.getSubmarine().getCoordShip().contains(coord)||
 					p2.getDestroyer().getCoordShip().contains(coord))) {
-					System.out.print(" X "); //touchÃ©
+					System.out.print(" X "); //touché
 				}
 				else {
 					if (p1.getShotFired().contains(coord)) {
-						System.out.print(" ! "); //pas touchÃ©
+						System.out.print(" ! "); //pas touché
 					}
 					else {
 						System.out.print(" - "); //rien
@@ -392,7 +398,7 @@ public class Battleship {
 				p1.getCruiser().getShotReceived().contains(coord)||
 				p1.getSubmarine().getShotReceived().contains(coord)||
 				p1.getDestroyer().getShotReceived().contains(coord)) {
-					System.out.print(" X "); //touchÃ©
+					System.out.print(" X "); //touché
 				}
 				else {
 					if (p1.getCarrier().getCoordShip().contains(coord)||
@@ -400,7 +406,7 @@ public class Battleship {
 					p1.getCruiser().getCoordShip().contains(coord)||
 					p1.getSubmarine().getCoordShip().contains(coord)||
 					p1.getDestroyer().getCoordShip().contains(coord)) {
-						System.out.print(" O "); //pas touchÃ©
+						System.out.print(" O "); //pas touché
 					}
 					else {
 						if (p2.getShotFired().contains(coord)) {

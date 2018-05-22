@@ -1,7 +1,7 @@
 
 package allardserre.thibaut;
 
-import java.util.*;
+import java.util.ArrayList;
 
 public class Tools {
 
@@ -56,11 +56,6 @@ public class Tools {
  	public static boolean endGame(Player p1, Player p2) {
  		return p1.shipsAllDestroyed()||p2.shipsAllDestroyed();
  	}
- 	
-	public static void affiche(ArrayList<String> liste){
-		for(int i=0;i<liste.size();i++)
-			System.out.println(liste.get(i));
-	}
  	
 	public static ArrayList<String> checkSpacesArray(int startCoordLine, int startCoordColl, int endCoordLine, int endCoordColl, int size, ArrayList<String> spaces){
 		spaces.add(intToString(startCoordColl)+startCoordLine);
@@ -227,7 +222,7 @@ public class Tools {
 	}
 	
 	public static boolean checkEndCoord(String startCoord, int endCoordColl, int endCoordLine, int size, ArrayList<String> spaceOccupied){
-		/*verifie si la derniere coordonnÃ©es est valide : si aucun bateau ne se trouve entre la premiere coord et la derniere coord*/
+		/*verifie si la derniere coordonnées est valide : si aucun bateau ne se trouve entre la premiere coordonnée et la derniere coordonnée*/
 	    int startCoordColl=(int)startCoord.charAt(0)-65;
 	    int startCoordLine = startCoord.charAt(1) - '0';
 	    if (startCoord.length()==3) {
@@ -363,6 +358,7 @@ public class Tools {
 	}
 	
 	public static boolean nearCoord(String coord1, String coord2) {
+		//si les deux coordonnées sont collées ou pas
 		int coord1Coll=(int)coord1.charAt(0)-65;
 		int coord1Line = stringToInt(coord1);		
 		int coord2Coll=(int)coord2.charAt(0)-65;
@@ -412,7 +408,7 @@ public class Tools {
 	public static ArrayList<String> generateSmartShotArray(ArrayList<String> shotFired, String coordShot, String coordLastShotHit){
 		//coordLastShotHit avant dernier hit
 		//coordShot dernier hit
-		//genere des coordonnees de tir en se basant sur les deux derniers tirs touchÃ©s (pour savoir si horizontal ou vertical)
+		//genere des coordonnees de tir en se basant sur les deux derniers tirs touchés (pour savoir si horizontal ou vertical)
 		ArrayList<String> generatedShotArray = new ArrayList<String>();
 		generatedShotArray=generateShotArray(shotFired,coordShot);
 		ArrayList<String> generatedShotArray2 = new ArrayList<String>();
@@ -438,8 +434,6 @@ public class Tools {
 				}
 			}
 		}
-
 	return generatedShotArray2;
 	}
-
 }

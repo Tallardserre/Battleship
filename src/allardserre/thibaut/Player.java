@@ -1,3 +1,4 @@
+
 package allardserre.thibaut;
 
 import java.util.ArrayList;
@@ -111,7 +112,7 @@ public class Player {
 				this.getCruiser().getCoordShip().contains(coord)||
 				this.getSubmarine().getCoordShip().contains(coord)||
 				this.getDestroyer().getCoordShip().contains(coord)) {
-					System.out.print(" O "); //pas touchÃ©
+					System.out.print(" O "); //pas touché
 				}
 				else {
 					System.out.print(" - "); //rien

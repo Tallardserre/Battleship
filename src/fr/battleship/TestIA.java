@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import allardserre.thibaut.AI;
 import allardserre.thibaut.Tools;
 
-
 public class TestIA {
 	
 	public static void main(String[] args) {
@@ -35,19 +34,14 @@ public class TestIA {
 			}
 			p1=new AI("IA number 1",levelIA1Number);
 			p2=new AI("IA number 2",levelIA2Number);
-		
-		
-		
 		//*************************GAME START *******************************
 			String coordShot="";
 			@SuppressWarnings("unused")
 			String hitShip="";
 			Boolean isDestroyed=false;
-	
 			while(!Tools.endGame(p1,p2)){
 				//JOUEUR qui joue.
 				coordShot=((AI) p1).generateShotCoord();
-	
 				if (p2.shipHit(coordShot)) {
 					if(Tools.isCarrierHere(coordShot,p2)) {
 						p2.getCarrier().getShotReceived().add(coordShot);
@@ -58,7 +52,6 @@ public class TestIA {
 						p2.getBattleship().getShotReceived().add(coordShot);
 						hitShip=p2.getBattleship().getShipCategory();
 						isDestroyed=p2.getBattleship().isDestroyed();
-		
 					}
 					if(Tools.isCruiserHere(coordShot,p2)) {
 						p2.getCruiser().getShotReceived().add(coordShot);
@@ -82,15 +75,11 @@ public class TestIA {
 						p1.getShotArray().add(shotArray);			
 						p1.setLastHit(coordShot);
 					}
-					
 				}
-				p1.getShotFired().add(coordShot);
-				
-				if (!Tools.endGame(p1,p2)) {
-	
+				p1.getShotFired().add(coordShot);				
+				if (!Tools.endGame(p1,p2)) {	
 					//IA qui joue.
-					coordShot=((AI) p2).generateShotCoord();
-					
+					coordShot=((AI) p2).generateShotCoord();					
 					if (p1.shipHit(coordShot)) {
 						if(Tools.isCarrierHere(coordShot,p1)) {
 							p1.getCarrier().getShotReceived().add(coordShot);
@@ -100,8 +89,7 @@ public class TestIA {
 						if(Tools.isBattleshipHere(coordShot,p1)) {
 							p1.getBattleship().getShotReceived().add(coordShot);
 							hitShip=p1.getBattleship().getShipCategory();
-							isDestroyed=p1.getBattleship().isDestroyed();
-			
+							isDestroyed=p1.getBattleship().isDestroyed();	
 						}
 						if(Tools.isCruiserHere(coordShot,p1)) {
 							p1.getCruiser().getShotReceived().add(coordShot);
@@ -124,10 +112,8 @@ public class TestIA {
 							shotArray.add(Boolean.toString(isDestroyed));
 							p2.getShotArray().add(shotArray);			
 							p2.setLastHit(coordShot);
-						}
-						
+						}					
 					}
-	
 					p2.getShotFired().add(coordShot);
 				}
 			}
@@ -151,8 +137,7 @@ public class TestIA {
 	
 				}
 				else {
-					X3=X3+1;
-	
+					X3=X3+1;	
 				}
 			}
 		}
@@ -160,7 +145,6 @@ public class TestIA {
 		String str2="AI Level Beginner; "+X1+"; AI Level Medium; "+Y1;
 		String str3="AI Level Beginner; "+X2+"; AI Level Hard; "+Y2;
 		String str4="AI Level Medium; "+X3+"; AI Level Hard; "+Y3;
-
 		FileWriter writer = null;
 		try {
 			writer = new FileWriter("ai_proof.csv");
