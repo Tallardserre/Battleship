@@ -222,7 +222,7 @@ public class Tools {
 	}
 	
 	public static boolean checkEndCoord(String startCoord, int endCoordColl, int endCoordLine, int size, ArrayList<String> spaceOccupied){
-		/*verifie si la derniere coordonnées est valide : si aucun bateau ne se trouve entre la premiere coordonnée et la derniere coordonnée*/
+		/*verifie si la derniere coordonnees est valide : si aucun bateau ne se trouve entre la premiere coordonnee et la derniere coordonnee*/
 	    int startCoordColl=(int)startCoord.charAt(0)-65;
 	    int startCoordLine = startCoord.charAt(1) - '0';
 	    if (startCoord.length()==3) {
@@ -358,7 +358,7 @@ public class Tools {
 	}
 	
 	public static boolean nearCoord(String coord1, String coord2) {
-		//si les deux coordonnées sont collées ou pas
+		//si les deux coordonnees sont collees ou pas
 		int coord1Coll=(int)coord1.charAt(0)-65;
 		int coord1Line = stringToInt(coord1);		
 		int coord2Coll=(int)coord2.charAt(0)-65;
@@ -408,7 +408,7 @@ public class Tools {
 	public static ArrayList<String> generateSmartShotArray(ArrayList<String> shotFired, String coordShot, String coordLastShotHit){
 		//coordLastShotHit avant dernier hit
 		//coordShot dernier hit
-		//genere des coordonnees de tir en se basant sur les deux derniers tirs touchés (pour savoir si horizontal ou vertical)
+		//genere des coordonnees de tir en se basant sur les deux derniers tirs touches (pour savoir si horizontal ou vertical)
 		ArrayList<String> generatedShotArray = new ArrayList<String>();
 		generatedShotArray=generateShotArray(shotFired,coordShot);
 		ArrayList<String> generatedShotArray2 = new ArrayList<String>();

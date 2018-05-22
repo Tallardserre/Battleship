@@ -8,7 +8,7 @@ public class AI extends Player{
 	private int level;
 	private ArrayList<ArrayList<String>> shotArray = new ArrayList<ArrayList<String>>(); 
 		//case 0: coord
-		//case 1: coulé oui/non
+		//case 1: coule oui/non
 	private ArrayList<String> generateShot = new ArrayList<String>();
 	private String lastHit;
 
@@ -139,7 +139,7 @@ public class AI extends Player{
 	}
 	
 	public String generateShotCoord1() { 
-		//generation de coordonnée de tir pour AI de niveau 1
+		//generation de coordonnee de tir pour AI de niveau 1
 		Random rand = new Random();
 		int stop=0;
 		int coordShotLine,coordShotColl;
@@ -149,7 +149,7 @@ public class AI extends Player{
 			coordShotColl=rand.nextInt((10-1)+1)+1;
 			coordShot=Tools.intToString(coordShotLine)+coordShotColl;
 			if (Tools.checkCoord(coordShot)) { 
-				//on verifie juste si la coordonnée est valide
+				//on verifie juste si la coordonnee est valide
 				stop=1;
 			}
 		}
@@ -157,7 +157,7 @@ public class AI extends Player{
 	}
 	
 	public String generateShotCoord2() { 
-		//generation de coordonnée de tir pour AI de niveau 2
+		//generation de coordonnee de tir pour AI de niveau 2
 		Random rand = new Random();
 		int stop=0;
 		int coordShotLine,coordShotColl;
@@ -167,7 +167,7 @@ public class AI extends Player{
 			coordShotColl=rand.nextInt((10-1)+1)+1;
 			coordShot=Tools.intToString(coordShotLine)+coordShotColl;
 			if (Tools.checkInputCoordShot(coordShot,this.getShotFired())) {
-				// on verifie si la coordonnée est valide et si elle n'a jamais été utilisée
+				// on verifie si la coordonnee est valide et si elle n'a jamais ete utilisee
 				stop=1;
 			}
 		}
@@ -181,10 +181,10 @@ public class AI extends Player{
 		boolean check=false;
 		String coordShot="";//GENERER LES TIRS!		
 		if(this.getShotArray().size()>0&&this.getShotArray().get(this.getShotArray().size()-1).get(1)=="false") {
-			//si la liste de tirs touchés n'est pas vide		
-			if(this.getGenerateShot().isEmpty()) {//si la liste de tirs générés est vide
+			//si la liste de tirs touches n'est pas vide		
+			if(this.getGenerateShot().isEmpty()) {//si la liste de tirs generes est vide
 				if(this.getShotFired().get(this.getShotFired().size()-1).equals(this.getLastHit())) {//si le dernier tir est touchÃ©
-					if(this.getShotArray().size()>1) {//si on a au moins 2 tir touchés
+					if(this.getShotArray().size()>1) {//si on a au moins 2 tir touches
 						check=false;
 						if(this.getShotArray().get(this.getShotArray().size()-1).get(1)=="false") {	//si le dernier tir n'a pas coulÃ© le bateau
 							i=this.getShotArray().size()-1;
@@ -195,7 +195,7 @@ public class AI extends Player{
 								i--;
 							}
 							if(this.getShotArray().size()<1||!check) {
-								//si nombre de tirs touchés <1 OU deux derniers tirs non voisins
+								//si nombre de tirs touches <1 OU deux derniers tirs non voisins
 								this.setGenerateShot(Tools.generateShotArray(this.getShotFired(), this.getLastHit()));
 								//generer nouvelle liste avec lasthit
 							}
@@ -222,7 +222,7 @@ public class AI extends Player{
 								}
 							}
 						}
-						if(check){//si 2 derniers tirs touchés sont voisins	
+						if(check){//si 2 derniers tirs touches sont voisins	
 							this.setGenerateShot(Tools.generateSmartShotArray(this.getShotFired(), this.getLastHit(), this.getShotArray().get(this.getShotArray().size()-2).get(0)));
 							//generer nouvelle "smart" liste
 							if(this.getGenerateShot().isEmpty()) {//si liste vide on inverse les deux derniers tirs dans la fonction
@@ -237,7 +237,7 @@ public class AI extends Player{
 					}
 				}
 			}
-			else {//si liste de tir générée non vide		
+			else {//si liste de tir generee non vide		
 				if(this.getLastHit().equals(this.getShotFired().get(this.getShotFired().size()-1))) {//si le dernier tir est touchÃ©
 					if(this.getShotArray().size()<1||!Tools.nearCoord(this.getShotArray().get(this.getShotArray().size()-1).get(0), this.getShotArray().get(this.getShotArray().size()-2).get(0))) {
 						//si nb shot<1 OU deux derniers tirs non voisins
@@ -258,9 +258,9 @@ public class AI extends Player{
 				}
 			}
 		}
-		if (this.getGenerateShot().isEmpty()) {//pas de coord de tir generées
-			if(this.getShotArray().isEmpty()) {//aucun tir n'a touché de bateau
-				while(stop==0) {//on genere des coordonnées qui concernent une case sur 2
+		if (this.getGenerateShot().isEmpty()) {//pas de coord de tir generees
+			if(this.getShotArray().isEmpty()) {//aucun tir n'a touche de bateau
+				while(stop==0) {//on genere des coordonnees qui concernent une case sur 2
 					int coordShotLine=rand.nextInt((10-0));
 					int coordShotColl=rand.nextInt((10-1)+1)+1;
 					if(coordShotLine%2!=0||coordShotColl%2==0) {
@@ -277,9 +277,9 @@ public class AI extends Player{
 					}
 				}
 			}
-			else {//si on a deja un tir touché
+			else {//si on a deja un tir touche
 				stop=0;
-				while(stop==0) {//généré des coordonnÃ©es aleatoires
+				while(stop==0) {//genere des coordonnÃ©es aleatoires
 					int coordShotLine=rand.nextInt((10-0));
 					int coordShotColl=rand.nextInt((10-1)+1)+1;
 					coordShot=Tools.intToString(coordShotLine)+coordShotColl;
@@ -289,9 +289,9 @@ public class AI extends Player{
 				}
 			}
 		}
-		if(coordShot.equals("")) {//si la liste de tir générée n'est pas vide
+		if(coordShot.equals("")) {//si la liste de tir generee n'est pas vide
 			i=0;
-			while(i<0||i>this.getGenerateShot().size()) {// on choisit au hasard une des coordonnées 
+			while(i<0||i>this.getGenerateShot().size()) {// on choisit au hasard une des coordonnees 
 				i=rand.nextInt(this.getGenerateShot().size()+1)-1;
 			}
 			coordShot=this.getGenerateShot().get(i);

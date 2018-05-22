@@ -112,7 +112,7 @@ public class Player {
 				this.getCruiser().getCoordShip().contains(coord)||
 				this.getSubmarine().getCoordShip().contains(coord)||
 				this.getDestroyer().getCoordShip().contains(coord)) {
-					System.out.print(" O "); //pas touché
+					System.out.print(" O "); //pas touche
 				}
 				else {
 					System.out.print(" - "); //rien

@@ -108,6 +108,14 @@ public class Battleship {
 				}
 				tour++;
 			}
+			if (p1.shipsAllDestroyed()) {
+				printShotMap(p2,p1,10,10);
+				System.out.println(p2.getName()+" won! in "+tour+" rounds.");
+			}
+			else {
+				printShotMap(p1,p2,10,10);
+				System.out.println(p1.getName()+" won! in "+tour+" rounds.");
+			}
 			System.out.println("Play again? Y/n");
 			replay=sc1.nextLine();
 			stop=0;
@@ -122,14 +130,6 @@ public class Battleship {
 				}
 			}
 		}//*************************** END GAME *****************************
-		if (p1.shipsAllDestroyed()) {
-			printShotMap(p2,p1,10,10);
-			System.out.println(p2.getName()+" won! in "+tour+" rounds.");
-		}
-		else {
-			printShotMap(p1,p2,10,10);
-			System.out.println(p1.getName()+" won! in "+tour+" rounds.");
-		}
 		sc1.close();	
 		sc2.close();
 	}
@@ -353,11 +353,11 @@ public class Battleship {
 					p2.getCruiser().getCoordShip().contains(coord)||
 					p2.getSubmarine().getCoordShip().contains(coord)||
 					p2.getDestroyer().getCoordShip().contains(coord))) {
-					System.out.print(" X "); //touché
+					System.out.print(" X "); //touche
 				}
 				else {
 					if (p1.getShotFired().contains(coord)) {
-						System.out.print(" ! "); //pas touché
+						System.out.print(" ! "); //pas touche
 					}
 					else {
 						System.out.print(" - "); //rien
@@ -398,7 +398,7 @@ public class Battleship {
 				p1.getCruiser().getShotReceived().contains(coord)||
 				p1.getSubmarine().getShotReceived().contains(coord)||
 				p1.getDestroyer().getShotReceived().contains(coord)) {
-					System.out.print(" X "); //touché
+					System.out.print(" X "); //touche
 				}
 				else {
 					if (p1.getCarrier().getCoordShip().contains(coord)||
@@ -406,7 +406,7 @@ public class Battleship {
 					p1.getCruiser().getCoordShip().contains(coord)||
 					p1.getSubmarine().getCoordShip().contains(coord)||
 					p1.getDestroyer().getCoordShip().contains(coord)) {
-						System.out.print(" O "); //pas touché
+						System.out.print(" O "); //pas touche
 					}
 					else {
 						if (p2.getShotFired().contains(coord)) {

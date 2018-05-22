@@ -54,7 +54,7 @@ public class Ship {
 		int endCoordColl = (int) endCoord.charAt(0) - 65;
 		int endCoordLine = Tools.stringToInt(endCoord);
 		this.coordShip = Tools.checkSpacesArray(startCoordLine, startCoordColl, endCoordLine, endCoordColl, size,
-				this.coordShip);//cette fonction genere des tableaux entre les 2 coordonnées données 
+				this.coordShip);//cette fonction genere des tableaux entre les 2 coordonnees donnees 
 	}
 
 	public boolean isDestroyed() {
