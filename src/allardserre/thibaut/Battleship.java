@@ -140,10 +140,6 @@ public class Battleship {
 		Boolean isDestroyed=false;
 		int stop=0;
 		System.out.println(p1.getName()+" is playing!");
-		if(gameModeNumber==1) {
-			printShipsMap(p1,p2,10,10);
-			printShotMap(p1,p2,10,10);
-		}
 		if (p1 instanceof AI){
 			if(gameModeNumber==2) {
 				coordShot=((AI)p1).generateShotCoord();
